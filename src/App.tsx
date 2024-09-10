@@ -1,71 +1,43 @@
 // src/App.tsx
-import React from 'react';
-import { Layout, Menu } from 'antd';
+import React from "react";
 import {
-  CiOutlined,
-  ProfileOutlined,
-  SolutionOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
-import './App.css';
-import NewsSection from './components/NewsSection';
-import PackagesSection from './components/PackagesSection';
-import ReferralSection from './components/ReferralSection';
-import ProfileSection from './components/ProfileSection';
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import { Layout } from "antd";
+import "./App.css";
+import Dashboard from "./components/Dashboard";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import { useAuth } from "./contexts/AuthContext";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content } = Layout;
 
 const App: React.FC = () => {
-  const [selectedMenu, setSelectedMenu] = React.useState('news');
-
-  const renderContent = () => {
-    switch (selectedMenu) {
-      case 'news':
-        return <NewsSection />;
-      case 'packages':
-        return <PackagesSection />;
-      case 'referral':
-        return <ReferralSection />;
-      case 'profile':
-        return <ProfileSection />;
-      default:
-        return <NewsSection />;
-    }
-  };
+  const [isAuthenticated, setIsAuthenticated] = React.useState(useAuth());
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sider collapsible>
-        <Menu
-          theme="dark"
-          defaultSelectedKeys={['news']}
-          mode="inline"
-          onSelect={({ key }) => setSelectedMenu(key)}
-        >
-          <Menu.Item key="news" icon={<CiOutlined />}>
-            News & Task
-          </Menu.Item>
-          <Menu.Item key="packages" icon={<SolutionOutlined />}>
-            Packages
-          </Menu.Item>
-          <Menu.Item key="referral" icon={<ProfileOutlined />}>
-            Referral
-          </Menu.Item>
-          <Menu.Item key="profile" icon={<UserOutlined />}>
-            Profile
-          </Menu.Item>
-        </Menu>
-      </Sider>
-      <Layout>
-        <Header style={{ background: '#fff', textAlign: 'center' }}>
-          Bitcoin Mining Dashboard
-        </Header>
-        <Content style={{ margin: '16px' }}>{renderContent()}</Content>
-        <Footer style={{ textAlign: 'center' }}>
-          Bitcoin Mining Dashboard ©2024
-        </Footer>
+    <Router>
+      <Layout style={{ minHeight: "100vh" }}>
+        <Content>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                isAuthenticated ? <Dashboard /> : <Navigate to="/login" />
+              }
+            />
+            <Route
+              path="/login"
+              element={<Login setIsAuthenticated={setIsAuthenticated} />}
+            />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </Content>
       </Layout>
-    </Layout>
+    </Router>
   );
 };
 
