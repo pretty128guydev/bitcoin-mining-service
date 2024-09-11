@@ -1,4 +1,3 @@
-// src/components/Login.tsx
 import React, { useState } from "react";
 import { Form, Input, Button, Card, message } from "antd";
 import axios from "axios";
@@ -22,6 +21,7 @@ const Login: React.FC<Props> = () => {
         message.success("Login successful");
         setIsAuthenticated(true);
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("role", response.data.role);
         navigate("/");
       })
       .catch((error) => {
@@ -31,30 +31,52 @@ const Login: React.FC<Props> = () => {
   };
 
   return (
-    <Card title="Login" style={{ maxWidth: 400, margin: "auto" }}>
-      <Form onFinish={onFinish}>
-        <Form.Item
-          name="email"
-          rules={[{ required: true, message: "Please input your email!" }]}
-        >
-          <Input placeholder="Email" />
-        </Form.Item>
-        <Form.Item
-          name="password"
-          rules={[{ required: true, message: "Please input your password!" }]}
-        >
-          <Input.Password placeholder="Password" />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading} block>
-            Log in
+    <div
+      style={{
+        textAlign: "center",
+        marginTop: "200px",
+        position: "relative",
+        zIndex: 2, // Ensure the card is above the background
+      }}
+    >
+      <Card
+        title="Login"
+        style={{
+          maxWidth: 400,
+          margin: "auto",
+          backgroundColor: "rgba(255, 255, 255, 0.5)", // Semi-transparent background
+          borderRadius: "8px", // Optional: Adding some rounding
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", // Optional: Subtle shadow for contrast
+        }} // Slight opacity on the form content
+      >
+        <Form onFinish={onFinish}>
+          <Form.Item
+            name="email"
+            rules={[{ required: true, message: "Please input your email!" }]}
+          >
+            <Input placeholder="Email" />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: "Please input your password!" }]}
+          >
+            <Input.Password placeholder="Password" />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" loading={loading} block>
+              Log in
+            </Button>
+          </Form.Item>
+          <Button
+            style={{ color: "black" }}
+            type="link"
+            onClick={() => navigate("/register")}
+          >
+            Don't have an account? Register here
           </Button>
-        </Form.Item>
-        <Button type="link" onClick={() => navigate("/register")}>
-          Don't have an account? Register here
-        </Button>
-      </Form>
-    </Card>
+        </Form>
+      </Card>
+    </div>
   );
 };
 

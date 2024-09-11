@@ -1,0 +1,31 @@
+.custom-footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #001529;
+    padding: 5px 0;
+    color: white;
+  }
+  
+  .footer-item {
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #aaa;
+  }
+  
+  .footer-item span {
+    margin-top: 5px;
+    font-size: 10px;
+  }
+  
+  .footer-item.active {
+    color: #40a9ff; /* Change to active color */
+  }
+  
+  .footer-item:hover {
+    color: #1890ff;
+  }
+  

@@ -17,8 +17,8 @@ const PackagesSection: React.FC = () => {
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta title={item.name} description={`Price: ${item.price}`} />
-            <div>{item.dailyEarnings}</div>
-            <Button type="primary">Buy Now</Button>
+            {/* <div>{item.dailyEarnings}</div> */}
+            <Button type="primary" >Buy Now</Button>
           </List.Item>
         )}
       />

@@ -1,0 +1,26 @@
+/* App.css */
+.image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: "50px";
+  }
+  
+  .image-item {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+  }
+  
+  .image-item img {
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .image-title {
+    margin-top: 10px;
+    font-size: 1em;
+    text-align: center;
+  }
+  
