@@ -49,6 +49,12 @@
   color: #42f5a7;
 }
 
+.dayText {
+  font-weight: bold;
+  font-size: 16px;
+  color: #ffffff;
+}
+
 .unlockButton {
   background-color: #8e44ad;
   color: #fff;

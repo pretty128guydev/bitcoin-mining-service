@@ -2,29 +2,41 @@
 import React from "react";
 import "./SpecialPackage.css"; // Importing the CSS file
 
-const SpecialPackage: React.FC = () => {
+interface SpecialPackageProps {
+  packageName: string;
+  dailyEarnings: string;
+  validTime: string;
+  ratingIncome: string;
+  unlockPrice: string;
+}
+
+const SpecialPackage: React.FC<SpecialPackageProps> = ({
+  packageName,
+  dailyEarnings,
+  validTime,
+  ratingIncome,
+  unlockPrice
+}) => {
   return (
     <div className="package_container">
       <div className="package_header">
         <h3 className="package_headerText">Special Package</h3>
       </div>
       <div className="packageDetails">
-        <h2>One star package</h2>
-        <div className="detailsRow">
-          <div>
-            <p className="detailTitle">2 Times</p>
-            <p>Daily Earnings</p>
-          </div>
-          <div>
-            <p className="detailTitle">90 Days</p>
-            <p>Valid Time</p>
-          </div>
+        <h2>{packageName}</h2>
+        <div className="ratingIncome">
+          <p>Daily Earnings</p>
+          <p className="dayText">{dailyEarnings}</p>
+        </div>
+        <div className="ratingIncome">
+          <p>Valid Time</p>
+          <p className="dayText">{validTime}</p>
         </div>
         <div className="ratingIncome">
           <p>Rating income</p>
-          <p className="usdtText">0.50 USDT</p>
+          <p className="usdtText">{ratingIncome}</p>
         </div>
-        <button className="unlockButton">15.00 USDT Unlock now</button>
+        <button className="unlockButton">{unlockPrice} Unlock now</button>
       </div>
     </div>
   );

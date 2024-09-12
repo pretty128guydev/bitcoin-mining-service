@@ -135,10 +135,11 @@ const Dashboard: React.FC = () => {
       )}
       <Layout
         style={{
-          backgroundImage: `url(${up_back})`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center center",
+          backgroundColor: "#16163d",
+          //   backgroundImage: `url(${up_back})`,
+          //   backgroundSize: "cover",
+          //   backgroundRepeat: "no-repeat",
+          //   backgroundPosition: "center center",
         }}
       >
         <Header
@@ -157,7 +158,7 @@ const Dashboard: React.FC = () => {
             Logout
           </Button>
         </Header>
-        <Content style={{ backgroundColor: "#555353a6" }}>
+        <Content >
           {renderContent()}
         </Content>
         {/* <Footer style={{ textAlign: "center" }}>Bitcoin Mining ©2024</Footer> */}
