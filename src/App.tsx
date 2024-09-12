@@ -26,10 +26,11 @@ const App: React.FC = () => {
       <Layout
         style={{
           minHeight: "100vh",
-          backgroundImage:
-            width > 425 ? `url(${backgroundImage})` : `url(${mobile_back})`, // Set the background image
-          backgroundSize: width > 425 ? "cover" : "100% 100%",
-          backgroundPosition: width > 425 ? `left center` : `center center`,
+        //   backgroundImage:
+        //     width > 425 ? `url(${backgroundImage})` : `url(${mobile_back})`, // Set the background image
+        //   backgroundSize: width > 425 ? "cover" : "100% 100%",
+        //   backgroundPosition: width > 425 ? `left center` : `center center`,
+        backgroundColor: "#13182f"
         }}
       >
         <Content>

@@ -3,6 +3,7 @@ import { Form, Input, Button, Card, message } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import SigninFrame from "./SigninFrame";
 
 interface Props {
   setIsAuthenticated: (value: any) => void;
@@ -34,12 +35,13 @@ const Login: React.FC<Props> = () => {
     <div
       style={{
         textAlign: "center",
-        marginTop: "200px",
+        marginTop: "50px",
         position: "relative",
         zIndex: 2, // Ensure the card is above the background
       }}
     >
-      <Card
+      <SigninFrame />
+      {/* <Card
         title="Login"
         style={{
           maxWidth: 400,
@@ -75,7 +77,7 @@ const Login: React.FC<Props> = () => {
             Don't have an account? Register here
           </Button>
         </Form>
-      </Card>
+      </Card> */}
     </div>
   );
 };

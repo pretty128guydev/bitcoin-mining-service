@@ -3,7 +3,6 @@ import axios from "axios";
 import "./NewsSection.css";
 import useWindowSize from "../hooks/useWindowSize";
 import bitcoin from "../assets/bitcoin.png";
-import { Flex } from "antd";
 import nonews from "../assets/nonews.svg";
 import Loader from "../assets/Loader";
 
@@ -108,7 +107,7 @@ const NewsSection: React.FC = () => {
           onClick={handleImageClick} // Add click event
           src={bitcoin}
           style={{
-            width: width < 500 ? 160 : 210,
+            width: "250px",
             marginBottom: "20px",
             cursor: "pointer", // Cursor change to indicate clickability
             transform: isClicked ? "scale(1.1)" : "scale(1)", // Effect: scale image when clicked

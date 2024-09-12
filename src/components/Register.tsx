@@ -3,6 +3,7 @@ import { Form, Input, Button, Card, message, Modal } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/mining.png";
+import SignupFrame from "./SignupFrame";
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const Register: React.FC = () => {
         navigate("/login");
       })
       .catch((error) => {
-        message.error("Registration failed");
+        message.error(error.response.data.message);
         setLoading(false);
       });
   };
@@ -54,14 +55,14 @@ const Register: React.FC = () => {
       .post("http://localhost:5000/api/register_admin", {
         values,
         role: "admin",
-        invitationcode: invitationCode
+        invitationcode: invitationCode,
       })
       .then((response) => {
         message.success("Registration successful as Administrator");
         navigate("/login");
       })
       .catch((error) => {
-        message.error("Registration failed");
+        message.error(error.response.data.message);
         setLoading(false);
       });
   };
@@ -74,12 +75,13 @@ const Register: React.FC = () => {
     <div
       style={{
         textAlign: "center",
-        marginTop: "200px",
+        marginTop: "50px",
         position: "relative",
         zIndex: 2,
       }}
     >
-      <Card
+      <SignupFrame />
+      {/* <Card
         title="Register"
         style={{
           maxWidth: 400,
@@ -132,7 +134,7 @@ const Register: React.FC = () => {
             Already have an account? Log in here
           </Button>
         </Form>
-      </Card>
+      </Card> */}
 
       <Modal
         title="Validation Administrator"

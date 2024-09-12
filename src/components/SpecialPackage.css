@@ -1,0 +1,62 @@
+/* SpecialPackage.css */
+.package_container {
+  width: 300px;
+  background-color: #20233a;
+  border-radius: 10px;
+  padding: 20px;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.package_header {
+  background-color: #6164e8;
+  border-radius: 5px;
+  padding: 5px 10px;
+  text-align: center;
+}
+
+.package_headerText {
+  margin: 0;
+  color: #fff;
+  font-size: 18px;
+}
+
+.packageDetails {
+  margin-top: 10px;
+}
+
+.detailsRow {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.detailTitle {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.ratingIncome {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.usdtText {
+  font-weight: bold;
+  font-size: 16px;
+  color: #42f5a7;
+}
+
+.unlockButton {
+  background-color: #8e44ad;
+  color: #fff;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  margin-top: 20px;
+  font-size: 16px;
+  cursor: pointer;
+}

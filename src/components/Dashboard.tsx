@@ -115,6 +115,24 @@ const Dashboard: React.FC = () => {
           </Menu>
         </SideBar>
       )}
+      {role == "superadmin" && (
+        <SideBar isMobile={width < 500}>
+          <Menu
+            theme="dark"
+            defaultSelectedKeys={["news"]}
+            mode="inline"
+            onSelect={({ key }) => setSelectedMenu(key)}
+            selectedKeys={[selectedMenu]}
+          >
+            <Menu.Item key="about_news" icon={<ThunderboltOutlined />}>
+              About Users
+            </Menu.Item>
+            <Menu.Item key="about_admins" icon={<ThunderboltOutlined />}>
+              About Admins
+            </Menu.Item>
+          </Menu>
+        </SideBar>
+      )}
       <Layout
         style={{
           backgroundImage: `url(${up_back})`,
