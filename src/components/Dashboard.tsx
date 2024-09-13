@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Layout, Menu, Button } from "antd";
+import { Layout, Menu, Button, Dropdown } from "antd";
 import {
   ThunderboltOutlined,
   ProfileOutlined,
@@ -13,7 +13,7 @@ import ProfileSection from "./ProfileSection";
 import { useNavigate } from "react-router-dom";
 import useWindowSize from "../hooks/useWindowSize";
 import CustomFooter from "./Footer";
-import up_back from "../assets/up_back.jpg";
+import logo from "../assets/logo.svg";
 
 const { Header, Content, Sider } = Layout;
 
@@ -41,7 +41,6 @@ const Dashboard: React.FC = () => {
   const width = useWindowSize() ?? 0;
 
   const [role, setrole] = useState(localStorage.getItem("role"));
-  console.log(role);
   const renderContent = () => {
     switch (selectedMenu) {
       case "news":
@@ -56,14 +55,39 @@ const Dashboard: React.FC = () => {
         return <NewsSection />;
     }
   };
+  const menuItems = [
+    { key: "news", icon: <ThunderboltOutlined />, label: "News & Task" },
+    { key: "packages", icon: <SolutionOutlined />, label: "Packages" },
+    { key: "referral", icon: <ProfileOutlined />, label: "Referral" },
+    { key: "profile", icon: <UserOutlined />, label: "Profile" },
+  ];
 
   const handleLogout = () => {
     localStorage.removeItem("token"); // Clear the token
     navigate("/login"); // Redirect to login page
   };
+  const mobileMenu = (
+    <Menu
+      theme="dark"
+      mode="vertical"
+      onClick={({ key }) => setSelectedMenu(key)}
+      selectedKeys={[selectedMenu]}
+      style={{ background: "rgb(19, 24, 47)" }}
+    >
+      {menuItems.map(({ key, icon, label }) => (
+        <Menu.Item
+          key={key}
+          icon={icon}
+          style={{ color: "#ffffff", background: "rgb(19, 24, 47)" }}
+        >
+          {label}
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout style={{ backgroundColor: "white", minHeight: "100vh" }}>
       {role == "user" && (
         <SideBar isMobile={width < 500}>
           <Menu
@@ -135,7 +159,7 @@ const Dashboard: React.FC = () => {
       )}
       <Layout
         style={{
-          backgroundColor: "#16163d",
+          backgroundColor: "rgb(19, 24, 47)",
           //   backgroundImage: `url(${up_back})`,
           //   backgroundSize: "cover",
           //   backgroundRepeat: "no-repeat",
@@ -149,18 +173,29 @@ const Dashboard: React.FC = () => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            padding: "0 20px",
+            padding: "0 10px 0px 0px",
             height: "47px",
           }}
         >
-          <div style={{ color: "white" }}>MY MININGS</div>
-          <Button type="primary" danger onClick={handleLogout}>
-            Logout
-          </Button>
+          {/* <div style={{ color: "white" }}>MY MININGS</div> */}
+          <img src={logo} style={{ width: "150px",  height: "110px" }} />
+          <div>
+            {/* {width < 425 && (
+              <Dropdown overlay={mobileMenu} trigger={["click"]}>
+                <Button type="primary">Menu</Button>
+              </Dropdown>
+            )} */}
+            <Button
+              type="primary"
+              danger
+              onClick={handleLogout}
+              style={{ marginLeft: "10px" }}
+            >
+              Logout
+            </Button>
+          </div>
         </Header>
-        <Content >
-          {renderContent()}
-        </Content>
+        <Content>{renderContent()}</Content>
         {/* <Footer style={{ textAlign: "center" }}>Bitcoin Mining ©2024</Footer> */}
         <CustomFooter
           selectedMenu={selectedMenu}

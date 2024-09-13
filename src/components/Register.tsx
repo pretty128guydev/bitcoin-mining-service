@@ -14,7 +14,6 @@ const Register: React.FC = () => {
 
   const onFinish = (values: any) => {
     setLoading(true);
-    console.log("Form Values:", values);
 
     axios
       .post("http://localhost:5000/api/register", { values, role: "user" })

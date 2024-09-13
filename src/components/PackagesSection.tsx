@@ -1,43 +1,79 @@
 import React from "react";
 import { Card } from "antd";
 import SpecialPackage from "./SpecialPackage";
+import TextAnimation from "./TextAnimation";
 
 // Define the package data
 const packages = [
   {
-    packageName: "One star package",
+    packageRating: 1,
     ratingIncome: "$50",
-    validTime: "1 times",
+    validTime: "60 days",
     dailyEarnings: "1.5 USD/day",
-    unlockPrice: "1.5 USDT",
+    unlockPrice: "50 USDT",
   },
   {
-    packageName: "Two star package",
+    packageRating: 2,
     ratingIncome: "$130",
-    validTime: "2 times",
-    dailyEarnings: "1.5 USD/day",
-    unlockPrice: "1.5 USDT",
+    validTime: "60 days",
+    dailyEarnings: "3.9 USD/day",
+    unlockPrice: "130 USDT",
   },
   {
-    packageName: "Three star package",
+    packageRating: 3,
     ratingIncome: "$280",
-    validTime: "4 times",
-    dailyEarnings: "1.5 USD/day",
-    unlockPrice: "1.5 USDT",
+    validTime: "60 days",
+    dailyEarnings: "8.4 USD/day",
+    unlockPrice: "280 USDT",
   },
   {
-    packageName: "Four star package",
+    packageRating: 4,
     ratingIncome: "$340",
-    validTime: "6 times",
-    dailyEarnings: "1.5 USD/day",
-    unlockPrice: "1.5 USDT",
+    validTime: "60 days",
+    dailyEarnings: "10.2 USD/day",
+    unlockPrice: "340 USDT",
   },
   {
-    packageName: "Five star package",
+    packageRating: 5,
     ratingIncome: "$500",
-    validTime: "8 times",
-    dailyEarnings: "1.5 USD/day",
-    unlockPrice: "1.5 USDT",
+    validTime: "60 days",
+    dailyEarnings: "15 USD/day",
+    unlockPrice: "500 USDT",
+  },
+  {
+    packageRating: 6,
+    ratingIncome: "$1000",
+    validTime: "60 days",
+    dailyEarnings: "30 USD/day",
+    unlockPrice: "1000 USDT",
+  },
+  {
+    packageRating: 7,
+    ratingIncome: "$2000",
+    validTime: "60 days",
+    dailyEarnings: "60 USD/day",
+    unlockPrice: "2000 USDT",
+  },
+  {
+    packageRating: 8,
+    ratingIncome: "$3000",
+    validTime: "60 days",
+    dailyEarnings: "90 USD/day",
+    unlockPrice: "3000 USDT",
+  },
+  {
+    packageRating: 9,
+    ratingIncome: "$5000",
+    validTime: "60 days",
+    dailyEarnings: "150 USD/day",
+    unlockPrice: "5000 USDT",
+  },
+  {
+    packageRating: 10,
+    ratingIncome: "$10000",
+    validTime: "60 days",
+    dailyEarnings: "300 USD/day",
+    unlockPrice: "10000 USDT",
   },
 ];
 
@@ -45,23 +81,29 @@ const PackagesSection: React.FC = () => {
   return (
     <div
       style={{
-        display: "flex",
-        flexWrap: "wrap",
-        gap: "20px",
         margin: "20px",
-        justifyContent: "space-evenly",
       }}
     >
-      {packages.map((pkg, index) => (
-        <SpecialPackage
-          key={index}
-          packageName={pkg.packageName}
-          dailyEarnings={pkg.dailyEarnings}
-          validTime={pkg.validTime}
-          ratingIncome={pkg.ratingIncome}
-          unlockPrice={pkg.unlockPrice}
-        />
-      ))}
+      <TextAnimation text="Special &nbsp; Packages" />
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "40px",
+          justifyContent: "space-evenly",
+        }}
+      >
+        {packages.map((pkg, index) => (
+          <SpecialPackage
+            key={index}
+            packageRating={pkg.packageRating}
+            dailyEarnings={pkg.dailyEarnings}
+            validTime={pkg.validTime}
+            ratingIncome={pkg.ratingIncome}
+            unlockPrice={pkg.unlockPrice}
+          />
+        ))}
+      </div>
     </div>
   );
 };

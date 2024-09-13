@@ -1,68 +1,75 @@
 /* SpecialPackage.css */
 .package_container {
-  width: 300px;
-  background-color: #20233a;
-  border-radius: 10px;
-  padding: 20px;
-  color: #fff;
-  font-family: Arial, sans-serif;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.package_header {
-  background-color: #6164e8;
-  border-radius: 5px;
-  padding: 5px 10px;
-  text-align: center;
-}
-
-.package_headerText {
-  margin: 0;
-  color: #fff;
-  font-size: 18px;
-}
-
-.packageDetails {
-  margin-top: 10px;
-}
-
-.detailsRow {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
-}
-
-.detailTitle {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.ratingIncome {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
-}
-
-.usdtText {
-  font-weight: bold;
-  font-size: 16px;
-  color: #42f5a7;
-}
-
-.dayText {
-  font-weight: bold;
-  font-size: 16px;
-  color: #ffffff;
-}
-
-.unlockButton {
-  background-color: #8e44ad;
-  color: #fff;
-  padding: 10px;
-  width: 100%;
-  border: none;
-  border-radius: 5px;
-  margin-top: 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
+    width: 275px;
+    background-image: linear-gradient(to right, #9d9a9a61, #cfc4c41f);
+    border-radius: 10px;
+    padding: 20px;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+  }
+  
+  .package_container:hover {
+    transform: scale(1.05); /* Slightly enlarge the container */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+  }
+  
+  .package_header {
+    background-color: #6164e8;
+    border-radius: 5px;
+    padding: 5px 10px;
+    text-align: center;
+  }
+  
+  .package_headerText {
+    margin: 0;
+    color: #fff;
+    font-size: 18px;
+  }
+  
+  .packageDetails {
+    margin-top: 10px;
+  }
+  
+  .detailsRow {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+  .detailTitle {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .ratingIncome {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+  .usdtText {
+    font-weight: bold;
+    font-size: 16px;
+    color: #42f5a7;
+  }
+  
+  .dayText {
+    font-weight: bold;
+    font-size: 16px;
+    color: #ffffff;
+  }
+  
+  .unlockButton {
+    background-image: linear-gradient(to right, #6a00f4, #c800ff);
+    color: #fff;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 40px;
+    margin-top: 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  

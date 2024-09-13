@@ -1,9 +1,13 @@
-import React from 'react';
-import { Card, Form, Input, Button } from 'antd';
+import React from "react";
+import { Card, Form, Input, Button } from "antd";
+import Carousel from "./Carousel";
+import bitcoin from "../assets/bitcoin.jpg"
+import bitcoin2 from "../assets/bitcoin.png"
 
 const ProfileSection: React.FC = () => {
   return (
     <Card title="Your Profile" bordered={false}>
+      <Carousel/>
       <Form layout="vertical">
         <Form.Item label="Username">
           <Input placeholder="Enter your username" />

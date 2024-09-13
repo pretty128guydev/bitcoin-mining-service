@@ -1,26 +1,77 @@
 /* App.css */
 .image-gallery {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: "50px";
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.image-item {
+  display: flex;
+  justify-content: center;
+}
+
+.image-item img {
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: auto;
+}
+
+.image-item a {
+    margin: auto;
+    width: 300px;
   }
-  
-  .image-item {
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
+
+.image-title {
+  margin-top: 10px;
+  font-size: 1em;
+  text-align: center;
+}
+
+/* App.css */
+.floating-numbers {
+  position: relative;
+  width: 300px;
+  height: 60px; /* Adjust as needed */
+  overflow: hidden; /* Ensure numbers don't overflow the container */
+  margin: 0px auto -150px auto;
+  z-index: 100;
+}
+
+.floating-number {
+  position: absolute;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  opacity: 0;
+  animation: float 1s ease-out forwards;
+  pointer-events: none; /* Ensure floating numbers don’t interfere with clicks */
+}
+
+@keyframes float {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .image-item img {
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  100% {
+    opacity: 0;
+    transform: translateY(-50px); /* Adjust the float distance as needed */
   }
-  
-  .image-title {
-    margin-top: 10px;
-    font-size: 1em;
-    text-align: center;
-  }
-  
+}
+/* Adjust styling for energy counter */
+.energy-container {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.energy-container img {
+  width: 30px;
+  margin-right: 10px;
+}
+
+.energy-container p {
+  font-size: 1.5rem;
+  color: #ffffff;
+  font-weight: bold;
+}

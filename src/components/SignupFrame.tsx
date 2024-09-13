@@ -55,7 +55,6 @@ const SignupFrame: React.FC = () => {
     else if (password !== confirmPassword)
       toast.error("Passwords do not match");
     else {
-      console.log("Form submitted successfully");
       axios
         .post("http://localhost:5000/api/register", {
           firstName,

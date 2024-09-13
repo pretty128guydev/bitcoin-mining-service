@@ -1,9 +1,10 @@
 // SpecialPackage.tsx
 import React from "react";
 import "./SpecialPackage.css"; // Importing the CSS file
+import StarRating from "./StarRating";
 
 interface SpecialPackageProps {
-  packageName: string;
+  packageRating: number;
   dailyEarnings: string;
   validTime: string;
   ratingIncome: string;
@@ -11,19 +12,16 @@ interface SpecialPackageProps {
 }
 
 const SpecialPackage: React.FC<SpecialPackageProps> = ({
-  packageName,
+  packageRating,
   dailyEarnings,
   validTime,
   ratingIncome,
-  unlockPrice
+  unlockPrice,
 }) => {
   return (
     <div className="package_container">
-      <div className="package_header">
-        <h3 className="package_headerText">Special Package</h3>
-      </div>
       <div className="packageDetails">
-        <h2>{packageName}</h2>
+        <StarRating rating={packageRating} />
         <div className="ratingIncome">
           <p>Daily Earnings</p>
           <p className="dayText">{dailyEarnings}</p>
