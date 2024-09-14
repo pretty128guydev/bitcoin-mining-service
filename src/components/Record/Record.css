@@ -1,0 +1,22 @@
+/* Record.css */
+.record-container {
+    margin: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    max-width: 600px;
+  }
+  
+  .record-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .record-list li {
+    background-color: #fff;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  

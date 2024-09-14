@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import useWindowSize from "../hooks/useWindowSize";
 import CustomFooter from "./Footer";
 import logo from "../assets/logo.svg";
+import AdminUsersPage from "./AdminUsersPage";
 
 const { Header, Content, Sider } = Layout;
 
@@ -50,7 +51,9 @@ const Dashboard: React.FC = () => {
       case "referral":
         return <ReferralSection />;
       case "profile":
-        return <ProfileSection />;
+        return <ProfileSection setSelectedMenu={setSelectedMenu} />;
+      case "about_users":
+        return <AdminUsersPage />;
       default:
         return <NewsSection />;
     }
@@ -148,7 +151,7 @@ const Dashboard: React.FC = () => {
             onSelect={({ key }) => setSelectedMenu(key)}
             selectedKeys={[selectedMenu]}
           >
-            <Menu.Item key="about_news" icon={<ThunderboltOutlined />}>
+            <Menu.Item key="about_users" icon={<ThunderboltOutlined />}>
               About Users
             </Menu.Item>
             <Menu.Item key="about_admins" icon={<ThunderboltOutlined />}>
@@ -178,7 +181,7 @@ const Dashboard: React.FC = () => {
           }}
         >
           {/* <div style={{ color: "white" }}>MY MININGS</div> */}
-          <img src={logo} style={{ width: "150px",  height: "110px" }} />
+          <img src={logo} style={{ width: "150px", height: "110px" }} />
           <div>
             {/* {width < 425 && (
               <Dropdown overlay={mobileMenu} trigger={["click"]}>

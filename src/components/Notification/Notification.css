@@ -1,0 +1,60 @@
+.Notification-container {
+    padding: 20px;
+    width: 100%;
+    border-radius: 10px;
+  }
+  
+  .tab-menu {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  
+  .tab-menu button {
+    background-color: transparent;
+    border: none;
+    color: #ccc;
+    font-size: 16px;
+    padding: 10px;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .tab-menu button.active {
+    color: white;
+    font-weight: bold;
+  }
+  
+  .tab-menu button.active::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #bd34fe 0%, #47caff 100%);
+    border-radius: 5px;
+  }
+  
+  .Notification-card {
+    background-color: #192841;
+    padding: 15px;
+    border-radius: 8px;
+    color: white;
+  }
+  
+  .Notification-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .Notification-date {
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .no-content {
+    color: #aaa;
+    font-size: 16px;
+  }
+  

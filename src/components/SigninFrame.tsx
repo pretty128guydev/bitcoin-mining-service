@@ -2,14 +2,13 @@ import React, { useState, FormEvent } from "react";
 import "./SigninFrame.css";
 import toast, { Toaster } from "react-hot-toast";
 import mining from "../assets/mining.png";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 const SigninFrame: React.FC = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [registrationMethod, setRegistrationMethod] = useState("email");
   const { setIsAuthenticated } = useAuth();
 
@@ -17,19 +16,14 @@ const SigninFrame: React.FC = () => {
     setShowPassword(!showPassword);
   };
 
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
-
   const handleRegistrationMethodChange = (method: string) => {
     setRegistrationMethod(method);
   };
 
-  const validateForm = (event: FormEvent<HTMLFormElement>) => {
+  const validateForm = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
 
-    // Consistent name attributes with what the code expects
     const password = (form.elements.namedItem("password") as HTMLInputElement)
       ?.value;
     const contactInfo =
@@ -38,29 +32,54 @@ const SigninFrame: React.FC = () => {
         : (form.elements.namedItem("phoneNumber") as HTMLInputElement)?.value;
 
     if (!contactInfo)
-      toast.error(
+      return toast.error(
         `${
           registrationMethod.charAt(0).toUpperCase() +
           registrationMethod.slice(1)
-        } is required`
+        } is required`,
+        {
+          duration: 4000,
+        }
       );
-    else if (!password) toast.error("Password is required");
-    else {
-      axios
-        .post("http://localhost:5000/api/login", {
-          contactInfo,
-          password,
-        })
-        .then((response) => {
-          toast.success("Registration successful");
-          setIsAuthenticated(true);
-          localStorage.setItem("token", response.data.token);
-          localStorage.setItem("role", response.data.role);
-          navigate("/");
-        })
-        .catch((error) => {
-          toast.error(error.response.data.message);
-        });
+    if (!password)
+      return toast.error("Password is required", {
+        duration: 4000,
+      });
+
+    const loadingToastId = toast.loading("Logging in...", {
+      duration: 6000,
+    });
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/login", {
+        [registrationMethod]: contactInfo,
+        password,
+      });
+
+      const { token, role, firstName, lastName } = response.data;
+
+      toast.success(`Welcome ${firstName || lastName || "User"}'s login!`, {
+        id: loadingToastId,
+        duration: 5000,
+      });
+
+      setIsAuthenticated(true);
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("role", response.data.role);
+      navigate("/");
+    } catch (error) {
+      let errorMessage = "Login failed";
+
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message || errorMessage;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      toast.error(errorMessage, {
+        id: loadingToastId,
+        duration: 4000,
+      });
     }
   };
 
@@ -68,8 +87,12 @@ const SigninFrame: React.FC = () => {
     <div className="register-container">
       <h1 className="title">Sign In</h1>
       <form className="form" onSubmit={validateForm}>
-        <img src={mining} style={{ width: "150px", marginBottom: "1rem" }} />
-        {/* Registration Method Selector */}
+        <img
+          src={mining}
+          style={{ width: "150px", marginBottom: "1rem" }}
+          alt="mining"
+        />
+        {/* Login Method Selector */}
         <div className="login-method">
           <button
             type="button"
@@ -94,7 +117,7 @@ const SigninFrame: React.FC = () => {
         {/* Conditionally Render Email or Phone Number Input */}
         {registrationMethod === "email" ? (
           <div className="input password-input">
-            <input name="email" placeholder="Email" />
+            <input type="email" name="email" placeholder="Email" />
           </div>
         ) : (
           <div className="input password-input">

@@ -1,0 +1,78 @@
+.language-picker {
+  position: relative;
+  margin: 0 auto;
+  padding: 20px;
+  background: #1f1f2f;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.language-picker h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 1.5em;
+  color: #ffffff;
+}
+
+.back-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.back-button:hover {
+  color: #7ed6df;
+}
+
+.language-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+}
+
+.language-item {
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.language-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.selected {
+  background-color: rgba(0, 0, 255, 0.3);
+  font-weight: bold;
+}
+
+.checkmark {
+  color: #7ed6df;
+  font-size: 1.2em;
+}
+
+.language-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.language-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+.language-list::-webkit-scrollbar-track {
+  background: transparent;
+}

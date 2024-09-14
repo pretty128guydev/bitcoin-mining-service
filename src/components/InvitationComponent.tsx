@@ -41,7 +41,7 @@ const InvitationComponent: React.FC = () => {
         </div>
       </div>
 
-      <div className="item">
+      <div className="item" style={{marginTop: "30px"}}>
         <QRCodeSVG value={invitationLink} size={150} />
       </div>
 
