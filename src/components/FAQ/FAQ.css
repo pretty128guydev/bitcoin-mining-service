@@ -12,16 +12,18 @@
   display: flex;
   justify-content: space-around;
   margin-bottom: 10px;
+  gap: 10px;
 }
 
 .faq-tab {
   background-color: #25274e;
   color: white;
-  padding: 10px 20px;
+  padding: 10px 10px;
   border: none;
   border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  width: 100px;
 }
 
 .faq-tab.active {

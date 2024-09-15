@@ -58,7 +58,7 @@ const SigninFrame: React.FC = () => {
 
       const { token, role, firstName, lastName } = response.data;
 
-      toast.success(`Welcome ${firstName || lastName || "User"}'s login!`, {
+      toast.success(`Welcome ${firstName}  ${lastName}'s login!`, {
         id: loadingToastId,
         duration: 5000,
       });

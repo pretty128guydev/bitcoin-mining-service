@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ConfirmationModal from "./ConfirmationModal/ConfirmationModal"; // Import the modal component
-import SendMessage from "./SendMessage"; // Import SendMessage component
-import "./AdminUsersPage.css"; // Import the CSS file
+import "./AdminsPage.css"; // Import the CSS file
 import toast, { Toaster } from "react-hot-toast";
 
 interface User {
@@ -14,12 +13,11 @@ interface User {
   role: string;
 }
 
-const AdminUsersPage: React.FC = () => {
+const AdminsPage: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [sendMessageVisible, setSendMessageVisible] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -33,7 +31,7 @@ const AdminUsersPage: React.FC = () => {
         setError("Failed to fetch users");
         setLoading(false);
       });
-  }, []);
+  }, [users]);
 
   const handleCheckAdmin = (user: User) => {
     setSelectedUser(user);
@@ -42,20 +40,24 @@ const AdminUsersPage: React.FC = () => {
 
   const handleConfirm = () => {
     if (selectedUser) {
-      const { id } = selectedUser;
+      const { id, role } = selectedUser;
 
+      // Only attempt to change role if the current role is 'user'
       axios
         .post("http://localhost:5000/api/update-role", {
           userId: id,
-          newRole: "admin",
+          newRole: "superadmin",
         })
-        .then(() => {
-          toast.success("User role updated to admin.");
-          setUsers(users.map((user) =>
-            user.id === id ? { ...user, role: "admin" } : user
-          ));
+        .then((response) => {
+          // On success, update the user list
+          toast.success("User role updated to superadmin.");
+          setUsers(
+            users.map((user) =>
+              user.id === id ? { ...user, role: "admin" } : user
+            )
+          );
         })
-        .catch(() => {
+        .catch((error) => {
           toast.error("Failed to update user role.");
         });
     }
@@ -66,17 +68,9 @@ const AdminUsersPage: React.FC = () => {
     setModalVisible(false);
   };
 
-  const handleSendMessage = (user: User) => {
-    setSelectedUser(user);
-    setSendMessageVisible(true);
-  };
-
-  const handleCloseSendMessage = () => {
-    setSendMessageVisible(false);
-  };
-
+  // Filter users to include only those with the role 'user'
   const usersToDisplay = users.filter(
-    (user) => user.role.toLowerCase() === "user"
+    (user) => user.role.toLowerCase() === "admin"
   );
 
   return (
@@ -107,13 +101,7 @@ const AdminUsersPage: React.FC = () => {
                   className="check-admin-button"
                   onClick={() => handleCheckAdmin(user)}
                 >
-                  Make this admin
-                </button>
-                <button
-                  className="send-message-button"
-                  onClick={() => handleSendMessage(user)}
-                >
-                  Send Message
+                  Make this superadmin
                 </button>
               </div>
             ))
@@ -125,19 +113,14 @@ const AdminUsersPage: React.FC = () => {
 
       {modalVisible && selectedUser && (
         <ConfirmationModal
-          message={`This user is currently a ${selectedUser.role.toLowerCase()}. Do you want to promote them to admin?`}
+          message={`This user is currently a ${selectedUser.role.toLowerCase()}. Do you want to promote them to superadmin?`}
           onConfirm={handleConfirm}
           onCancel={handleCancel}
         />
       )}
-
-      {sendMessageVisible && selectedUser && (
-        <SendMessage fullName={selectedUser.firstname + selectedUser.lastname} recipientId={selectedUser.id} onClose={handleCloseSendMessage} />
-      )}
-
       <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 };
 
-export default AdminUsersPage;
+export default AdminsPage;

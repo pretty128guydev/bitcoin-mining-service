@@ -15,12 +15,17 @@ import {
   AiOutlineInfoCircle,
 } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import { Badge } from "antd";
 
 interface MenuPageProps {
-  setSelectedMenu: (data: any) => void; // Define the type of the data you expect
+  setSelectedMenu: (data: any) => void;
+  unread_messages: string;
 }
 
-const MenuPage: React.FC<MenuPageProps> = ({setSelectedMenu}) => {
+const MenuPage: React.FC<MenuPageProps> = ({
+  setSelectedMenu,
+  unread_messages,
+}) => {
   const navigate = useNavigate();
   // Handle Menu Click Events (just a placeholder for now)
   const handleClick = (label: string) => {
@@ -78,11 +83,18 @@ const MenuPage: React.FC<MenuPageProps> = ({setSelectedMenu}) => {
           label="Switch Language"
           onClick={() => handleClick("switch-language")}
         />
-        <MenuOption
-          icon={<FaBell />}
-          label="Notification"
-          onClick={() => handleClick("notification")}
-        />
+        <Badge
+          count={unread_messages}
+          size="small"
+          color="#ff4d4f"
+          styles={{ root: { width: "100%" } }}
+        >
+          <MenuOption
+            icon={<FaBell />}
+            label="Notification"
+            onClick={() => handleClick("notification")}
+          />
+        </Badge>
         <MenuOption
           icon={<AiOutlineInfoCircle />}
           label="About Us"

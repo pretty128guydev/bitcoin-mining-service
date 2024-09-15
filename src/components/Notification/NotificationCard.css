@@ -1,0 +1,65 @@
+.card-notification {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  padding: 15px;
+  margin-bottom: 10px;
+  background: #9b9b9b38;
+  border-radius: 13px;
+}
+
+.trash-button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .trash-button:hover {
+    color: #7ed6df;
+  }
+
+.card-notification-title-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-notification-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 0;
+}
+
+.card-notification-date {
+  font-size: 12px;
+  color: #888;
+  text-align: right;
+  margin: 0px;
+}
+
+.card-notification .card-notification-content-container {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.card-notification-sender {
+  font-size: 13px;
+  color: #555;
+  text-align: left;
+}
+
+.card-notification-content {
+  font-size: 13px;
+  color: #ffffff;
+  line-height: 1.5;
+  text-align: left;
+  overflow-wrap: break-word;
+  margin: 10px 0px;
+}

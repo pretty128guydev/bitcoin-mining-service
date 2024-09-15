@@ -1,0 +1,128 @@
+/* AdminUsersPage.css */
+
+.admin-user-container {
+  margin: 24px;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  margin-bottom: 24px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.loading,
+.error {
+  text-align: center;
+  font-size: 18px;
+}
+
+.error {
+  color: red;
+}
+
+.user-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 0;
+  margin: 0;
+}
+
+.user-card {
+  background-image: linear-gradient(to right, #9d9a9a61, #cfc4c41f);
+  /* border: 1px solid #ddd; */
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  width: 250px;
+}
+
+.user-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.user-detail {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #c7b8b87d;
+}
+
+.user-detail strong {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.check-admin-button {
+  background-image: linear-gradient(to right, #6a00f4, #c800ff);
+  border: none;
+  color: white;
+  padding: 5px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 10px 0;
+  cursor: pointer;
+  border-radius: 20px;
+  width: 100%;
+}
+
+.check-admin-button:hover {
+  background-color: #0056b3;
+}
+
+.send-message-button {
+  background-image: linear-gradient(to right, #6a00f4, #c800ff);
+  border: none;
+  color: white;
+  padding: 5px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 10px 0;
+  cursor: pointer;
+  border-radius: 20px;
+  width: 100%;
+}
+
+.send-message-button:hover {
+  background-color: #0056b3;
+}
+
+.message-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.message-modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.message-modal-content h2 {
+  margin-top: 0;
+}
+
+.message-modal-content textarea {
+  width: 100%;
+  height: 150px;
+  margin: 10px 0;
+}
+
+.message-modal-content button {
+  margin-right: 10px;
+}

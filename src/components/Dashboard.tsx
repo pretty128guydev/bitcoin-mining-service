@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Layout, Menu, Button, Dropdown } from "antd";
+import React, { useEffect, useState } from "react";
+import { Layout, Menu, Button, Dropdown, Badge } from "antd";
 import {
   ThunderboltOutlined,
   ProfileOutlined,
@@ -15,8 +15,16 @@ import useWindowSize from "../hooks/useWindowSize";
 import CustomFooter from "./Footer";
 import logo from "../assets/logo.svg";
 import AdminUsersPage from "./AdminUsersPage";
+import AdminsPage from "./AdminsPage";
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 const { Header, Content, Sider } = Layout;
+
+interface JwtPayload {
+  id: string;
+  // Add other properties that you expect in your JWT payload
+}
 
 const SideBar = ({
   isMobile,
@@ -40,6 +48,31 @@ const Dashboard: React.FC = () => {
   const [selectedMenu, setSelectedMenu] = React.useState("news");
   const navigate = useNavigate();
   const width = useWindowSize() ?? 0;
+  const [userId, setUserId] = useState<string>("");
+  const [unread_messages, setunread_messages] = useState<string>("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      const decoded: JwtPayload = jwtDecode(token);
+      setUserId(decoded.id);
+      const fetchUnreadMessages = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:5000/api/user/${userId}/unread`
+          );
+          setunread_messages(response.data.length)
+        } catch (error) {
+          console.error("Error fetching unread messages:", error);
+        }
+      };
+
+      fetchUnreadMessages();
+    } else {
+      console.log("no tokens");
+    }
+  });
 
   const [role, setrole] = useState(localStorage.getItem("role"));
   const renderContent = () => {
@@ -51,9 +84,11 @@ const Dashboard: React.FC = () => {
       case "referral":
         return <ReferralSection />;
       case "profile":
-        return <ProfileSection setSelectedMenu={setSelectedMenu} />;
+        return <ProfileSection unread_messages={unread_messages} setSelectedMenu={setSelectedMenu} />;
       case "about_users":
         return <AdminUsersPage />;
+      case "about_admins":
+        return <AdminsPage />;
       default:
         return <NewsSection />;
     }
@@ -203,6 +238,7 @@ const Dashboard: React.FC = () => {
         <CustomFooter
           selectedMenu={selectedMenu}
           setSelectedMenu={setSelectedMenu}
+          unread_messages={unread_messages}
         />
       </Layout>
     </Layout>
