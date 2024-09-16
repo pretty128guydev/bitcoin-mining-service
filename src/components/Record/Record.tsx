@@ -1,14 +1,16 @@
-import React from 'react';
-import './Record.css';
+import React from "react";
+import "./Record.css";
+import { useTranslation } from "react-i18next";
 
 const Record: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <div className="record-container">
-      <h1>Your Transaction Records</h1>
+      <h1>{t("Your Transaction Records")}</h1>
       <ul className="record-list">
-        <li>Transaction 1: $200 - Completed</li>
-        <li>Transaction 2: $500 - Pending</li>
-        <li>Transaction 3: $100 - Failed</li>
+        <li>{t("Transaction 1: $200 - Completed")}</li>
+        <li>{t("Transaction 2: $500 - Pending")}</li>
+        <li>{t("Transaction 3: $100 - Failed")}</li>
       </ul>
     </div>
   );

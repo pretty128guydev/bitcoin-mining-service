@@ -4,12 +4,14 @@ import toast, { Toaster } from "react-hot-toast";
 import mining from "../assets/mining.png";
 import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const SignupFrame: React.FC = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [registrationMethod, setRegistrationMethod] = useState("email");
+  const { t } = useTranslation();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -36,23 +38,23 @@ const SignupFrame: React.FC = () => {
         ? (form.elements.namedItem("email") as HTMLInputElement)?.value
         : (form.elements.namedItem("phoneNumber") as HTMLInputElement)?.value;
 
-    if (!firstName) return toast.error("First name is required", {
+    if (!firstName) return toast.error(t("First name is required"), {
       duration: 4000,
     });
-    if (!lastName) return toast.error("Last name is required", {
+    if (!lastName) return toast.error(t("Last name is required"), {
       duration: 4000,
     });
-    if (!contactInfo) return toast.error(`${registrationMethod.charAt(0).toUpperCase() + registrationMethod.slice(1)} is required`, {
+    if (!contactInfo) return toast.error(`${registrationMethod.charAt(0).toUpperCase() + registrationMethod.slice(1)} ${t("is required")}`, {
       duration: 4000,
     });
-    if (!password) return toast.error("Password is required", {
+    if (!password) return toast.error(t("Password is required"), {
       duration: 4000,
     });
-    if (password !== confirmPassword) return toast.error("Passwords do not match", {
+    if (password !== confirmPassword) return toast.error(t("Passwords do not match"), {
       duration: 4000,
     });
 
-    const loadingToastId = toast.loading("Registering...", {
+    const loadingToastId = toast.loading(t("Registering..."), {
       duration: 6000,
     });
 
@@ -65,13 +67,13 @@ const SignupFrame: React.FC = () => {
         role: "user",
       });
 
-      toast.success("Registration successful", {
+      toast.success(t("Registration successful"), {
         id: loadingToastId,
         duration: 4000,
       });
       navigate("/login");
     } catch (error) {
-      let errorMessage = "Registration failed";
+      let errorMessage = t("Registration failed");
 
       if (axios.isAxiosError(error)) {
         errorMessage = error.response?.data?.message || errorMessage;
@@ -88,9 +90,9 @@ const SignupFrame: React.FC = () => {
 
   return (
     <div className="register-container">
-      <h1 className="title">Sign Up</h1>
+      <h1 className="title">{t("Sign Up")}</h1>
       <form className="form" onSubmit={validateForm}>
-        <img src={mining} style={{ width: "150px", marginBottom: "1rem" }} alt="mining" />
+        <img src={mining} style={{ width: "150px", marginBottom: "1rem" }} alt={t("mining")} />
         {/* Registration Method Selector */}
         <div className="registration-method">
           <button
@@ -98,30 +100,30 @@ const SignupFrame: React.FC = () => {
             className={`selector-button ${registrationMethod === "email" ? "active" : ""}`}
             onClick={() => handleRegistrationMethodChange("email")}
           >
-            Email
+            {t("Email")}
           </button>
           <button
             type="button"
             className={`selector-button ${registrationMethod === "phoneNumber" ? "active" : ""}`}
             onClick={() => handleRegistrationMethodChange("phoneNumber")}
           >
-            Mobile
+            {t("Mobile")}
           </button>
         </div>
 
         <div className="input-group password-input">
-          <input type="text" name="firstname" placeholder="First Name" />
-          <input type="text" name="lastname" placeholder="Last Name" />
+          <input type="text" name="firstname" placeholder={t("First Name")} />
+          <input type="text" name="lastname" placeholder={t("Last Name")} />
         </div>
 
         {/* Conditionally Render Email or Phone Number Input */}
         {registrationMethod === "email" ? (
           <div className="input password-input">
-            <input type="email" name="email" placeholder="Email" />
+            <input type="email" name="email" placeholder={t("Email")} />
           </div>
         ) : (
           <div className="input password-input">
-            <input type="tel" name="phoneNumber" placeholder="Phone Number" />
+            <input type="tel" name="phoneNumber" placeholder={t("Phone Number")} />
           </div>
         )}
 
@@ -129,14 +131,14 @@ const SignupFrame: React.FC = () => {
           <input
             type={showPassword ? "text" : "password"}
             name="password"
-            placeholder="Password"
+            placeholder={t("Password")}
           />
           <button
             type="button"
             className="show-button"
             onClick={togglePasswordVisibility}
           >
-            {showPassword ? "Hide" : "Show"}
+            {showPassword ? t("Hide") : t("Show")}
           </button>
         </div>
 
@@ -144,23 +146,23 @@ const SignupFrame: React.FC = () => {
           <input
             type={showConfirmPassword ? "text" : "password"}
             name="confirmPassword"
-            placeholder="Confirm Password"
+            placeholder={t("Confirm Password")}
           />
           <button
             type="button"
             className="show-button"
             onClick={toggleConfirmPasswordVisibility}
           >
-            {showConfirmPassword ? "Hide" : "Show"}
+            {showConfirmPassword ? t("Hide") : t("Show")}
           </button>
         </div>
 
         <button type="submit" className="submit-button">
-          Sign Up
+          {t("Sign Up")}
         </button>
         <div className="footer">
           <p>
-            Already have an account? <a href="/login">Sign In</a>
+            {t("Already have an account?")} <a href="/login">{t("Sign In")}</a>
           </p>
         </div>
       </form>

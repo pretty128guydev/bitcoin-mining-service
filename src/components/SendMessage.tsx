@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import "./SendMessage.css"; // Create this CSS file for styling
 import { jwtDecode } from "jwt-decode";
+import { useTranslation } from "react-i18next";
 
 interface SendMessageProps {
   recipientId: string;
@@ -20,6 +21,7 @@ const SendMessage: React.FC<SendMessageProps> = ({
   fullName,
 }) => {
   const [content, setContent] = useState("");
+  const { t } = useTranslation();
 
   const handleSend = () => {
     const token = localStorage.getItem("token");
@@ -31,7 +33,7 @@ const SendMessage: React.FC<SendMessageProps> = ({
       const userId = decoded.id;
       const read_status = "unread";
       if (content.trim() === "") {
-        toast.error("Message content cannot be empty.");
+        toast.error(t("Message content cannot be empty."));
         return;
       }
       axios
@@ -42,31 +44,31 @@ const SendMessage: React.FC<SendMessageProps> = ({
           read_status,
         })
         .then(() => {
-          toast.success(`Message sent to ${fullName}  successfully.`);
+          toast.success(`${t("Message sent to")} ${fullName}  ${t("successfully.")}`);
           setContent("");
           onClose(); // Close the modal
         })
         .catch(() => {
-          toast.error("Failed to send message.");
+          toast.error(t("Failed to send message."));
         });
     } else {
-      toast.error("No token found.");
+      toast.error(t("No token found."));
     }
   };
 
   return (
     <div className="send-message-modal">
-      <h2>{`Send Message to ${fullName}`}</h2>
+      <h2>{`${t("Send Message to")} ${fullName}`}</h2>
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder="Enter your message here..."
+        placeholder={t("Enter your message here...")}
       />
       <button className="modal-button confirm" onClick={handleSend}>
-        Send
+        {t("Send")}
       </button>
       <button className="modal-button cancel" onClick={onClose}>
-        Close
+        {t("Close")}
       </button>
     </div>
   );

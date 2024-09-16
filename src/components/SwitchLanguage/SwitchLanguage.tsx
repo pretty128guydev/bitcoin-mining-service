@@ -43,7 +43,6 @@ const SwitchLanguage: React.FC = () => {
   }, []);
 
   const handleChangeLanguage = (code: string) => {
-    console.log(`Changing language to: ${code}`);
     setSelectedLanguage(code);
     localStorage.setItem("selectedLanguage", code);
 

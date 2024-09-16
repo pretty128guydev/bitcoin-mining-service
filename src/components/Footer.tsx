@@ -7,6 +7,7 @@ import {
 } from "@ant-design/icons"; // Retain icons if needed
 import "./Footer.css"; // Add CSS styling here
 import { Badge } from "antd";
+import { useTranslation } from "react-i18next";
 
 interface CustomFooterProps {
   selectedMenu: string;
@@ -22,6 +23,7 @@ const CustomFooter: React.FC<CustomFooterProps> = ({
   const handleMenuClick = (menuKey: string) => {
     setSelectedMenu(menuKey);
   };
+  const { t } = useTranslation();
 
   return (
     <footer className="custom-footer">
@@ -30,21 +32,21 @@ const CustomFooter: React.FC<CustomFooterProps> = ({
         onClick={() => handleMenuClick("news")}
       >
         <ThunderboltOutlined style={{ fontSize: "15px" }} />
-        <span>NEWS</span>
+        <span>{t("NEWS")}</span>
       </div>
       <div
         className={`footer-item ${selectedMenu === "packages" ? "active" : ""}`}
         onClick={() => handleMenuClick("packages")}
       >
         <ProfileOutlined style={{ fontSize: "15px" }} />
-        <span>PACKAGES</span>
+        <span>{t("PACKAGES")}</span>
       </div>
       <div
         className={`footer-item ${selectedMenu === "referral" ? "active" : ""}`}
         onClick={() => handleMenuClick("referral")}
       >
         <SolutionOutlined style={{ fontSize: "15px" }} />
-        <span>INVITING</span>
+        <span>{t("INVITING")}</span>
       </div>
       <Badge count={unread_messages} size="small" color="#ff4d4f">
         <div
@@ -54,7 +56,7 @@ const CustomFooter: React.FC<CustomFooterProps> = ({
           onClick={() => handleMenuClick("profile")}
         >
           <UserOutlined style={{ fontSize: "15px" }} />
-          <span>PROFILE</span>
+          <span>{t("PROFILE")}</span>
         </div>
       </Badge>
     </footer>

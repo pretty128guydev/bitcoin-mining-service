@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Make sure to install axios
 import toast, { Toaster } from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
+import { useTranslation } from "react-i18next";
 
 interface JwtPayload {
   id: string;
@@ -29,12 +30,13 @@ const LoginPassword: React.FC = () => {
   const handleBack = () => {
     navigate(-1); // Navigates to the previous page
   };
+  const { t } = useTranslation();
 
   const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (newPassword !== confirmPassword) {
-      toast.error("New password and confirmation do not match.");
+      toast.error(`${t("New password and confirmation do not match.")}`);
       return;
     }
 
@@ -56,15 +58,15 @@ const LoginPassword: React.FC = () => {
           } // Assuming you use JWT for auth
         );
 
-        toast.success("Password changed successfully.");
+        toast.success(`${t("Password changed successfully.")}`);
         // Optionally navigate away or clear fields
         navigate("/login"); // Redirect to login or another page if needed
       } else {
-        toast.error("No token found.");
+        toast.error(`${t("No token found.")}`);
       }
     } catch (error: any) {
       console.log(error.response);
-      toast.error(error.response?.data?.message || "An error occurred.");
+      toast.error(error.response?.data?.message || `${t("An error occurred.")}`);
     }
   };
 
@@ -73,11 +75,11 @@ const LoginPassword: React.FC = () => {
       <button className="back-button" onClick={handleBack}>
         <FaArrowLeft />
       </button>
-      <h2>Change Password</h2>
+      <h2>{t("Change Password")}</h2>
       <form onSubmit={handlePasswordChange}>
         <div className="password-field">
           <input
-            placeholder="Old login password"
+            placeholder={t("Old login password")}
             type={showOldPassword ? "text" : "password"}
             value={oldPassword}
             onChange={(e) => setOldPassword(e.target.value)}
@@ -90,7 +92,7 @@ const LoginPassword: React.FC = () => {
 
         <div className="password-field">
           <input
-            placeholder="New login password"
+            placeholder={t("New login password")}
             type={showNewPassword ? "text" : "password"}
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
@@ -103,7 +105,7 @@ const LoginPassword: React.FC = () => {
 
         <div className="password-field">
           <input
-            placeholder="Confirm new password"
+            placeholder={t("Confirm new password")}
             type={showConfirmPassword ? "text" : "password"}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
@@ -115,7 +117,7 @@ const LoginPassword: React.FC = () => {
         </div>
 
         <button className="confirm-button" type="submit">
-          Confirm
+          {t("Confirm")}
         </button>
       </form>
       <Toaster position="top-center" reverseOrder={false} />

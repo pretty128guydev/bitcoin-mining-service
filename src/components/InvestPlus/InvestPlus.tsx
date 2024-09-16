@@ -3,6 +3,7 @@ import "./InvestPlus.css";
 import useWindowSize from "../../hooks/useWindowSize";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const options = [
   {
@@ -55,62 +56,63 @@ const InvestPlus: React.FC = () => {
   const handleBack = () => {
     navigate(-1); // Navigates to the previous page
   };
+  const { t } = useTranslation();
   return (
     <div className="investment-options">
       <button className="back-button" onClick={handleBack}>
         <FaArrowLeft />
       </button>
-      <h2>Invest Plus</h2>
+      <h2>{t("Invest Plus")}</h2>
       {width < 525
         ? options.map((option, index) => (
             <div className="investment-card">
               <div className="sm-investment-header">
-                <span>{option.period} days investment rights</span>
+                <span>{option.period} {t("days investment rights")}</span>
                 <span className="sm-daily-return">
-                  Daily return rate: {option.dailyReturnRate}%
+                  {t("Daily return rate:")} {option.dailyReturnRate}%
                 </span>
               </div>
               <div className="sm-investment-details">
                 <div className="sm-investment-info">
                   <p>
-                    Minimum Investment amount:{" "}
-                    <strong>{option.minInvestment} USDT</strong>
+                    {t("Minimum Investment amount:")}{" "}
+                    <strong>{option.minInvestment} {t("USDT")}</strong>
                   </p>
                   <p>
-                    Investment period: <strong>{option.period} Days</strong>
+                    {t("Investment period:")} <strong>{option.period} {t("Days")}</strong>
                   </p>
                   <p>
-                    Periodic principal and interest:{" "}
-                    <strong>{option.periodicAmount} USDT</strong>
+                    {t("Periodic principal and interest:")}{" "}
+                    <strong>{option.periodicAmount} {t("USDT")}</strong>
                   </p>
                 </div>
-                <button className="invest-button">Invest now</button>
+                <button className="invest-button">{t("Invest now")}</button>
               </div>
             </div>
           ))
         : options.map((option, index) => (
             <div className="investment-card">
               <div className="investment-header">
-                <span>{option.period} days investment rights</span>
+                <span>{option.period} {t("days investment rights")}</span>
                 <span className="daily-return">
-                  Daily return rate: {option.dailyReturnRate}%
+                  {t("Daily return rate:")} {option.dailyReturnRate}%
                 </span>
               </div>
               <div className="investment-details">
                 <div className="investment-info">
                   <p>
-                    Minimum Investment amount:{" "}
-                    <strong>{option.minInvestment} USDT</strong>
+                    {t("Minimum Investment amount:")}{" "}
+                    <strong>{option.minInvestment} {t("USDT")}</strong>
                   </p>
                   <p>
-                    Investment period: <strong>{option.period} Days</strong>
+                    {t("Investment period:")} <strong>{option.period} {t("Days")}</strong>
                   </p>
                   <p>
-                    Periodic principal and interest:{" "}
-                    <strong>{option.periodicAmount} USDT</strong>
+                    {t("Periodic principal and interest:")}{" "}
+                    <strong>{option.periodicAmount} {t("USDT")}</strong>
                   </p>
                 </div>
-                <button className="invest-button">Invest now</button>
+                <button className="invest-button">{t("Invest now")}</button>
               </div>
             </div>
           ))}

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/mining.png";
 import SignupFrame from "./SignupFrame";
+import { useTranslation } from "react-i18next";
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const Register: React.FC = () => {
   const [form] = Form.useForm();
   const [modalVisible, setModalVisible] = useState(false); // State to control modal visibility
   const [invitationCode, setInvitationCode] = useState(""); // State for invitation code
+  const { t } = useTranslation();
 
   const onFinish = (values: any) => {
     setLoading(true);
@@ -18,7 +20,7 @@ const Register: React.FC = () => {
     axios
       .post("http://localhost:5000/api/register", { values, role: "user" })
       .then((response) => {
-        message.success("Registration successful");
+        message.success(t("Registration successful"));
         navigate("/login");
       })
       .catch((error) => {
@@ -36,7 +38,7 @@ const Register: React.FC = () => {
       setModalVisible(true);
     } catch (errorInfo) {
       // Validation failed, display error message
-      message.error("Please complete all required fields.");
+      message.error(t("Please complete all required fields."));
     }
   };
 
@@ -57,7 +59,7 @@ const Register: React.FC = () => {
         invitationcode: invitationCode,
       })
       .then((response) => {
-        message.success("Registration successful as Administrator");
+        message.success(t("Registration successful as Administrator"));
         navigate("/login");
       })
       .catch((error) => {
@@ -136,16 +138,16 @@ const Register: React.FC = () => {
       </Card> */}
 
       <Modal
-        title="Validation Administrator"
+        title={t("Validation Administrator")}
         visible={modalVisible}
         onOk={handleModalOk}
         onCancel={handleModalCancel}
         confirmLoading={loading}
-        okText="Submit"
-        cancelText="Cancel"
+        okText={t("Submit")}
+        cancelText={t("Cancel")}
       >
         <Input
-          placeholder="Enter your invitation code"
+          placeholder={t("Enter your invitation code")}
           value={invitationCode}
           onChange={(e) => setInvitationCode(e.target.value)}
         />

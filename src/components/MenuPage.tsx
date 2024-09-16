@@ -16,6 +16,7 @@ import {
 } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "antd";
+import { useTranslation } from "react-i18next";
 
 interface MenuPageProps {
   setSelectedMenu: (data: any) => void;
@@ -36,28 +37,29 @@ const MenuPage: React.FC<MenuPageProps> = ({
     localStorage.removeItem("token"); // Clear the token
     navigate("/login"); // Redirect to login page
   };
+  const { t } = useTranslation();
 
   return (
     <div className="menu-page">
       <div className="menu-options">
         <MenuOption
           icon={<AiOutlineSetting />}
-          label="InvestPlus"
+          label={t("InvestPlus")}
           onClick={() => handleClick("investplus")}
         />
         <MenuOption
           icon={<FaGlobe />}
-          label="Official Website"
+          label={t("Official Website")}
           onClick={() => setSelectedMenu("/news")}
         />
         <MenuOption
           icon={<FaQuestionCircle />}
-          label="FAQ"
+          label={t("FAQ")}
           onClick={() => handleClick("faq")}
         />
         <MenuOption
           icon={<FaLock />}
-          label="Login Password"
+          label={t("Login Password")}
           onClick={() => handleClick("login-password")}
         />
         {/* <MenuOption
@@ -67,7 +69,7 @@ const MenuPage: React.FC<MenuPageProps> = ({
         /> */}
         <MenuOption
           icon={<FaEnvelope />}
-          label="Record"
+          label={t("Record")}
           onClick={() => handleClick("record")}
         />
       </div>
@@ -75,12 +77,12 @@ const MenuPage: React.FC<MenuPageProps> = ({
       <div className="menu-options">
         <MenuOption
           icon={<AiOutlineInfoCircle />}
-          label="Contact Customer Service"
+          label={t("Contact Customer Service")}
           onClick={() => handleClick("online-service")}
         />
         <MenuOption
           icon={<AiOutlineGlobal />}
-          label="Switch Language"
+          label={t("Switch Language")}
           onClick={() => handleClick("switch-language")}
         />
         <Badge
@@ -91,18 +93,18 @@ const MenuPage: React.FC<MenuPageProps> = ({
         >
           <MenuOption
             icon={<FaBell />}
-            label="Notification"
+            label={t("Notification")}
             onClick={() => handleClick("notification")}
           />
         </Badge>
         <MenuOption
           icon={<AiOutlineInfoCircle />}
-          label="About Us"
+          label={t("About Us")}
           onClick={() => handleClick("about-us")}
         />
         <MenuOption
           icon={<FaMobileAlt />}
-          label="APP Download"
+          label={t("APP Download")}
           onClick={() => {}}
         />
       </div>
@@ -110,7 +112,7 @@ const MenuPage: React.FC<MenuPageProps> = ({
       <div className="logout">
         <button className="logout-button" onClick={handleLogout}>
           <AiOutlineLogout />
-          LogOut
+          {t("LogOut")}
         </button>
       </div>
     </div>

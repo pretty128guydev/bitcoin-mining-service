@@ -5,19 +5,19 @@
   gap: 10px;
 }
 
-.image-item {
+.image-item-cont {
   display: flex;
   justify-content: center;
 }
 
-.image-item img {
+.image-item-cont img {
   height: auto;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin: auto;
 }
 
-.image-item a {
+.image-item-cont a {
     margin: auto;
     width: 300px;
   }

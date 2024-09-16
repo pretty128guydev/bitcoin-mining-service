@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Menu, Button, Dropdown, Badge } from "antd";
+import { Layout, Menu, Button, Dropdown, Badge, MenuProps } from "antd";
 import {
   ThunderboltOutlined,
   ProfileOutlined,
@@ -18,12 +18,19 @@ import AdminUsersPage from "./AdminUsersPage";
 import AdminsPage from "./AdminsPage";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const { Header, Content, Sider } = Layout;
 
 interface JwtPayload {
   id: string;
   // Add other properties that you expect in your JWT payload
+}
+
+interface MenuItem {
+  key: string;
+  icon: any;
+  label: string;
 }
 
 const SideBar = ({
@@ -50,6 +57,7 @@ const Dashboard: React.FC = () => {
   const width = useWindowSize() ?? 0;
   const [userId, setUserId] = useState<string>("");
   const [unread_messages, setunread_messages] = useState<string>("");
+  const { t } = useTranslation();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -62,7 +70,7 @@ const Dashboard: React.FC = () => {
           const response = await axios.get(
             `http://localhost:5000/api/user/${userId}/unread`
           );
-          setunread_messages(response.data.length)
+          setunread_messages(response.data.length);
         } catch (error) {
           console.error("Error fetching unread messages:", error);
         }
@@ -75,6 +83,16 @@ const Dashboard: React.FC = () => {
   });
 
   const [role, setrole] = useState(localStorage.getItem("role"));
+
+  const menuItems = [
+    { key: "about_users", icon: <ThunderboltOutlined />, label: t("USERS") },
+    { key: "about_admins", icon: <ThunderboltOutlined />, label: t("ADMINS") },
+    { key: "news", icon: <ThunderboltOutlined />, label: t("News & Task") },
+    { key: "packages", icon: <SolutionOutlined />, label: t("Packages") },
+    { key: "referral", icon: <ProfileOutlined />, label: t("Referral") },
+    { key: "profile", icon: <UserOutlined />, label: t("Profile") },
+  ];
+
   const renderContent = () => {
     switch (selectedMenu) {
       case "news":
@@ -84,7 +102,12 @@ const Dashboard: React.FC = () => {
       case "referral":
         return <ReferralSection />;
       case "profile":
-        return <ProfileSection unread_messages={unread_messages} setSelectedMenu={setSelectedMenu} />;
+        return (
+          <ProfileSection
+            unread_messages={unread_messages}
+            setSelectedMenu={setSelectedMenu}
+          />
+        );
       case "about_users":
         return <AdminUsersPage />;
       case "about_admins":
@@ -93,36 +116,125 @@ const Dashboard: React.FC = () => {
         return <NewsSection />;
     }
   };
-  const menuItems = [
-    { key: "news", icon: <ThunderboltOutlined />, label: "News & Task" },
-    { key: "packages", icon: <SolutionOutlined />, label: "Packages" },
-    { key: "referral", icon: <ProfileOutlined />, label: "Referral" },
-    { key: "profile", icon: <UserOutlined />, label: "Profile" },
-  ];
 
   const handleLogout = () => {
     localStorage.removeItem("token"); // Clear the token
     navigate("/login"); // Redirect to login page
   };
-  const mobileMenu = (
-    <Menu
-      theme="dark"
-      mode="vertical"
-      onClick={({ key }) => setSelectedMenu(key)}
-      selectedKeys={[selectedMenu]}
-      style={{ background: "rgb(19, 24, 47)" }}
-    >
-      {menuItems.map(({ key, icon, label }) => (
-        <Menu.Item
-          key={key}
-          icon={icon}
-          style={{ color: "#ffffff", background: "rgb(19, 24, 47)" }}
-        >
-          {label}
-        </Menu.Item>
-      ))}
-    </Menu>
-  );
+  const getMenuItems = (role: string | null): MenuProps["items"] => {
+    switch (role) {
+      case "admin":
+        return [
+          {
+            label: t("Users"),
+            key: "about_users",
+            icon: <ThunderboltOutlined />,
+            theme: "dark",
+          },
+          {
+            label: t("News & Task"),
+            key: "news",
+            icon: <ThunderboltOutlined />,
+            theme: "dark",
+          },
+          {
+            label: t("Packages"),
+            key: "packages",
+            icon: <SolutionOutlined />,
+            theme: "dark",
+          },
+          {
+            label: t("Referral"),
+            key: "referral",
+            icon: <ProfileOutlined />,
+            theme: "dark",
+          },
+          {
+            label: t("Profile"),
+            key: "profile",
+            icon: <UserOutlined />,
+            theme: "dark",
+          },
+        ];
+      case "user":
+        return [
+          {
+            label: t("News & Task"),
+            key: "news",
+            icon: <ThunderboltOutlined />,
+            theme: "dark",
+          },
+          {
+            label: t("Packages"),
+            key: "packages",
+            icon: <SolutionOutlined />,
+            theme: "dark",
+          },
+          {
+            label: t("Referral"),
+            key: "referral",
+            icon: <ProfileOutlined />,
+            theme: "dark",
+          },
+          {
+            label: t("Profile"),
+            key: "profile",
+            icon: <UserOutlined />,
+            theme: "dark",
+          },
+        ];
+      case "superadmin":
+        return [
+          {
+            label: t("Users"),
+            key: "about_users",
+            icon: <ThunderboltOutlined />,
+            theme: "dark",
+          },
+          {
+            label: t("Admins"),
+            key: "about_admins",
+            icon: <ThunderboltOutlined />,
+          },
+          {
+            label: t("News & Task"),
+            key: "news",
+            icon: <ThunderboltOutlined />,
+            theme: "dark",
+          },
+          {
+            label: t("Packages"),
+            key: "packages",
+            icon: <SolutionOutlined />,
+            theme: "dark",
+          },
+          {
+            label: t("Referral"),
+            key: "referral",
+            icon: <ProfileOutlined />,
+            theme: "dark",
+          },
+          {
+            label: t("Profile"),
+            key: "profile",
+            icon: <UserOutlined />,
+            theme: "dark",
+          },
+        ];
+      default:
+        return [];
+    }
+  };
+
+  const mobileMenu = (): MenuProps => {
+    return {
+      items: getMenuItems(role),
+      theme: "dark",
+      onClick: (e) => {
+        setSelectedMenu(e.key); // Update state or handle menu click
+      },
+    };
+  };
 
   return (
     <Layout style={{ backgroundColor: "white", minHeight: "100vh" }}>
@@ -136,16 +248,16 @@ const Dashboard: React.FC = () => {
             selectedKeys={[selectedMenu]}
           >
             <Menu.Item key="news" icon={<ThunderboltOutlined />}>
-              News & Task
+              {t("News & Task")}
             </Menu.Item>
             <Menu.Item key="packages" icon={<SolutionOutlined />}>
-              Packages
+              {t("Packages")}
             </Menu.Item>
             <Menu.Item key="referral" icon={<ProfileOutlined />}>
-              Referral
+              {t("Referral")}
             </Menu.Item>
             <Menu.Item key="profile" icon={<UserOutlined />}>
-              Profile
+              {t("Profile")}
             </Menu.Item>
           </Menu>
         </SideBar>
@@ -159,20 +271,20 @@ const Dashboard: React.FC = () => {
             onSelect={({ key }) => setSelectedMenu(key)}
             selectedKeys={[selectedMenu]}
           >
-            <Menu.Item key="about_news" icon={<ThunderboltOutlined />}>
-              About Users
+            <Menu.Item key="about_users" icon={<ThunderboltOutlined />}>
+              {t("About Users")}
             </Menu.Item>
             <Menu.Item key="news" icon={<ThunderboltOutlined />}>
-              News & Task
+              {t("News & Task")}
             </Menu.Item>
             <Menu.Item key="packages" icon={<SolutionOutlined />}>
-              Packages
+              {t("Packages")}
             </Menu.Item>
             <Menu.Item key="referral" icon={<ProfileOutlined />}>
-              Referral
+              {t("Referral")}
             </Menu.Item>
             <Menu.Item key="profile" icon={<UserOutlined />}>
-              Profile
+              {t("Profile")}
             </Menu.Item>
           </Menu>
         </SideBar>
@@ -187,10 +299,22 @@ const Dashboard: React.FC = () => {
             selectedKeys={[selectedMenu]}
           >
             <Menu.Item key="about_users" icon={<ThunderboltOutlined />}>
-              About Users
+              {t("About Users")}
             </Menu.Item>
             <Menu.Item key="about_admins" icon={<ThunderboltOutlined />}>
-              About Admins
+              {t("About Admins")}
+            </Menu.Item>
+            <Menu.Item key="news" icon={<ThunderboltOutlined />}>
+              {t("News & Task")}
+            </Menu.Item>
+            <Menu.Item key="packages" icon={<SolutionOutlined />}>
+              {t("Packages")}
+            </Menu.Item>
+            <Menu.Item key="referral" icon={<ProfileOutlined />}>
+              {t("Referral")}
+            </Menu.Item>
+            <Menu.Item key="profile" icon={<UserOutlined />}>
+              {t("Profile")}
             </Menu.Item>
           </Menu>
         </SideBar>
@@ -218,18 +342,27 @@ const Dashboard: React.FC = () => {
           {/* <div style={{ color: "white" }}>MY MININGS</div> */}
           <img src={logo} style={{ width: "150px", height: "110px" }} />
           <div>
-            {/* {width < 425 && (
-              <Dropdown overlay={mobileMenu} trigger={["click"]}>
-                <Button type="primary">Menu</Button>
+            {width < 500 && (
+              <Dropdown menu={mobileMenu()} trigger={["click"]}>
+                <Button
+                  type="primary"
+                  style={{ background: "#0b2f51", width: "70px" }}
+                >
+                  {t("Menu")}
+                </Button>
               </Dropdown>
-            )} */}
+            )}
             <Button
               type="primary"
               danger
               onClick={handleLogout}
-              style={{ marginLeft: "10px" }}
+              style={{
+                marginLeft: "10px",
+                background: "#cf313177",
+                width: "70px",
+              }}
             >
-              Logout
+              {t("Logout")}
             </Button>
           </div>
         </Header>

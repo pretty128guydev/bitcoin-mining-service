@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react'; // Ensure you have this installed
 import './InvitationComponent.css'; // Import the CSS file
+import { useTranslation } from 'react-i18next';
 
 const InvitationComponent: React.FC = () => {
   const [isCopied, setIsCopied] = useState(false);
   const invitationCode = '825389';
   const invitationLink = `https://kwtvokvip.cc/#/reg?ic=${invitationCode}`;
+  const { t } = useTranslation();
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -16,27 +18,27 @@ const InvitationComponent: React.FC = () => {
   return (
     <div className="inv_container">
       <div className="item">
-        <label className="label">Invitation Code</label>
+        <label className="label">{t("Invitation Code")}</label>
         <div className="code-container">
           <span className="code">{invitationCode}</span>
           <button
             className="copy-button"
             onClick={() => copyToClipboard(invitationCode)}
           >
-            Copy
+            {t("Copy")}
           </button>
         </div>
       </div>
 
       <div className="item">
-        <label className="label">Invitation Link</label>
+        <label className="label">{t("Invitation Link")}</label>
         <div className="link-container">
           <span className="link">{invitationLink}</span>
           <button
             className="copy-button"
             onClick={() => copyToClipboard(invitationLink)}
           >
-            Copy
+            {t("Copy")}
           </button>
         </div>
       </div>
@@ -45,7 +47,7 @@ const InvitationComponent: React.FC = () => {
         <QRCodeSVG value={invitationLink} size={150} />
       </div>
 
-      {isCopied && <div className="copied-message">Copied to clipboard!</div>}
+      {isCopied && <div className="copied-message">{t("Copied to clipboard!")}</div>}
     </div>
   );
 };

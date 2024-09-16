@@ -5,6 +5,7 @@ import axios from "axios";
 import NotificationCard from "./NotificationCard";
 import "./Notification.css";
 import { jwtDecode } from "jwt-decode";
+import { useTranslation } from "react-i18next";
 
 interface NotificationData {
   title: string;
@@ -29,6 +30,7 @@ const Notification: React.FC = () => {
   const [messages, setMessages] = useState<NotificationData[]>([]);
   const [activeTab, setActiveTab] = useState("Notification");
   const [userId, setUserId] = useState<string>("");
+  const { t } = useTranslation();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -62,20 +64,20 @@ const Notification: React.FC = () => {
       <button className="back-button" onClick={handleBack}>
         <FaArrowLeft />
       </button>
-      <h2>Notifications</h2>
+      <h2>{t("Notifications")}</h2>
       <div className="notifi-container">
         <div className="tab-menu">
           <button
             className={activeTab === "Notification" ? "active" : ""}
             onClick={() => setActiveTab("Notification")}
           >
-            Announcement
+            {t("Announcement")}
           </button>
           <button
             className={activeTab === "message" ? "active" : ""}
             onClick={() => setActiveTab("message")}
           >
-            Message
+            {t("Message")}
           </button>
         </div>
 
@@ -85,7 +87,7 @@ const Notification: React.FC = () => {
               notifications.map((notif, index) => (
                 <NotificationCard
                   key={index}
-                  title={`from ${notif.senderFirstName}${notif.senderLastName}`}
+                  title={`${t("From")} ${notif.senderFirstName}${notif.senderLastName}`}
                   date={notif.date}
                   content={notif.content}
                   senderEmail={notif.senderEmail}
@@ -98,13 +100,13 @@ const Notification: React.FC = () => {
                 />
               ))
             ) : (
-              <div className="no-content">No Notifications</div>
+              <div className="no-content">{t("No Notifications")}</div>
             )
           ) : messages.length > 0 ? (
             messages.map((msg, index) => (
               <NotificationCard
                 key={index}
-                title={`From ${msg.senderFirstName}${msg.senderLastName}`}
+                title={`${t("From")} ${msg.senderFirstName}${msg.senderLastName}`}
                 date={msg.date}
                 content={msg.content}
                 senderEmail={msg.senderEmail}
@@ -117,7 +119,7 @@ const Notification: React.FC = () => {
               />
             ))
           ) : (
-            <div className="no-content">No Messages</div>
+            <div className="no-content">{t("No Messages")}</div>
           )}
         </div>
       </div>

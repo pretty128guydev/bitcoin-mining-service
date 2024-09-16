@@ -2,40 +2,42 @@ import React from "react";
 import "./OnlineService.css";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const OnlineService: React.FC = () => {
   const navigate = useNavigate();
   const handleBack = () => {
     navigate(-1); // Navigates to the previous page
   };
+  const { t } = useTranslation();
   return (
     <div className="online-service-container">
       <button className="back-button" onClick={handleBack}>
         <FaArrowLeft />
       </button>
-      <h2>Online Service</h2>
-      <p>Choose your preferred online customer service contact method</p>
+      <h2>{t("Online Service")}</h2>
+      <p>{t("Choose your preferred online customer service contact method")}</p>
       <div className="service-options">
         <div className="service-option">
           <img
             src="https://img.icons8.com/color/48/000000/telegram-app--v1.png"
-            alt="Telegram"
+            alt={t("Telegram")}
           />
-          <span>KWTVOK Official Channel</span>
+          <span>{t("KWTVOK Official Channel")}</span>
         </div>
         <div className="service-option">
           <img
             src="https://img.icons8.com/color/48/000000/telegram-app--v1.png"
-            alt="Telegram"
+            alt={t("Telegram")}
           />
-          <span>Kwtvok 24H Service</span>
+          <span>{t("Kwtvok 24H Service")}</span>
         </div>
         <div className="service-option">
           <img
             src="https://img.icons8.com/color/48/000000/whatsapp.png"
-            alt="WhatsApp"
+            alt={t("WhatsApp")}
           />
-          <span>Kwtvok 24H Service</span>
+          <span>{t("Kwtvok 24H Service")}</span>
         </div>
       </div>
     </div>

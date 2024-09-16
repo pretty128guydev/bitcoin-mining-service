@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import SigninFrame from "./SigninFrame";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   setIsAuthenticated: (value: any) => void;
@@ -13,20 +14,21 @@ const Login: React.FC<Props> = () => {
   const navigate = useNavigate();
   const { setIsAuthenticated } = useAuth();
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const onFinish = (values: any) => {
     setLoading(true);
     axios
       .post("http://localhost:5000/api/login", values)
       .then((response) => {
-        message.success("Login successful");
+        message.success(t("Login successful"));
         setIsAuthenticated(true);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("role", response.data.role);
         navigate("/");
       })
       .catch((error) => {
-        message.error("Invalid credentials");
+        message.error(t("Invalid credentials"));
         setLoading(false);
       });
   };

@@ -7,6 +7,7 @@ import nonews from "../assets/nonews.svg";
 import Loader from "../assets/Loader";
 import lightning from "../assets/lightning.png";
 import { Carousel } from "antd";
+import { useTranslation } from "react-i18next";
 
 interface NewsItem {
   uuid: string;
@@ -22,6 +23,7 @@ const NewsSection: React.FC = () => {
   const [price, setPrice] = useState<number>(0);
   const [energy, setEnergy] = useState<number>(0);
   const width = useWindowSize() ?? 0;
+  const { t } = useTranslation();
 
   // State to track if the image is clicked or not
   const [isClicked, setIsClicked] = useState(false);
@@ -101,7 +103,7 @@ const NewsSection: React.FC = () => {
           }}
         >
           <img src={nonews} style={{ width: "100px" }} />
-          <h2 style={{ color: "#ffffff" }}>No Current news</h2>
+          <h2 style={{ color: "#ffffff" }}>{t("No Current news")}</h2>
         </div>
       )}
       {/* <div className="image-gallery">
@@ -117,22 +119,31 @@ const NewsSection: React.FC = () => {
           </div>
         ))}
       </div> */}
-      <Carousel arrows infinite={false} afterChange={onChange}>
-        {newsItems.map((item) => (
-          <div
-            className="image-item"
-            key={item.uuid}
-          >
-            <a href={item.url} target="_blank" rel="noopener noreferrer">
-              <img
-                src={item.image_url}
-                alt={item.title}
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Carousel
+          arrows
+          infinite={false}
+          afterChange={onChange}
+          style={{ width: width < 425 ? "250px" : "350px" }}
+        >
+          {newsItems.map((item) => (
+            <div className="image-item-cont" key={item.uuid}>
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{ width: width < 425 ? "200px" : "300px" }}
-              />
-            </a>
-          </div>
-        ))}
-      </Carousel>
+              >
+                <img
+                  src={item.image_url}
+                  alt={item.title}
+                  style={{ width: width < 425 ? "200px" : "300px" }}
+                />
+              </a>
+            </div>
+          ))}
+        </Carousel>
+      </div>
 
       {/* Display floating numbers */}
       <div className="floating-numbers">

@@ -4,6 +4,7 @@ import ConfirmationModal from "./ConfirmationModal/ConfirmationModal"; // Import
 import SendMessage from "./SendMessage"; // Import SendMessage component
 import "./AdminUsersPage.css"; // Import the CSS file
 import toast, { Toaster } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 interface User {
   id: string;
@@ -21,6 +22,7 @@ const AdminUsersPage: React.FC = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [sendMessageVisible, setSendMessageVisible] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     axios
@@ -50,13 +52,13 @@ const AdminUsersPage: React.FC = () => {
           newRole: "admin",
         })
         .then(() => {
-          toast.success("User role updated to admin.");
+          toast.success(t("User role updated to admin."));
           setUsers(users.map((user) =>
             user.id === id ? { ...user, role: "admin" } : user
           ));
         })
         .catch(() => {
-          toast.error("Failed to update user role.");
+          toast.error(t("Failed to update user role."));
         });
     }
     setModalVisible(false);
@@ -81,9 +83,9 @@ const AdminUsersPage: React.FC = () => {
 
   return (
     <div className="admin-user-container">
-      <h1>Users List</h1>
+      <h1>{t("Users List")}</h1>
       {loading ? (
-        <p className="loading">Loading...</p>
+        <p className="loading">{t("Loading...")}</p>
       ) : error ? (
         <p className="error">{error}</p>
       ) : (
@@ -92,40 +94,40 @@ const AdminUsersPage: React.FC = () => {
             usersToDisplay.map((user) => (
               <div key={user.id} className="user-card">
                 <div className="user-detail">
-                  <strong>Name:</strong> {`${user.firstname} ${user.lastname}`}
+                  <strong>{t("Name:")}</strong> {`${user.firstname} ${user.lastname}`}
                 </div>
                 <div className="user-detail">
-                  <strong>Email:</strong> {user.email}
+                  <strong>{t("Email:")}</strong> {user.email}
                 </div>
                 <div className="user-detail">
-                  <strong>Phone Number:</strong> {user.phoneNumber}
+                  <strong>{t("Phone Number:")}</strong> {user.phoneNumber}
                 </div>
                 <div className="user-detail">
-                  <strong>Role:</strong> {user.role}
+                  <strong>{t("Role:")}</strong> {user.role}
                 </div>
                 <button
                   className="check-admin-button"
                   onClick={() => handleCheckAdmin(user)}
                 >
-                  Make this admin
+                  {t("Make this admin")}
                 </button>
                 <button
                   className="send-message-button"
                   onClick={() => handleSendMessage(user)}
                 >
-                  Send Message
+                  {t("Send Message")}
                 </button>
               </div>
             ))
           ) : (
-            <p>No users with the role 'user' found.</p>
+            <p>{t("No users with the role 'user' found.")}</p>
           )}
         </div>
       )}
 
       {modalVisible && selectedUser && (
         <ConfirmationModal
-          message={`This user is currently a ${selectedUser.role.toLowerCase()}. Do you want to promote them to admin?`}
+          message={`${t("This user is currently a")} ${selectedUser.role.toLowerCase()}${t(". Do you want to promote them to admin?")}`}
           onConfirm={handleConfirm}
           onCancel={handleCancel}
         />
