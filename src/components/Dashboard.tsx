@@ -19,6 +19,7 @@ import AdminsPage from "./AdminsPage";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import TronWalletConnector from "./tronWallet/tronWalletConnector";
 
 const { Header, Content, Sider } = Layout;
 
@@ -363,6 +364,18 @@ const Dashboard: React.FC = () => {
               }}
             >
               {t("Logout")}
+            </Button>
+            <TronWalletConnector />
+            <Button
+              type="primary"
+              danger
+              style={{
+                marginLeft: "10px",
+                background: "#cf313177",
+                width: "70px",
+              }}
+            >
+              {t("Connect")}
             </Button>
           </div>
         </Header>
