@@ -2,6 +2,10 @@
   padding: 20px;
   width: 100%;
   border-radius: 10px;
+  max-width: 1000px;
+  margin: 40px auto;
+  background-color: #2a2d3a;
+  min-height: 500px;
 }
 
 .tab-menu {

@@ -23,7 +23,7 @@ const AdminsPage: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/users")
+      .get(`${process.env.REACT_APP_BACKEND_PORT}/api/users`)
       .then((response) => {
         setUsers(response.data);
         setLoading(false);
@@ -45,7 +45,7 @@ const AdminsPage: React.FC = () => {
 
       // Only attempt to change role if the current role is 'user'
       axios
-        .post("http://localhost:5000/api/update-role", {
+        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/update-role`, {
           userId: id,
           newRole: "superadmin",
         })

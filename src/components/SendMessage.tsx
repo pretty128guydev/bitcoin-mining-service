@@ -37,7 +37,7 @@ const SendMessage: React.FC<SendMessageProps> = ({
         return;
       }
       axios
-        .post("http://localhost:5000/api/send", {
+        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/send`, {
           userId,
           recipientId,
           content,

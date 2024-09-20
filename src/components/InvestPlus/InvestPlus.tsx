@@ -57,6 +57,9 @@ const InvestPlus: React.FC = () => {
     navigate(-1); // Navigates to the previous page
   };
   const { t } = useTranslation();
+  const invest = () => {
+    navigate(`/rechargeSelect`);
+  };
   return (
     <div className="investment-options">
       <button className="back-button" onClick={handleBack}>
@@ -67,7 +70,9 @@ const InvestPlus: React.FC = () => {
         ? options.map((option, index) => (
             <div className="investment-card">
               <div className="sm-investment-header">
-                <span>{option.period} {t("days investment rights")}</span>
+                <span>
+                  {option.period} {t("days investment rights")}
+                </span>
                 <span className="sm-daily-return">
                   {t("Daily return rate:")} {option.dailyReturnRate}%
                 </span>
@@ -76,24 +81,35 @@ const InvestPlus: React.FC = () => {
                 <div className="sm-investment-info">
                   <p>
                     {t("Minimum Investment amount:")}{" "}
-                    <strong>{option.minInvestment} {t("USDT")}</strong>
+                    <strong>
+                      {option.minInvestment} {t("USDT")}
+                    </strong>
                   </p>
                   <p>
-                    {t("Investment period:")} <strong>{option.period} {t("Days")}</strong>
+                    {t("Investment period:")}{" "}
+                    <strong>
+                      {option.period} {t("Days")}
+                    </strong>
                   </p>
                   <p>
                     {t("Periodic principal and interest:")}{" "}
-                    <strong>{option.periodicAmount} {t("USDT")}</strong>
+                    <strong>
+                      {option.periodicAmount} {t("USDT")}
+                    </strong>
                   </p>
                 </div>
-                <button className="invest-button">{t("Invest now")}</button>
+                <button className="invest-button" onClick={invest}>
+                  {t("Invest now")}
+                </button>
               </div>
             </div>
           ))
         : options.map((option, index) => (
             <div className="investment-card">
               <div className="investment-header">
-                <span>{option.period} {t("days investment rights")}</span>
+                <span>
+                  {option.period} {t("days investment rights")}
+                </span>
                 <span className="daily-return">
                   {t("Daily return rate:")} {option.dailyReturnRate}%
                 </span>
@@ -102,17 +118,26 @@ const InvestPlus: React.FC = () => {
                 <div className="investment-info">
                   <p>
                     {t("Minimum Investment amount:")}{" "}
-                    <strong>{option.minInvestment} {t("USDT")}</strong>
+                    <strong>
+                      {option.minInvestment} {t("USDT")}
+                    </strong>
                   </p>
                   <p>
-                    {t("Investment period:")} <strong>{option.period} {t("Days")}</strong>
+                    {t("Investment period:")}{" "}
+                    <strong>
+                      {option.period} {t("Days")}
+                    </strong>
                   </p>
                   <p>
                     {t("Periodic principal and interest:")}{" "}
-                    <strong>{option.periodicAmount} {t("USDT")}</strong>
+                    <strong>
+                      {option.periodicAmount} {t("USDT")}
+                    </strong>
                   </p>
                 </div>
-                <button className="invest-button">{t("Invest now")}</button>
+                <button className="invest-button" onClick={invest}>
+                  {t("Invest now")}
+                </button>
               </div>
             </div>
           ))}

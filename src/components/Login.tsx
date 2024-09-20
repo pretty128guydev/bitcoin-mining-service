@@ -19,7 +19,7 @@ const Login: React.FC<Props> = () => {
   const onFinish = (values: any) => {
     setLoading(true);
     axios
-      .post("http://localhost:5000/api/login", values)
+      .post(`${process.env.REACT_APP_BACKEND_PORT}/api/login`, values)
       .then((response) => {
         message.success(t("Login successful"));
         setIsAuthenticated(true);

@@ -6,6 +6,7 @@
     "@ant-design/icons": "^5.4.0",
     "@fortawesome/fontawesome-free": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@noble/secp256k1": "^1.7.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -19,6 +20,7 @@
     "@types/react-dom": "^18.3.0",
     "antd": "^5.20.6",
     "axios": "^1.7.7",
+    "chmod": "^0.2.1",
     "i18next": "^23.15.1",
     "jwt-decode": "^4.0.0",
     "qrcode.react": "^4.0.1",
@@ -30,6 +32,8 @@
     "react-router-dom": "^6.26.2",
     "react-scripts": "5.0.1",
     "react-toastify": "^10.0.5",
+    "socket.io-client": "^4.7.5",
+    "stream": "^0.0.3",
     "tronweb": "^5.3.2",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
@@ -57,5 +61,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "assert": "^2.1.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "process": "^0.11.10",
+    "stream-browserify": "^3.0.0"
   }
 }

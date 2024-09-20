@@ -1,110 +1,163 @@
-import React from "react";
-import MenuOption from "./MenuOption"; // Assuming both files are in the same folder
+import React, { useContext, useState } from "react";
+import { MyContext } from "../MyContext"; // Import the context
+import { Badge } from "antd"; // For Badge component
 import {
-  FaLock,
-  FaQuestionCircle,
-  FaGlobe,
-  FaEnvelope,
-  FaBell,
-  FaMobileAlt,
-} from "react-icons/fa"; // For Icons
-import {
-  AiOutlineLogout,
-  AiOutlineSetting,
-  AiOutlineGlobal,
   AiOutlineInfoCircle,
+  AiOutlineLogout,
+  AiOutlineGlobal,
+  AiOutlineSetting,
 } from "react-icons/ai";
+import {
+  FaBell,
+  FaGlobe,
+  FaLock,
+  FaEnvelope,
+  FaQuestionCircle,
+  FaMobileAlt,
+} from "react-icons/fa";
+import { BsFillLightningChargeFill } from "react-icons/bs";
+import MenuOption from "./MenuOption"; // Assuming both files are in the same folder
 import { useNavigate } from "react-router-dom";
-import { Badge } from "antd";
-import { useTranslation } from "react-i18next";
+import ConfirmationModal from "./ConfirmationModal/ConfirmationModal";
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
+import toast from "react-hot-toast";
+import CuteLoading from "./CuteLoading/CuteLoading";
 
 interface MenuPageProps {
   setSelectedMenu: (data: any) => void;
-  unread_messages: string;
+  balance: string;
+}
+interface JwtPayload {
+  id: string;
+  // Add other properties that you expect in your JWT payload
 }
 
-const MenuPage: React.FC<MenuPageProps> = ({
-  setSelectedMenu,
-  unread_messages,
-}) => {
+const MenuPage: React.FC<MenuPageProps> = ({ setSelectedMenu, balance }) => {
   const navigate = useNavigate();
-  // Handle Menu Click Events (just a placeholder for now)
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const context = useContext(MyContext); // Access the context safely
+  const { myunreadmessage, setMyunreadmessages } = context; // Safely destructure from context
+  const { mybalance, setMybalance } = context; // Safely destructure from context
+
   const handleClick = (label: string) => {
     console.log(`${label} clicked`);
     navigate(`/menu/${label}`);
   };
+
   const handleLogout = () => {
     localStorage.removeItem("token"); // Clear the token
     navigate("/login"); // Redirect to login page
   };
-  const { t } = useTranslation();
+
+  const handleConfirm = (amount: number) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setLoading(true);
+      const decoded: JwtPayload = jwtDecode(token);
+      const userId = decoded.id;
+
+      if (Number(balance) < Number(amount)) {
+        axios
+          .post(`${process.env.REACT_APP_BACKEND_PORT}/api/create_payment`, {
+            amount: amount,
+            sender_id: userId,
+            price_currency: "usd",
+          })
+          .then((response) => {
+            setLoading(false);
+            const paymentId = response?.data?.invoice_id;
+            window.location.href = `https://nowpayments.io/payment?iid=${paymentId}`;
+          })
+          .catch((error) => {
+            setLoading(false);
+            toast.error(error.message);
+          });
+      } else {
+      }
+    } else {
+      console.log(`No token found.`);
+    }
+  };
+
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
+
+  const Recharge = () => {
+    setModalVisible(true);
+  };
 
   return (
     <div className="menu-page">
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <h1>MY BALANCE: ${mybalance}</h1>
+      </div>
       <div className="menu-options">
         <MenuOption
           icon={<AiOutlineSetting />}
-          label={t("InvestPlus")}
+          label="InvestPlus"
           onClick={() => handleClick("investplus")}
         />
         <MenuOption
           icon={<FaGlobe />}
-          label={t("Official Website")}
+          label="Official Website"
           onClick={() => setSelectedMenu("/news")}
         />
         <MenuOption
           icon={<FaQuestionCircle />}
-          label={t("FAQ")}
+          label="FAQ"
           onClick={() => handleClick("faq")}
         />
         <MenuOption
           icon={<FaLock />}
-          label={t("Login Password")}
+          label="Login Password"
           onClick={() => handleClick("login-password")}
         />
-        {/* <MenuOption
-          icon={<FaLock />}
-          label="Security Password"
-          onClick={() => handleClick("security-password")}
-        /> */}
         <MenuOption
           icon={<FaEnvelope />}
-          label={t("Record")}
-          onClick={() => handleClick("record")}
+          label="Passport Verify"
+          onClick={() => handleClick("passport")}
+        />
+        <MenuOption
+          icon={<BsFillLightningChargeFill />}
+          label="Recharge My Wallet"
+          onClick={() => Recharge()}
         />
       </div>
       <div className="menu-separator"></div> {/* Separator for sections */}
       <div className="menu-options">
         <MenuOption
           icon={<AiOutlineInfoCircle />}
-          label={t("Contact Customer Service")}
+          label="Contact Customer Service"
           onClick={() => handleClick("online-service")}
         />
         <MenuOption
           icon={<AiOutlineGlobal />}
-          label={t("Switch Language")}
+          label="Switch Language"
           onClick={() => handleClick("switch-language")}
         />
         <Badge
-          count={unread_messages}
+          count={myunreadmessage} // Use the global state here
           size="small"
           color="#ff4d4f"
           styles={{ root: { width: "100%" } }}
         >
           <MenuOption
             icon={<FaBell />}
-            label={t("Notification")}
+            label="Notification"
             onClick={() => handleClick("notification")}
           />
         </Badge>
         <MenuOption
           icon={<AiOutlineInfoCircle />}
-          label={t("About Us")}
+          label="About Us"
           onClick={() => handleClick("about-us")}
         />
         <MenuOption
           icon={<FaMobileAlt />}
-          label={t("APP Download")}
+          label="APP Download"
           onClick={() => {}}
         />
       </div>
@@ -112,9 +165,20 @@ const MenuPage: React.FC<MenuPageProps> = ({
       <div className="logout">
         <button className="logout-button" onClick={handleLogout}>
           <AiOutlineLogout />
-          {t("LogOut")}
+          LogOut
         </button>
       </div>
+      {modalVisible && (
+        <div>
+          <ConfirmationModal
+            message={""}
+            onConfirm={handleConfirm}
+            onCancel={handleCancel}
+            recharge={true}
+          />
+        </div>
+      )}
+      {loading && <CuteLoading />} {/* Show loading spinner when processing */}
     </div>
   );
 };

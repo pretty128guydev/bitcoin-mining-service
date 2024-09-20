@@ -1,115 +1,135 @@
 .recharge-container {
-    width: 350px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #1e1e38;
-    border-radius: 10px;
-    color: white;
-    font-family: Arial, sans-serif;
-  }
-  
-  .header {
-    text-align: center;
-  }
-  
-  .logo {
-    width: 50px;
-    margin-bottom: 10px;
-  }
-  
-  .network-selection {
-    font-size: 14px;
-    margin-bottom: 5px;
-  }
-  
-  .mainnet-name {
-    font-size: 18px;
-    font-weight: bold;
-    color: #5d5bff;
-  }
-  
-  .qrcode-section {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
-  }
-  
-  .qrcode-wrapper {
-    background-color: white;
-    padding: 10px;
-    border-radius: 10px;
-  }
-  
-  .address-section {
-    margin: 20px 0;
-  }
-  
-  .name {
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
-  
-  .address-box {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #2b2b52;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  
-  .address {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  
-  .copy-button {
-    background-color: #4b88ff;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .copy-button:hover {
-    background-color: #3a68cc;
-  }
-  
-  .recharge-complete-btn {
-    width: 100%;
-    padding: 10px;
-    background: linear-gradient(90deg, #5d5bff, #ea5dff);
-    border: none;
-    border-radius: 5px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 20px;
-  }
-  
-  .recharge-complete-btn:hover {
-    background: linear-gradient(90deg, #4d4dcc, #d14dd1);
-  }
-  
-  .warm-reminder {
-    display: flex;
-    align-items: flex-start;
-    margin-top: 20px;
-    background-color: #2b2b52;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  
-  .reminder-icon {
-    width: 20px;
-    margin-right: 10px;
-  }
-  
-  .reminder-text p {
-    font-size: 12px;
-    margin: 5px 0;
-    color: #999;
-  }
-  
+  margin: 10px auto;
+  padding: 20px;
+  background-color: #1e1e38;
+  border-radius: 10px;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  text-align: center;
+}
+
+.recharge-header {
+  margin-top: 40px;
+}
+
+.logo {
+  width: 100%;
+  margin-bottom: -40px;
+  display: flex;
+  justify-content: center;
+}
+
+.logo img {
+  width: 60px;
+}
+
+.network-selection {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.mainnet-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #5d5bff;
+}
+
+.qrcode-section {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.qrcode-wrapper {
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.address-section {
+  margin: 20px 0;
+}
+
+.name {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.address-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2b2b52;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.address {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.copy-button {
+  background-color: #4b88ff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.copy-button:hover {
+  background-color: #3a68cc;
+}
+
+.recharge-complete-btn {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(90deg, #5d5bff, #ea5dff);
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.recharge-complete-btn:hover {
+  background: linear-gradient(90deg, #4d4dcc, #d14dd1);
+}
+
+.warm-reminder {
+  align-items: flex-start;
+  margin-top: 20px;
+  background-color: #2b2b52;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.reminder-icon {
+  width: 20px;
+  margin-right: 10px;
+}
+
+.reminder-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.reminder-text p {
+  font-size: 12px;
+  margin: 5px 0;
+  color: #999;
+  text-align: left;
+}
+
+.recharge-body {
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+}

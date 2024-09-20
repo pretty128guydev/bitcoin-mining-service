@@ -59,7 +59,7 @@ const SignupFrame: React.FC = () => {
     });
 
     try {
-      await axios.post("http://localhost:5000/api/register", {
+      await axios.post(`${process.env.REACT_APP_BACKEND_PORT}/api/register`, {
         firstName,
         lastName,
         password,

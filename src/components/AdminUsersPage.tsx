@@ -26,7 +26,7 @@ const AdminUsersPage: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/users")
+      .get(`${process.env.REACT_APP_BACKEND_PORT}/api/users`)
       .then((response) => {
         setUsers(response.data);
         setLoading(false);
@@ -47,7 +47,7 @@ const AdminUsersPage: React.FC = () => {
       const { id } = selectedUser;
 
       axios
-        .post("http://localhost:5000/api/update-role", {
+        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/update-role`, {
           userId: id,
           newRole: "admin",
         })

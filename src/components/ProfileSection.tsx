@@ -4,12 +4,12 @@ import MenuPage from "./MenuPage";
 
 interface ProfileSectionProps {
     setSelectedMenu: (data: any) => void;
-    unread_messages: string // Define the type of the data you expect
+    balance: string
 }
 
-const ProfileSection: React.FC<ProfileSectionProps> = ({ setSelectedMenu, unread_messages }) => {
+const ProfileSection: React.FC<ProfileSectionProps> = ({ setSelectedMenu, balance }) => {
   return (
-    <MenuPage unread_messages={unread_messages} setSelectedMenu={setSelectedMenu}/>
+    <MenuPage balance={balance} setSelectedMenu={setSelectedMenu}/>
     // <Card title="Your Profile" bordered={false}>
     //   <Form layout="vertical">
     //     <Form.Item label="Username">

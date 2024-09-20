@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./NotificationCard.css";
 import { FaTrashAlt } from "react-icons/fa";
 import axios from "axios";
+import { MyContext } from "../../MyContext";
 
 interface NotificationData {
   title: string;
@@ -44,7 +45,7 @@ const NotificationCard: React.FC<NotificationProps> = ({
   const handleDelete = () => {
     if (userId) {
       axios
-        .post(`http://localhost:5000/api/message-delete/${messageId}`, {
+        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/message-delete/${messageId}`, {
           userId: userId,
         })
         .then((response) => {

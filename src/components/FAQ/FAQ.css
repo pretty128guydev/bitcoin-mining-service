@@ -4,9 +4,12 @@
   border-radius: 10px;
   padding: 20px;
   color: white;
+  max-width: 1400px;
+  width: 100%;
 }
 .faq-container h2 {
   color: #ffffff;
+  margin: 15px 0px 30px 0px ;
 }
 .faq-tabs {
   display: flex;

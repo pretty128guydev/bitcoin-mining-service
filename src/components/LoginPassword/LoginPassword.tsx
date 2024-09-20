@@ -51,7 +51,7 @@ const LoginPassword: React.FC = () => {
 
         console.log(decoded);
         const response = await axios.post(
-          "http://localhost:5000/api/change-password", // Update with your backend endpoint
+          `${process.env.REACT_APP_BACKEND_PORT}/api/change-password`, // Update with your backend endpoint
           { userId, oldPassword, newPassword },
           {
             headers: { Authorization: `Bearer ${token}` },

@@ -19,7 +19,7 @@ import AdminsPage from "./AdminsPage";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import TronWalletConnector from "./tronWallet/tronWalletConnector";
+import io from "socket.io-client";
 
 const { Header, Content, Sider } = Layout;
 
@@ -32,6 +32,21 @@ interface MenuItem {
   key: string;
   icon: any;
   label: string;
+}
+
+interface DashboardProps {
+  balance: string;
+}
+
+interface Message {
+  messageId: number;
+  createdAt: string;
+  content: string;
+  senderId: number;
+  senderFirstName: string;
+  senderLastName: string;
+  senderEmail: string;
+  senderPhoneNumber: string;
 }
 
 const SideBar = ({
@@ -52,36 +67,13 @@ const SideBar = ({
   }
 };
 
-const Dashboard: React.FC = () => {
+const Dashboard: React.FC<DashboardProps> = ({ balance }) => {
   const [selectedMenu, setSelectedMenu] = React.useState("news");
   const navigate = useNavigate();
   const width = useWindowSize() ?? 0;
   const [userId, setUserId] = useState<string>("");
-  const [unread_messages, setunread_messages] = useState<string>("");
   const { t } = useTranslation();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      const decoded: JwtPayload = jwtDecode(token);
-      setUserId(decoded.id);
-      const fetchUnreadMessages = async () => {
-        try {
-          const response = await axios.get(
-            `http://localhost:5000/api/user/${userId}/unread`
-          );
-          setunread_messages(response.data.length);
-        } catch (error) {
-          console.error("Error fetching unread messages:", error);
-        }
-      };
-
-      fetchUnreadMessages();
-    } else {
-      console.log("no tokens");
-    }
-  });
+  const [error, setError] = useState<string>("");
 
   const [role, setrole] = useState(localStorage.getItem("role"));
 
@@ -99,15 +91,12 @@ const Dashboard: React.FC = () => {
       case "news":
         return <NewsSection />;
       case "packages":
-        return <PackagesSection />;
+        return <PackagesSection balance={balance} />;
       case "referral":
         return <ReferralSection />;
       case "profile":
         return (
-          <ProfileSection
-            unread_messages={unread_messages}
-            setSelectedMenu={setSelectedMenu}
-          />
+          <ProfileSection setSelectedMenu={setSelectedMenu} balance={balance} />
         );
       case "about_users":
         return <AdminUsersPage />;
@@ -237,6 +226,60 @@ const Dashboard: React.FC = () => {
     };
   };
 
+  const test = () => {
+    axios
+      .post(
+        `https://api-sandbox.nowpayments.io/v1/invoice`,
+        {
+          price_amount: 1000,
+          price_currency: "usd",
+          order_id: "RGDBP-21314",
+          order_description: "Apple Macbook Pro 2019 x 1",
+          ipn_callback_url: `${process.env.REACT_APP_BACKEND_PORT}/api/crypto_payment`,
+          success_url: "https://nowpayments.io",
+          cancel_url: "https://nowpayments.io",
+        },
+        {
+          headers: {
+            "x-api-key": "BH3XM7Q-B7R458H-M0899QP-YHHKBZ1", // Replace with your actual API key
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        // window.location.href = response.data.invoice_url;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  const pay = () => {
+    const invoice_id = 5179197052;
+    axios
+      .post(`${process.env.REACT_APP_BACKEND_PORT}/api/crypto_payment`, {
+        payment_status: "finished",
+        invoice_id: 5179197052,
+        price_amount: 1000,
+        actually_paid: 1000,
+      })
+      .then((response) => {
+        // window.location.href = response.data.payment_link;
+        console.log(response.data);
+      });
+  };
+  const status = () => {
+    const id = 2;
+    axios
+      .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get-balance/${id}`)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   return (
     <Layout style={{ backgroundColor: "white", minHeight: "100vh" }}>
       {role == "user" && (
@@ -356,6 +399,30 @@ const Dashboard: React.FC = () => {
             <Button
               type="primary"
               danger
+              onClick={test}
+              style={{
+                marginLeft: "10px",
+                background: "#cf313177",
+                width: "70px",
+              }}
+            >
+              {t("TEST")}
+            </Button>
+            <Button
+              type="primary"
+              danger
+              onClick={status}
+              style={{
+                marginLeft: "10px",
+                background: "#cf313177",
+                width: "70px",
+              }}
+            >
+              {t("STATUS")}
+            </Button>
+            <Button
+              type="primary"
+              danger
               onClick={handleLogout}
               style={{
                 marginLeft: "10px",
@@ -365,17 +432,17 @@ const Dashboard: React.FC = () => {
             >
               {t("Logout")}
             </Button>
-            <TronWalletConnector />
             <Button
               type="primary"
               danger
+              onClick={pay}
               style={{
                 marginLeft: "10px",
                 background: "#cf313177",
                 width: "70px",
               }}
             >
-              {t("Connect")}
+              {t("pay")}
             </Button>
           </div>
         </Header>
@@ -384,7 +451,6 @@ const Dashboard: React.FC = () => {
         <CustomFooter
           selectedMenu={selectedMenu}
           setSelectedMenu={setSelectedMenu}
-          unread_messages={unread_messages}
         />
       </Layout>
     </Layout>

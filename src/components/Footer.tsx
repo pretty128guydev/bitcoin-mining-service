@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   ThunderboltOutlined,
   ProfileOutlined,
@@ -8,22 +8,23 @@ import {
 import "./Footer.css"; // Add CSS styling here
 import { Badge } from "antd";
 import { useTranslation } from "react-i18next";
+import { MyContext } from "../MyContext";
 
 interface CustomFooterProps {
   selectedMenu: string;
-  unread_messages: string
   setSelectedMenu: (menu: string) => void;
 }
 
 const CustomFooter: React.FC<CustomFooterProps> = ({
   selectedMenu,
   setSelectedMenu,
-  unread_messages
 }) => {
   const handleMenuClick = (menuKey: string) => {
     setSelectedMenu(menuKey);
   };
   const { t } = useTranslation();
+  const context = useContext(MyContext); // Access the context safely
+  const { myunreadmessage, setMyunreadmessages } = context;
 
   return (
     <footer className="custom-footer">
@@ -48,7 +49,7 @@ const CustomFooter: React.FC<CustomFooterProps> = ({
         <SolutionOutlined style={{ fontSize: "15px" }} />
         <span>{t("INVITING")}</span>
       </div>
-      <Badge count={unread_messages} size="small" color="#ff4d4f">
+      <Badge count={myunreadmessage} size="small" color="#ff4d4f">
         <div
           className={`footer-item ${
             selectedMenu === "profile" ? "active" : ""

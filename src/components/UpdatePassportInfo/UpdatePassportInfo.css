@@ -1,0 +1,74 @@
+.up_pa_passport-form {
+  max-width: 700px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #2a2d3a;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.up_pa_passport-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.up_pa_form-group {
+  margin-bottom: 15px;
+}
+
+.up_pa_form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #fff;
+}
+
+.up_pa_form-group input[type="text"],
+.up_pa_form-group input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #2a2d3a;
+  color: #fff;
+}
+
+.up_pa_image-preview {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.up_pa_image-preview h3 {
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.up_pa_image-preview img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.up_pa_submit-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.up_pa_submit-button:hover {
+  background-color: #0056b3;
+}
+
+.up_pa_message {
+  text-align: center;
+  margin-top: 15px;
+  color: #28a745;
+}

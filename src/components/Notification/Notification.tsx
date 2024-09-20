@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -6,6 +6,7 @@ import NotificationCard from "./NotificationCard";
 import "./Notification.css";
 import { jwtDecode } from "jwt-decode";
 import { useTranslation } from "react-i18next";
+import { MyContext } from "../../MyContext";
 
 interface NotificationData {
   title: string;
@@ -31,6 +32,8 @@ const Notification: React.FC = () => {
   const [activeTab, setActiveTab] = useState("Notification");
   const [userId, setUserId] = useState<string>("");
   const { t } = useTranslation();
+  const context = useContext(MyContext); // Access the context safely
+  const { myunreadmessage, setMyunreadmessages } = context;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -41,10 +44,11 @@ const Notification: React.FC = () => {
 
       if (userId) {
         axios
-          .get(`http://localhost:5000/api/user/${userId}`)
+          .get(`${process.env.REACT_APP_BACKEND_PORT}/api/user/${userId}`)
           .then((response) => {
             console.log(response.data);
-            setMessages(response.data);
+            setMessages(response.data.messages);
+            setMyunreadmessages(response.data.count);
           })
           .catch((error) => {
             console.error("Error fetching messages", error);
@@ -60,67 +64,73 @@ const Notification: React.FC = () => {
   };
 
   return (
-    <div className="Notification-container">
+    <div>
       <button className="back-button" onClick={handleBack}>
         <FaArrowLeft />
       </button>
       <h2>{t("Notifications")}</h2>
-      <div className="notifi-container">
-        <div className="tab-menu">
-          <button
-            className={activeTab === "Notification" ? "active" : ""}
-            onClick={() => setActiveTab("Notification")}
-          >
-            {t("Announcement")}
-          </button>
-          <button
-            className={activeTab === "message" ? "active" : ""}
-            onClick={() => setActiveTab("message")}
-          >
-            {t("Message")}
-          </button>
-        </div>
+      <div className="Notification-container">
+        <div className="notifi-container">
+          <div className="tab-menu">
+            <button
+              className={activeTab === "Notification" ? "active" : ""}
+              onClick={() => setActiveTab("Notification")}
+            >
+              {t("Announcement")}
+            </button>
+            <button
+              className={activeTab === "message" ? "active" : ""}
+              onClick={() => setActiveTab("message")}
+            >
+              {t("Message")}
+            </button>
+          </div>
 
-        <div className="notification-content">
-          {activeTab === "Notification" ? (
-            notifications.length > 0 ? (
-              notifications.map((notif, index) => (
+          <div className="notification-content">
+            {activeTab === "Notification" ? (
+              notifications.length > 0 ? (
+                notifications.map((notif, index) => (
+                  <NotificationCard
+                    key={index}
+                    title={`${t("From")} ${notif.senderFirstName}${
+                      notif.senderLastName
+                    }`}
+                    date={notif.date}
+                    content={notif.content}
+                    senderEmail={notif.senderEmail}
+                    senderLastName={notif.senderLastName}
+                    senderFirstName={notif.senderFirstName}
+                    createdAt={notif.createdAt}
+                    userId={userId}
+                    messageId={notif.messageId}
+                    setMessages={setMessages}
+                  />
+                ))
+              ) : (
+                <div className="no-content">{t("No Notifications")}</div>
+              )
+            ) : messages.length > 0 ? (
+              messages.map((msg, index) => (
                 <NotificationCard
                   key={index}
-                  title={`${t("From")} ${notif.senderFirstName}${notif.senderLastName}`}
-                  date={notif.date}
-                  content={notif.content}
-                  senderEmail={notif.senderEmail}
-                  senderLastName={notif.senderLastName}
-                  senderFirstName={notif.senderFirstName}
-                  createdAt={notif.createdAt}
+                  title={`${t("From")} ${msg.senderFirstName}${
+                    msg.senderLastName
+                  }`}
+                  date={msg.date}
+                  content={msg.content}
+                  senderEmail={msg.senderEmail}
+                  senderLastName={msg.senderLastName}
+                  senderFirstName={msg.senderFirstName}
+                  createdAt={msg.createdAt}
                   userId={userId}
-                  messageId={notif.messageId}
+                  messageId={msg.messageId}
                   setMessages={setMessages}
                 />
               ))
             ) : (
-              <div className="no-content">{t("No Notifications")}</div>
-            )
-          ) : messages.length > 0 ? (
-            messages.map((msg, index) => (
-              <NotificationCard
-                key={index}
-                title={`${t("From")} ${msg.senderFirstName}${msg.senderLastName}`}
-                date={msg.date}
-                content={msg.content}
-                senderEmail={msg.senderEmail}
-                senderLastName={msg.senderLastName}
-                senderFirstName={msg.senderFirstName}
-                createdAt={msg.createdAt}
-                userId={userId}
-                messageId={msg.messageId}
-                setMessages={setMessages}
-              />
-            ))
-          ) : (
-            <div className="no-content">{t("No Messages")}</div>
-          )}
+              <div className="no-content">{t("No Messages")}</div>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -18,7 +18,7 @@ const Register: React.FC = () => {
     setLoading(true);
 
     axios
-      .post("http://localhost:5000/api/register", { values, role: "user" })
+      .post(`${process.env.REACT_APP_BACKEND_PORT}/api/register`, { values, role: "user" })
       .then((response) => {
         message.success(t("Registration successful"));
         navigate("/login");
@@ -53,7 +53,7 @@ const Register: React.FC = () => {
     setLoading(true);
 
     axios
-      .post("http://localhost:5000/api/register_admin", {
+      .post(`${process.env.REACT_APP_BACKEND_PORT}/api/register_admin`, {
         values,
         role: "admin",
         invitationcode: invitationCode,
