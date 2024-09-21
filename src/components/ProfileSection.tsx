@@ -4,12 +4,12 @@ import MenuPage from "./MenuPage";
 
 interface ProfileSectionProps {
     setSelectedMenu: (data: any) => void;
-    balance: string
+    mybalance: number
 }
 
-const ProfileSection: React.FC<ProfileSectionProps> = ({ setSelectedMenu, balance }) => {
+const ProfileSection: React.FC<ProfileSectionProps> = ({ setSelectedMenu, mybalance }) => {
   return (
-    <MenuPage balance={balance} setSelectedMenu={setSelectedMenu}/>
+    <MenuPage mybalance={mybalance} setSelectedMenu={setSelectedMenu}/>
     // <Card title="Your Profile" bordered={false}>
     //   <Form layout="vertical">
     //     <Form.Item label="Username">

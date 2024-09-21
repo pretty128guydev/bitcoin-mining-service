@@ -23,17 +23,18 @@ import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import toast from "react-hot-toast";
 import CuteLoading from "./CuteLoading/CuteLoading";
+import { FaMoneyCheckAlt } from "react-icons/fa";
 
 interface MenuPageProps {
   setSelectedMenu: (data: any) => void;
-  balance: string;
+  mybalance: number;
 }
 interface JwtPayload {
   id: string;
   // Add other properties that you expect in your JWT payload
 }
 
-const MenuPage: React.FC<MenuPageProps> = ({ setSelectedMenu, balance }) => {
+const MenuPage: React.FC<MenuPageProps> = ({ setSelectedMenu }) => {
   const navigate = useNavigate();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -51,6 +52,8 @@ const MenuPage: React.FC<MenuPageProps> = ({ setSelectedMenu, balance }) => {
     navigate("/login"); // Redirect to login page
   };
 
+  const Deposit = () => {};
+
   const handleConfirm = (amount: number) => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -58,24 +61,21 @@ const MenuPage: React.FC<MenuPageProps> = ({ setSelectedMenu, balance }) => {
       const decoded: JwtPayload = jwtDecode(token);
       const userId = decoded.id;
 
-      if (Number(balance) < Number(amount)) {
-        axios
-          .post(`${process.env.REACT_APP_BACKEND_PORT}/api/create_payment`, {
-            amount: amount,
-            sender_id: userId,
-            price_currency: "usd",
-          })
-          .then((response) => {
-            setLoading(false);
-            const paymentId = response?.data?.invoice_id;
-            window.location.href = `https://nowpayments.io/payment?iid=${paymentId}`;
-          })
-          .catch((error) => {
-            setLoading(false);
-            toast.error(error.message);
-          });
-      } else {
-      }
+      axios
+        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/create_payment`, {
+          amount: amount,
+          sender_id: userId,
+          price_currency: "usd",
+        })
+        .then((response) => {
+          setLoading(false);
+          const paymentId = response?.data?.invoice_id;
+          window.location.href = `https://nowpayments.io/payment?iid=${paymentId}`;
+        })
+        .catch((error) => {
+          setLoading(false);
+          toast.error(error.message);
+        });
     } else {
       console.log(`No token found.`);
     }
@@ -106,11 +106,6 @@ const MenuPage: React.FC<MenuPageProps> = ({ setSelectedMenu, balance }) => {
           onClick={() => setSelectedMenu("/news")}
         />
         <MenuOption
-          icon={<FaQuestionCircle />}
-          label="FAQ"
-          onClick={() => handleClick("faq")}
-        />
-        <MenuOption
           icon={<FaLock />}
           label="Login Password"
           onClick={() => handleClick("login-password")}
@@ -125,9 +120,19 @@ const MenuPage: React.FC<MenuPageProps> = ({ setSelectedMenu, balance }) => {
           label="Recharge My Wallet"
           onClick={() => Recharge()}
         />
+        <MenuOption
+          icon={<FaMoneyCheckAlt />}
+          label="Deposit"
+          onClick={() => handleClick("rechargeSelect")}
+        />
       </div>
       <div className="menu-separator"></div> {/* Separator for sections */}
       <div className="menu-options">
+        <MenuOption
+          icon={<FaQuestionCircle />}
+          label="FAQ"
+          onClick={() => handleClick("faq")}
+        />
         <MenuOption
           icon={<AiOutlineInfoCircle />}
           label="Contact Customer Service"

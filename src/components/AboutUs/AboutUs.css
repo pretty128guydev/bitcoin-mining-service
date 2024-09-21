@@ -15,5 +15,12 @@
 }
 
 .aboutus-header {
-    margin-top: 30px;
+  margin-top: 30px;
+}
+
+.about_us_info {
+  text-align: justify;
+  letter-spacing: 1px;
+  line-height: 30px;
+  padding: 20px;
 }

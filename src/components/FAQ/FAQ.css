@@ -9,7 +9,7 @@
 }
 .faq-container h2 {
   color: #ffffff;
-  margin: 15px 0px 30px 0px ;
+  margin: 15px 0px 30px 0px;
 }
 .faq-tabs {
   display: flex;
@@ -22,7 +22,7 @@
   background-color: #25274e;
   color: white;
   padding: 10px 10px;
-  border: none;
+  border: none !important;
   border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -57,4 +57,42 @@
 
 .faq-content p:hover {
   color: #8e2de2;
+}
+
+.ant-collapse-content-box {
+  background-color: #25274e;
+  border: none !important;
+}
+
+.ant-collapse-expand-icon {
+  border: none !important;
+  color: #fff;
+}
+
+.ant-collapse-header-text {
+  border: none !important;
+  color: #fff;
+}
+
+.ant-collapse-content {
+  border: none !important;
+}
+
+.ant-collapse-content-active {
+  border: none !important;
+}
+
+.ant-collapse-content-box p {
+  text-align: justify;
+  border: none !important;
+}
+
+.ant-collapse-content-box pre {
+  text-align: justify;
+  text-wrap: wrap;
+  color: #fff;
+}
+
+.ant-collapse {
+  border: none !important;
 }

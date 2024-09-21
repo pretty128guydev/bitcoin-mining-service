@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./UpdatePassportInfo.css";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import CuteLoading from "../CuteLoading/CuteLoading";
+import { FaRegCheckCircle } from "react-icons/fa";
 
 interface JwtPayload {
   id: string;
@@ -17,6 +18,29 @@ const UpdatePassportInfo: React.FC = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
+  const token = localStorage.getItem("token");
+  const [verificated, setverificated] = useState<string>("<none>");
+
+  useEffect(() => {
+    if (token) {
+      const decoded: JwtPayload = jwtDecode(token);
+      const userId = decoded.id;
+      axios
+        .post(
+          `${process.env.REACT_APP_BACKEND_PORT}/api/get-passport/${userId}`
+        )
+        .then((response) => {
+          setverificated(response.data.passport_verificated);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching messages", error);
+        });
+    } else {
+      console.log("no token found");
+    }
+  }, []);
 
   const handlePassportNumberChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -88,42 +112,55 @@ const UpdatePassportInfo: React.FC = () => {
         <FaArrowLeft />
       </button>
       <h2>Passport Information</h2>
-
-      <form className="up_pa_passport-form" onSubmit={handleSubmit}>
-        <div className="up_pa_form-group">
-          <label htmlFor="passportNumber">Passport Number</label>
-          <input
-            type="text"
-            id="passportNumber"
-            value={passportNumber}
-            onChange={handlePassportNumberChange}
-            required
-          />
-        </div>
-
-        <div className="up_pa_form-group">
-          <label htmlFor="passportImage">Upload Passport Image</label>
-          <input
-            type="file"
-            id="passportImage"
-            accept="image/*"
-            onChange={handlePassportImageChange}
-          />
-        </div>
-
-        {passportPreview && (
-          <div className="up_pa_image-preview">
-            <h3>Preview</h3>
-            <img src={passportPreview} alt="Passport Preview" />
+      {verificated === "<none>" ? <></> :
+      (verificated !== "verified" ? (
+        <form className="up_pa_passport-form" onSubmit={handleSubmit}>
+          <div className="up_pa_form-group">
+            <label htmlFor="passportNumber">Passport Number</label>
+            <input
+              type="text"
+              id="passportNumber"
+              value={passportNumber}
+              onChange={handlePassportNumberChange}
+              required
+            />
           </div>
-        )}
 
-        <button type="submit" className="up_pa_submit-button" disabled={loading}>
-          Update Passport Info
-        </button>
+          <div className="up_pa_form-group">
+            <label htmlFor="passportImage">Upload Passport Image</label>
+            <input
+              type="file"
+              id="passportImage"
+              accept="image/*"
+              onChange={handlePassportImageChange}
+            />
+          </div>
 
-        {message && <p className="up_pa_message">{message}</p>}
-      </form>
+          {passportPreview && (
+            <div className="up_pa_image-preview">
+              <h3>Preview</h3>
+              <img src={passportPreview} alt="Passport Preview" />
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className="up_pa_submit-button"
+            disabled={loading}
+          >
+            Update Passport Info
+          </button>
+
+          {message && <p className="up_pa_message">{message}</p>}
+        </form>
+      ) : (
+        <div className="al_verificated">
+          <div className="al_icon">
+            <FaRegCheckCircle color="green" fontSize={"25px"} />
+          </div>
+          <h2>You are already verificated</h2>
+        </div>
+      ))}
 
       {loading && <CuteLoading />}
     </div>

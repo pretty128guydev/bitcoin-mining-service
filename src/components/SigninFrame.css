@@ -103,7 +103,7 @@ input::placeholder {
 
 .password-input input {
   flex: 1; /* Allow the input to take up available space */
-  background-color: #25273e;
+  background-color: #141432;
   border: 2px solid;
   border-color: #f33131;
   border-radius: 30px;

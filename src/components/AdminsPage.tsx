@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ConfirmationModal from "./ConfirmationModal/ConfirmationModal"; // Import the modal component
+import SendMessage from "./SendMessage"; // Import SendMessage component
 import "./AdminsPage.css"; // Import the CSS file
 import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import CuteLoading from "./CuteLoading/CuteLoading";
+import ImageViewer from "react-simple-image-viewer";
 
 interface User {
   id: string;
@@ -12,6 +15,9 @@ interface User {
   email: string;
   phoneNumber: string;
   role: string;
+  balance: number;
+  passport_number: number;
+  passport_image_path: string;
 }
 
 const AdminsPage: React.FC = () => {
@@ -19,20 +25,25 @@ const AdminsPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [sendMessageVisible, setSendMessageVisible] = useState<boolean>(false);
+  const [passportModalVisible, setPassportModalVisible] =
+    useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_BACKEND_PORT}/api/users`)
       .then((response) => {
         setUsers(response.data);
+        console.log(response.data);
         setLoading(false);
       })
       .catch((error) => {
         setError("Failed to fetch users");
         setLoading(false);
       });
-  }, [users]);
+  }, []);
 
   const handleCheckAdmin = (user: User) => {
     setSelectedUser(user);
@@ -41,24 +52,22 @@ const AdminsPage: React.FC = () => {
 
   const handleConfirm = () => {
     if (selectedUser) {
-      const { id, role } = selectedUser;
+      const { id } = selectedUser;
 
-      // Only attempt to change role if the current role is 'user'
       axios
         .post(`${process.env.REACT_APP_BACKEND_PORT}/api/update-role`, {
           userId: id,
           newRole: "superadmin",
         })
-        .then((response) => {
-          // On success, update the user list
+        .then(() => {
           toast.success(t("User role updated to superadmin."));
           setUsers(
             users.map((user) =>
-              user.id === id ? { ...user, role: "admin" } : user
+              user.id === id ? { ...user, role: "superadmin" } : user
             )
           );
         })
-        .catch((error) => {
+        .catch(() => {
           toast.error(t("Failed to update user role."));
         });
     }
@@ -69,18 +78,32 @@ const AdminsPage: React.FC = () => {
     setModalVisible(false);
   };
 
-  // Filter users to include only those with the role 'user'
+  const handleSendMessage = (user: User) => {
+    setSelectedUser(user);
+    setSendMessageVisible(true);
+  };
+
+  const handleCloseSendMessage = () => {
+    setSendMessageVisible(false);
+  };
+
+  const handleViewPassport = (user: User) => {
+    setSelectedUser(user);
+    setPassportModalVisible(true);
+  };
+
+  const handleClosePassportModal = () => {
+    setPassportModalVisible(false);
+  };
+
   const usersToDisplay = users.filter(
     (user) => user.role.toLowerCase() === "admin"
   );
-  const { t } = useTranslation();
 
   return (
     <div className="admin-user-container">
       <h1>{t("Users List")}</h1>
-      {loading ? (
-        <p className="loading">{t("Loading...")}</p>
-      ) : error ? (
+      {error ? (
         <p className="error">{error}</p>
       ) : (
         <div className="user-list">
@@ -88,7 +111,8 @@ const AdminsPage: React.FC = () => {
             usersToDisplay.map((user) => (
               <div key={user.id} className="user-card">
                 <div className="user-detail">
-                  <strong>{t("Name:")}</strong> {`${user.firstname} ${user.lastname}`}
+                  <strong>{t("Name:")}</strong>{" "}
+                  {`${user.firstname} ${user.lastname}`}
                 </div>
                 <div className="user-detail">
                   <strong>{t("Email:")}</strong> {user.email}
@@ -99,28 +123,73 @@ const AdminsPage: React.FC = () => {
                 <div className="user-detail">
                   <strong>{t("Role:")}</strong> {user.role}
                 </div>
-                <button
-                  className="check-admin-button"
-                  onClick={() => handleCheckAdmin(user)}
+                <div className="user-detail">
+                  <strong>{t("Balance:")}</strong> ${user.balance}
+                </div>
+                <div className="user-detail">
+                  <strong>{t("Passport Number:")}</strong>{" "}
+                  {user.passport_number}
+                </div>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  {t("Make this superadmin")}
-                </button>
+                  <button
+                    className="send-message-button"
+                    onClick={() => handleViewPassport(user)}
+                  >
+                    {t("View Passport")}
+                  </button>
+                  <button
+                    className="send-message-button"
+                    onClick={() => handleSendMessage(user)}
+                  >
+                    {t("Send Message")}
+                  </button>
+                  <button
+                    className="send-message-button"
+                    onClick={() => handleCheckAdmin(user)}
+                  >
+                    {t("Make this superadmin")}
+                  </button>
+                </div>
               </div>
             ))
           ) : (
-            <p>{t("No users with the role 'user' found.")}</p>
+            <p>{t("No users found.")}</p>
           )}
         </div>
       )}
-
       {modalVisible && selectedUser && (
         <ConfirmationModal
-          message={`${t("This user is currently a")} ${selectedUser.role.toLowerCase()} ${t(". Do you want to promote them to superadmin?")}`}
+          message={`${t(
+            "This user is currently a"
+          )} ${selectedUser.role.toLowerCase()}${t(
+            ". Do you want to promote them to admin?"
+          )}`}
           onConfirm={handleConfirm}
           onCancel={handleCancel}
         />
       )}
+      {sendMessageVisible && selectedUser && (
+        <SendMessage
+          fullName={selectedUser.firstname + selectedUser.lastname}
+          recipientId={selectedUser.id}
+          onClose={handleCloseSendMessage}
+        />
+      )}
+      {passportModalVisible && selectedUser && (
+        <ImageViewer
+          src={[
+            `${process.env.REACT_APP_BACKEND_PORT}/${selectedUser.passport_image_path}`,
+          ]}
+          currentIndex={0}
+          disableScroll={false}
+          closeOnClickOutside={true}
+          onClose={handleClosePassportModal}
+        />
+      )}
       <Toaster position="top-center" reverseOrder={false} />
+      {loading && <CuteLoading />} {/* Show loading spinner when processing */}
     </div>
   );
 };

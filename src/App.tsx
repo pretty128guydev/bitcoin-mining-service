@@ -66,22 +66,22 @@ const RechargeWrapper: React.FC = () => {
     string,
     { mainnetType: string; depositAddress: string; qrCodeUrl: string }
   > = {
-    "trc20-usdt": {
+    "TRC20-USDT": {
       mainnetType: "TRC20-USDT",
       depositAddress: "TR7kbVZnRByZpoMrf4YrLQ4aJi6FQbaZ5c",
       qrCodeUrl: "https://api.kwtvok.cc/static/image/trc20-usdt.jpg",
     },
-    trx: {
+    TRX: {
       mainnetType: "TRX",
       depositAddress: "TMkPZVNRYzpoMrf4YlQaJ56qFQba75pL2d",
       qrCodeUrl: "https://api.kwtvok.cc/static/image/trx.webp",
     },
-    "bep20-usdt": {
+    "BEP20-USDT": {
       mainnetType: "BEP20-USDT",
       depositAddress: "BNQp123BNYPQR4lKqgFZPba75YlQaJfCZ2",
       qrCodeUrl: "https://api.kwtvok.cc/static/image/bep20-usdt.webp",
     },
-    bnb: {
+    BNB: {
       mainnetType: "BNB",
       depositAddress: "BNqPz4NyBZR4YlQa75JfQ7CZPZPba69J2",
       qrCodeUrl: "https://api.kwtvok.cc/static/image/bnb.webp",
@@ -128,8 +128,8 @@ const App: React.FC = () => {
   const { mybalance, setMybalance } = context; // Safely destructure from context
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  const [balance, setBalance] = useState<string>("");
   const [actually_paid, setactually_paid] = useState<number>(0);
+  const [packageprice, setpackageprice] = useState<number>(0);
   const REACT_APP_SOCKET_PORT = process.env.REACT_APP_SOCKET_PORT;
 
   const socket = io("http://localhost:8000");
@@ -139,6 +139,11 @@ const App: React.FC = () => {
   const handleCancel = () => {
     setModalVisible(false);
     setactually_paid(0);
+  };
+
+  const pahandleCancle = () => {
+    setModalVisible(false);
+    setpackageprice(0);
   };
   // const userId = getAuthUser();
 
@@ -157,11 +162,13 @@ const App: React.FC = () => {
       axios
         .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get-balance/${userId}`)
         .then((response) => {
-          console.log(response.data.balance);
+          setMybalance(response.data.balance);
         })
         .catch((error) => {
           console.error("Error fetching messages", error);
         });
+    } else {
+      console.log("no token found");
     }
   }, []);
 
@@ -171,8 +178,13 @@ const App: React.FC = () => {
       const userId = decoded.id;
 
       // Listen for balance response
+      socket.on("package_bought", (balance, newbalance) => {
+        console.log(balance, newbalance);
+        setMybalance(balance);
+        setpackageprice(newbalance);
+      });
+
       socket.on("balanceResponse", (balance, actually_paid) => {
-        console.log(balance, actually_paid);
         setMybalance(balance);
         if (!actually_paid) {
           setactually_paid(actually_paid);
@@ -238,7 +250,7 @@ const App: React.FC = () => {
               path="/"
               element={
                 isAuthenticated ? (
-                  <Dashboard balance={balance} />
+                  <Dashboard mybalance={mybalance} />
                 ) : (
                   <Navigate to="/login" />
                 )
@@ -259,10 +271,13 @@ const App: React.FC = () => {
             />
             <Route path="/menu/record" element={<Record />} />
             <Route
-              path="/rechargeSelect/:amount"
+              path="/menu/rechargeSelect"
               element={<RechargeSelect options={options} />}
             />
-            <Route path="/recharge/:cryptoId" element={<RechargeWrapper />} />
+            <Route
+              path="/menu/rechargeSelect/:cryptoId"
+              element={<RechargeWrapper />}
+            />
             <Route path="/menu/switch-language" element={<SwitchLanguage />} />
             <Route path="/menu/notification" element={<Notification />} />
             <Route path="/menu/about-us" element={<AboutUs />} />
@@ -281,9 +296,18 @@ const App: React.FC = () => {
       {actually_paid !== 0 && (
         <div>
           <ConfirmationModal
-            message={`${actually_paid}$ has now been deposited into your account.`}
+            message={`$${actually_paid} has now been deposited into your account.`}
             onConfirm={handleCancel}
             onCancel={handleCancel}
+          />
+        </div>
+      )}
+      {packageprice !== 0 && (
+        <div>
+          <ConfirmationModal
+            message={`You have bought $${packageprice} package successfully!`}
+            onConfirm={pahandleCancle}
+            onCancel={pahandleCancle}
           />
         </div>
       )}

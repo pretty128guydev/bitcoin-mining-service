@@ -6,6 +6,10 @@ import {
   SolutionOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { FaRegUser } from "react-icons/fa";
+import { RiAdminLine } from "react-icons/ri";
+import { MdOutlineLogout } from "react-icons/md";
+import { FaUserCircle } from "react-icons/fa";
 import NewsSection from "./NewsSection";
 import PackagesSection from "./PackagesSection";
 import ReferralSection from "./ReferralSection";
@@ -35,7 +39,7 @@ interface MenuItem {
 }
 
 interface DashboardProps {
-  balance: string;
+  mybalance: number;
 }
 
 interface Message {
@@ -67,7 +71,7 @@ const SideBar = ({
   }
 };
 
-const Dashboard: React.FC<DashboardProps> = ({ balance }) => {
+const Dashboard: React.FC<DashboardProps> = ({ mybalance }) => {
   const [selectedMenu, setSelectedMenu] = React.useState("news");
   const navigate = useNavigate();
   const width = useWindowSize() ?? 0;
@@ -78,8 +82,8 @@ const Dashboard: React.FC<DashboardProps> = ({ balance }) => {
   const [role, setrole] = useState(localStorage.getItem("role"));
 
   const menuItems = [
-    { key: "about_users", icon: <ThunderboltOutlined />, label: t("USERS") },
-    { key: "about_admins", icon: <ThunderboltOutlined />, label: t("ADMINS") },
+    { key: "about_users", icon: <FaRegUser />, label: t("USERS") },
+    { key: "about_admins", icon: <RiAdminLine />, label: t("ADMINS") },
     { key: "news", icon: <ThunderboltOutlined />, label: t("News & Task") },
     { key: "packages", icon: <SolutionOutlined />, label: t("Packages") },
     { key: "referral", icon: <ProfileOutlined />, label: t("Referral") },
@@ -91,12 +95,15 @@ const Dashboard: React.FC<DashboardProps> = ({ balance }) => {
       case "news":
         return <NewsSection />;
       case "packages":
-        return <PackagesSection balance={balance} />;
+        return <PackagesSection mybalance={mybalance} />;
       case "referral":
         return <ReferralSection />;
       case "profile":
         return (
-          <ProfileSection setSelectedMenu={setSelectedMenu} balance={balance} />
+          <ProfileSection
+            setSelectedMenu={setSelectedMenu}
+            mybalance={mybalance}
+          />
         );
       case "about_users":
         return <AdminUsersPage />;
@@ -118,7 +125,7 @@ const Dashboard: React.FC<DashboardProps> = ({ balance }) => {
           {
             label: t("Users"),
             key: "about_users",
-            icon: <ThunderboltOutlined />,
+            icon: <FaRegUser />,
             theme: "dark",
           },
           {
@@ -143,6 +150,12 @@ const Dashboard: React.FC<DashboardProps> = ({ balance }) => {
             label: t("Profile"),
             key: "profile",
             icon: <UserOutlined />,
+            theme: "dark",
+          },
+          {
+            label: t("LogOut"),
+            key: "logout",
+            icon: <MdOutlineLogout />,
             theme: "dark",
           },
         ];
@@ -172,19 +185,25 @@ const Dashboard: React.FC<DashboardProps> = ({ balance }) => {
             icon: <UserOutlined />,
             theme: "dark",
           },
+          {
+            label: t("LogOut"),
+            key: "logout",
+            icon: <MdOutlineLogout />,
+            theme: "dark",
+          },
         ];
       case "superadmin":
         return [
           {
             label: t("Users"),
             key: "about_users",
-            icon: <ThunderboltOutlined />,
+            icon: <FaRegUser />,
             theme: "dark",
           },
           {
             label: t("Admins"),
             key: "about_admins",
-            icon: <ThunderboltOutlined />,
+            icon: <RiAdminLine />,
           },
           {
             label: t("News & Task"),
@@ -210,6 +229,12 @@ const Dashboard: React.FC<DashboardProps> = ({ balance }) => {
             icon: <UserOutlined />,
             theme: "dark",
           },
+          {
+            label: t("LogOut"),
+            key: "logout",
+            icon: <MdOutlineLogout />,
+            theme: "dark",
+          },
         ];
       default:
         return [];
@@ -222,6 +247,9 @@ const Dashboard: React.FC<DashboardProps> = ({ balance }) => {
       theme: "dark",
       onClick: (e) => {
         setSelectedMenu(e.key); // Update state or handle menu click
+        if (e.key === "logout") {
+          handleLogout();
+        }
       },
     };
   };
@@ -315,7 +343,7 @@ const Dashboard: React.FC<DashboardProps> = ({ balance }) => {
             onSelect={({ key }) => setSelectedMenu(key)}
             selectedKeys={[selectedMenu]}
           >
-            <Menu.Item key="about_users" icon={<ThunderboltOutlined />}>
+            <Menu.Item key="about_users" icon={<FaRegUser />}>
               {t("About Users")}
             </Menu.Item>
             <Menu.Item key="news" icon={<ThunderboltOutlined />}>
@@ -342,10 +370,10 @@ const Dashboard: React.FC<DashboardProps> = ({ balance }) => {
             onSelect={({ key }) => setSelectedMenu(key)}
             selectedKeys={[selectedMenu]}
           >
-            <Menu.Item key="about_users" icon={<ThunderboltOutlined />}>
+            <Menu.Item key="about_users" icon={<FaRegUser />}>
               {t("About Users")}
             </Menu.Item>
-            <Menu.Item key="about_admins" icon={<ThunderboltOutlined />}>
+            <Menu.Item key="about_admins" icon={<RiAdminLine />}>
               {t("About Admins")}
             </Menu.Item>
             <Menu.Item key="news" icon={<ThunderboltOutlined />}>
@@ -386,17 +414,19 @@ const Dashboard: React.FC<DashboardProps> = ({ balance }) => {
           {/* <div style={{ color: "white" }}>MY MININGS</div> */}
           <img src={logo} style={{ width: "150px", height: "110px" }} />
           <div>
-            {width < 500 && (
-              <Dropdown menu={mobileMenu()} trigger={["click"]}>
-                <Button
-                  type="primary"
-                  style={{ background: "#0b2f51", width: "70px" }}
-                >
-                  {t("Menu")}
-                </Button>
-              </Dropdown>
-            )}
-            <Button
+            <Dropdown menu={mobileMenu()} trigger={["click"]}>
+              <Button
+                type="primary"
+                style={{
+                  padding: "5px 10px",
+                  justifyContent: "space-between",
+                }}
+              >
+                <FaUserCircle />
+                <span>${`${mybalance}`}</span>
+              </Button>
+            </Dropdown>
+            {/* <Button
               type="primary"
               danger
               onClick={test}
@@ -443,7 +473,7 @@ const Dashboard: React.FC<DashboardProps> = ({ balance }) => {
               }}
             >
               {t("pay")}
-            </Button>
+            </Button> */}
           </div>
         </Header>
         <Content>{renderContent()}</Content>

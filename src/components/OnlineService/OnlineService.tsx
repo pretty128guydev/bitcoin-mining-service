@@ -23,21 +23,21 @@ const OnlineService: React.FC = () => {
             src="https://img.icons8.com/color/48/000000/telegram-app--v1.png"
             alt={t("Telegram")}
           />
-          <span>{t("KWTVOK Official Channel")}</span>
+          <span>{t("Myminings official channel")}</span>
         </div>
         <div className="service-option">
           <img
             src="https://img.icons8.com/color/48/000000/telegram-app--v1.png"
             alt={t("Telegram")}
           />
-          <span>{t("Kwtvok 24H Service")}</span>
+          <span>{t("Myminings 24h service")}</span>
         </div>
         <div className="service-option">
           <img
             src="https://img.icons8.com/color/48/000000/whatsapp.png"
             alt={t("WhatsApp")}
           />
-          <span>{t("Kwtvok 24H Service")}</span>
+          <span>{t("Myminings 24h service")}</span>
         </div>
       </div>
     </div>

@@ -72,3 +72,15 @@
   margin-top: 15px;
   color: #28a745;
 }
+
+.al_verificated {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.al_verificated h2 {
+  color: #fff;
+  margin: 10px;
+}

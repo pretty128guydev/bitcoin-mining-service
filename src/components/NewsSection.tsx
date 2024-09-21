@@ -6,8 +6,9 @@ import bitcoin from "../assets/bitcoin.png";
 import nonews from "../assets/nonews.svg";
 import Loader from "../assets/Loader";
 import lightning from "../assets/lightning.png";
-import { Carousel } from "antd";
 import { useTranslation } from "react-i18next";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.css";
 
 interface NewsItem {
   uuid: string;
@@ -72,6 +73,10 @@ const NewsSection: React.FC = () => {
     fetchNews();
   }, []);
 
+  const onClickItem = (key: string) => {
+    window.open(key);
+  };
+
   return (
     <div
       style={{
@@ -119,31 +124,28 @@ const NewsSection: React.FC = () => {
           </div>
         ))}
       </div> */}
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <Carousel
-          arrows
-          infinite={false}
-          afterChange={onChange}
-          style={{ width: width < 425 ? "250px" : "350px" }}
-        >
-          {newsItems.map((item) => (
-            <div className="image-item-cont" key={item.uuid}>
-              <a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ width: width < 425 ? "200px" : "300px" }}
-              >
-                <img
-                  src={item.image_url}
-                  alt={item.title}
-                  style={{ width: width < 425 ? "200px" : "300px" }}
-                />
-              </a>
-            </div>
-          ))}
-        </Carousel>
-      </div>
+      <Carousel
+        showArrows={true}
+        infiniteLoop={true}
+        autoPlay={true}
+        showStatus={false}
+        showThumbs={true}
+        onChange={onChange}
+        swipeable={true}
+        useKeyboardArrows={true}
+        dynamicHeight={true}
+        stopOnHover={true}
+        // onClickThumb={onClickThumb}
+      >
+        {newsItems.map((item) => (
+          <div
+            className="image-item-cont"
+            key={item.uuid}
+            style={{ backgroundImage: `url(${item.image_url})` }}
+            onClick={() => onClickItem(item.url)}
+          ></div>
+        ))}
+      </Carousel>
 
       {/* Display floating numbers */}
       <div className="floating-numbers">

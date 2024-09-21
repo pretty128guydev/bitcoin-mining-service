@@ -40,30 +40,7 @@ const RechargeSelect: React.FC<RechargeSelectProps> = ({ options }) => {
     label: string,
     price_currency: string
   ) => {
-    const token = localStorage.getItem("token");
-    // Navigate to the recharge page with the selected crypto
-    // navigate(`/recharge/${id}`);
-    if (token) {
-      const decoded: JwtPayload = jwtDecode(token);
-      const userId = decoded.id;
-      const NOWPAYMENTS_API_KEY = "S21P2D0-YF6M4WH-KKS6TX5-34NWND7";
-      axios
-        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/create_payment`, {
-          amount: amount,
-          sender_id: userId,
-          price_currency: price_currency,
-        })
-        .then((response) => {
-          console.log(response.data.invoice_id)
-          const paymentId = response?.data?.invoice_id;
-          window.location.href = `https://nowpayments.io/payment?iid=${paymentId}`;
-        })
-        .catch((error) => {
-          toast.error(error.message);
-        });
-    } else {
-      console.log("No token found.");
-    }
+    navigate(`/menu/rechargeSelect/${label}`);
   };
 
   return (

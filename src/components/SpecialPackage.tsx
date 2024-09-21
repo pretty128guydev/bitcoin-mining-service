@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./SpecialPackage.css"; // Importing the CSS file
 import StarRating from "./StarRating";
 import { useTranslation } from "react-i18next";
@@ -8,6 +8,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import ConfirmationModal from "./ConfirmationModal/ConfirmationModal";
 import CuteLoading from "./CuteLoading/CuteLoading"; // Import your loading component
+import { MyContext } from "../MyContext";
 
 interface SpecialPackageProps {
   packageRating: number;
@@ -15,7 +16,9 @@ interface SpecialPackageProps {
   validTime: string;
   ratingIncome: string;
   unlockPrice: string;
-  balance: string;
+  mybalance: number;
+  verificated: string;
+  user_id: string;
 }
 
 interface JwtPayload {
@@ -29,58 +32,104 @@ const SpecialPackage: React.FC<SpecialPackageProps> = ({
   validTime,
   ratingIncome,
   unlockPrice,
-  balance,
+  verificated,
+  user_id,
 }) => {
   const { t } = useTranslation();
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const context = useContext(MyContext);
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setmessage] = useState<string>("");
+  const [balance_enough, setbalance_enough] = useState<boolean>(false);
+  const { mybalance, setMybalance } = context; // Safely destructure from context
 
   const handleCancel = () => {
     setModalVisible(false);
   };
 
   const handleConfirm = () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setLoading(true);
-      const decoded: JwtPayload = jwtDecode(token);
-      const userId = decoded.id;
-
-      if (Number(balance) < Number(unlockPrice)) {
+    if (verificated !== "verified") {
+      setModalVisible(false);
+    } else {
+      if (balance_enough) {
+        setLoading(true);
+        setModalVisible(false);
         axios
-          .post(`${process.env.REACT_APP_BACKEND_PORT}/api/create_payment`, {
-            amount: unlockPrice,
-            sender_id: userId,
-            price_currency: "usd",
-          })
+          .post(
+            `${process.env.REACT_APP_BACKEND_PORT}/api/update_payment_balance/${user_id}`,
+            { unlockPrice: unlockPrice }
+          )
           .then((response) => {
             setLoading(false);
-            const paymentId = response?.data?.invoice_id;
-            window.location.href = `https://nowpayments.io/payment?iid=${paymentId}`;
+            setMybalance(response.data.balance);
           })
           .catch((error) => {
+            console.error("Error fetching messages", error);
+          });
+        axios
+          .post(
+            `${process.env.REACT_APP_BACKEND_PORT}/api/update-package/${user_id}`,
+            { packagePrice: unlockPrice, packageRole: dailyEarnings }
+          )
+          .then((response) => {
             setLoading(false);
-            toast.error(error.message);
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.error("Error fetching messages", error);
           });
       } else {
+        const token = localStorage.getItem("token");
+        if (token) {
+          setLoading(true);
+          const decoded: JwtPayload = jwtDecode(token);
+          const userId = decoded.id;
+
+          if (Number(mybalance) < Number(unlockPrice)) {
+            axios
+              .post(
+                `${process.env.REACT_APP_BACKEND_PORT}/api/create_payment`,
+                {
+                  amount: unlockPrice,
+                  sender_id: userId,
+                  price_currency: "usd",
+                }
+              )
+              .then((response) => {
+                setLoading(false);
+                const paymentId = response?.data?.invoice_id;
+                window.location.href = `https://nowpayments.io/payment?iid=${paymentId}`;
+              })
+              .catch((error) => {
+                setLoading(false);
+                toast.error(error.message);
+              });
+          } else {
+          }
+        } else {
+          console.log(`No token found.`);
+        }
       }
-    } else {
-      console.log(`No token found.`);
     }
   };
 
   const unlockbutton = (unlockPrice: string) => {
-    console.log(balance, unlockPrice);
-    if (Number(balance) < Number(unlockPrice)) {
-      setmessage(
-        `It lacks balance. You have to recharge wallet. Will you recharge $${unlockPrice} now?`
-      );
+    console.log(mybalance, unlockPrice);
+    if (verificated !== "verified") {
+      setmessage("You have to verify your passport information");
       setModalVisible(true);
     } else {
-      setmessage(`Will you purchase the ${unlockPrice} package now?`);
-      setModalVisible(true);
+      if (Number(mybalance) < Number(unlockPrice)) {
+        setmessage(
+          `It lacks balance. You have to recharge wallet. Will you recharge $${unlockPrice} now?`
+        );
+        setModalVisible(true);
+      } else {
+        setbalance_enough(true);
+        setmessage(`Will you purchase the ${unlockPrice} package now?`);
+        setModalVisible(true);
+      }
     }
   };
 
@@ -91,7 +140,7 @@ const SpecialPackage: React.FC<SpecialPackageProps> = ({
           <StarRating rating={packageRating} />
           <div className="ratingIncome">
             <p>{t("Daily Earnings")}</p>
-            <p className="dayText">{dailyEarnings}</p>
+            <p className="dayText">{dailyEarnings} USD/day</p>
           </div>
           <div className="ratingIncome">
             <p>{t("Valid Time")}</p>
