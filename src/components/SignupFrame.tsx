@@ -162,11 +162,10 @@ const SignupFrame: React.FC = () => {
         </button>
         <div className="footer">
           <p>
-            {t("Already have an account?")} <a href="/login">{t("Sign In")}</a>
+            {t("Already have an account?")} <a href="/#/login">{t("Sign In")}</a>
           </p>
         </div>
       </form>
-      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 };

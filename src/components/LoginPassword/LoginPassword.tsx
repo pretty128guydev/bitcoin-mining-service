@@ -48,8 +48,6 @@ const LoginPassword: React.FC = () => {
 
         // Now TypeScript knows that `decoded` has an `id` property
         const userId = decoded.id;
-
-        console.log(decoded);
         const response = await axios.post(
           `${process.env.REACT_APP_BACKEND_PORT}/api/change-password`, // Update with your backend endpoint
           { userId, oldPassword, newPassword },
@@ -65,7 +63,6 @@ const LoginPassword: React.FC = () => {
         toast.error(`${t("No token found.")}`);
       }
     } catch (error: any) {
-      console.log(error.response);
       toast.error(error.response?.data?.message || `${t("An error occurred.")}`);
     }
   };
@@ -120,7 +117,6 @@ const LoginPassword: React.FC = () => {
           {t("Confirm")}
         </button>
       </form>
-      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 };

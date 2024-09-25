@@ -32,7 +32,6 @@ const PackagesSection: React.FC<PackagesSectionProps> = ({ mybalance }) => {
         )
         .then((response) => {
           setverificated(response.data.passport_verificated);
-          console.log(response.data);
         })
         .catch((error) => {
           console.error("Error fetching messages", error);
@@ -117,7 +116,9 @@ const PackagesSection: React.FC<PackagesSectionProps> = ({ mybalance }) => {
   return (
     <div
       style={{
-        margin: "20px",
+        padding: "20px",
+        height: "100%",
+        overflowY: "auto"
       }}
     >
       <TextAnimation text={`${t("Special")}  ${t("Packages")}`} />

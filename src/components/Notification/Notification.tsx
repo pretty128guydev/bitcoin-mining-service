@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { MyContext } from "../../MyContext";
 
 interface NotificationData {
+  senderId: number;
   title: string;
   date: string;
   content: string;
@@ -20,12 +21,16 @@ interface NotificationData {
   messageId: number;
 }
 
+interface NotificationProps {
+  setSelectedMenu: (data: any) => void
+}
+
 interface JwtPayload {
   id: string;
   // Add other properties that you expect in your JWT payload
 }
 
-const Notification: React.FC = () => {
+const Notification: React.FC<NotificationProps> = ({ setSelectedMenu }) => {
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState<NotificationData[]>([]);
   const [messages, setMessages] = useState<NotificationData[]>([]);
@@ -34,6 +39,12 @@ const Notification: React.FC = () => {
   const { t } = useTranslation();
   const context = useContext(MyContext); // Access the context safely
   const { myunreadmessage, setMyunreadmessages } = context;
+
+  useEffect(() => {
+    if (myunreadmessage > 0) {
+      setActiveTab("message")
+    }
+  },[])
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -46,7 +57,6 @@ const Notification: React.FC = () => {
         axios
           .get(`${process.env.REACT_APP_BACKEND_PORT}/api/user/${userId}`)
           .then((response) => {
-            console.log(response.data);
             setMessages(response.data.messages);
             setMyunreadmessages(response.data.count);
           })
@@ -60,7 +70,7 @@ const Notification: React.FC = () => {
   }, [userId, activeTab]);
 
   const handleBack = () => {
-    navigate(-1);
+    navigate(-1)
   };
 
   return (
@@ -92,15 +102,15 @@ const Notification: React.FC = () => {
                 notifications.map((notif, index) => (
                   <NotificationCard
                     key={index}
-                    title={`${t("From")} ${notif.senderFirstName}${
-                      notif.senderLastName
-                    }`}
+                    title={`${t("From")} ${notif.senderFirstName}${notif.senderLastName
+                      }`}
                     date={notif.date}
                     content={notif.content}
                     senderEmail={notif.senderEmail}
                     senderLastName={notif.senderLastName}
                     senderFirstName={notif.senderFirstName}
                     createdAt={notif.createdAt}
+                    senderId={notif.senderId}
                     userId={userId}
                     messageId={notif.messageId}
                     setMessages={setMessages}
@@ -113,14 +123,14 @@ const Notification: React.FC = () => {
               messages.map((msg, index) => (
                 <NotificationCard
                   key={index}
-                  title={`${t("From")} ${msg.senderFirstName}${
-                    msg.senderLastName
-                  }`}
+                  title={`${t("From")} ${msg.senderFirstName}${msg.senderLastName
+                    }`}
                   date={msg.date}
                   content={msg.content}
                   senderEmail={msg.senderEmail}
                   senderLastName={msg.senderLastName}
                   senderFirstName={msg.senderFirstName}
+                  senderId={msg.senderId}
                   createdAt={msg.createdAt}
                   userId={userId}
                   messageId={msg.messageId}

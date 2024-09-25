@@ -9,6 +9,8 @@ import lightning from "../assets/lightning.png";
 import { useTranslation } from "react-i18next";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.css";
+import { jwtDecode } from "jwt-decode";
+import ConfirmationModal from "./ConfirmationModal/ConfirmationModal";
 
 interface NewsItem {
   uuid: string;
@@ -17,43 +19,94 @@ interface NewsItem {
   image_url: string;
 }
 
+
+interface JwtPayload {
+  id: string;
+  // Add other properties that you expect in your JWT payload
+}
+
+
 const NewsSection: React.FC = () => {
   const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [price, setPrice] = useState<number>(0);
   const [energy, setEnergy] = useState<number>(0);
+  const [message, setMessage] = useState<string>("");
   const width = useWindowSize() ?? 0;
   const { t } = useTranslation();
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
+
+  const handleConfirm = () => {
+    setModalVisible(false);
+  };
 
   // State to track if the image is clicked or not
   const [isClicked, setIsClicked] = useState(false);
   const [floatingNumbers, setFloatingNumbers] = useState<
     { value: number; left: string; top: string }[]
   >([]);
+  const token = localStorage.getItem("token");
 
   const onChange = (currentSlide: number) => {
     console.log(currentSlide);
   };
+
+  useEffect(() => {
+    if (token) {
+      const decoded: JwtPayload = jwtDecode(token);
+      const userId = decoded.id;
+      axios
+        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get_button_clicks/${userId}`)
+        .then((response) => {
+          setEnergy(response.data.result)
+        })
+        .catch((error) => {
+          console.error("Error fetching messages", error);
+        });
+    } else {
+      console.log("no token found")
+    }
+  }, [])
   // Function to handle image click
   const handleImageClick = () => {
-    setIsClicked(true); // Start animation effect
+    if (energy < 500) {
+      if (token) {
+        const decoded: JwtPayload = jwtDecode(token);
+        const userId = decoded.id;
+        axios
+          .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get_package_status/${userId}`)
+          .then((response) => {
+            if (response.data === "active") {
+              axios
+                .post(`${process.env.REACT_APP_BACKEND_PORT}/api/button_clicks/${userId}`, { newClicks: energy + 1 })
+                .then((response) => {
+                  setEnergy(Number(response.data.result))
+                })
+                .catch((error) => {
+                  console.error("Error fetching messages", error);
+                });
+            } else {
+              setMessage(`${t("You didn't have bought any Package")}`)
+              setModalVisible(true)
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching messages", error);
+          });
 
-    // Update price and add a floating number with random position
-    const newNumber = {
-      value: price + 0.00000257,
-      left: `${Math.random() * 100}%`, // Random horizontal position
-      top: `${Math.random() * 100}px`, // Random vertical position
-    };
-
-    setPrice(newNumber.value);
-    setEnergy((prev) => Math.min(prev + 1, 500));
-    setFloatingNumbers((prev) => [...prev, newNumber]);
-
-    // Stop shaving animation after a short delay
-    setTimeout(() => {
-      setIsClicked(false);
-    }, 500); // Duration of the shaving effect
+      } else {
+        console.log("no token found");
+      }
+    } else {
+      setMessage(`${t("You've reached at 500 times Please try tomorrow.")}`)
+      setModalVisible(true)
+    }
   };
 
   useEffect(() => {
@@ -81,10 +134,10 @@ const NewsSection: React.FC = () => {
     <div
       style={{
         height: "100%",
+        overflow: "auto",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-evenly",
-        position: "relative", // Ensure that floating numbers are positioned relative to this container
+        justifyContent: "space-around"
       }}
     >
       {loading && (
@@ -108,7 +161,7 @@ const NewsSection: React.FC = () => {
           }}
         >
           <img src={nonews} style={{ width: "100px" }} />
-          <h2 style={{ color: "#ffffff" }}>{t("No Current news")}</h2>
+          <h2 style={{ color: "#ffffff" }}>{t("No Current News")}</h2>
         </div>
       )}
       {/* <div className="image-gallery">
@@ -135,7 +188,8 @@ const NewsSection: React.FC = () => {
         useKeyboardArrows={true}
         dynamicHeight={true}
         stopOnHover={true}
-        // onClickThumb={onClickThumb}
+        interval={1500}
+      // onClickThumb={onClickThumb}
       >
         {newsItems.map((item) => (
           <div
@@ -154,12 +208,12 @@ const NewsSection: React.FC = () => {
             key={index}
             className="floating-number"
             style={{
-              animation: `float 2s ease-out ${index * 0.1}s`,
+              animation: `float 1s ease-out ${index * 0.1}s`,
               left: number.left,
               top: number.top,
             }}
           >
-            +{(0.00000257).toFixed(8)}
+            +{(2)}
           </div>
         ))}
       </div>
@@ -171,20 +225,22 @@ const NewsSection: React.FC = () => {
           justifyContent: "center",
           alignItems: "center",
           zIndex: "0",
+          marginBottom: "25px"
         }}
       >
         <img
           onClick={handleImageClick}
           src={bitcoin}
-          className={isClicked ? "shaving" : ""}
+          className={isClicked ? "bitcoin_button" : "bitcoin_button is-clicked"}
           style={{
-            width: "250px",
+            width: "215px",
             cursor: "pointer",
             transform: isClicked ? "scale(1.1)" : "scale(1)",
             transition: "transform 0.3s ease",
+            marginBottom: "50px"
           }}
         />
-        <p
+        {/* <p
           style={{
             fontSize: "2rem",
             fontWeight: "bold",
@@ -197,12 +253,12 @@ const NewsSection: React.FC = () => {
           }}
         >
           ${price.toFixed(8)}
-        </p>
-        <div style={{ display: "flex", alignItems: "center" }}>
+        </p> */}
+        <div style={{ display: "flex", alignItems: "center", marginRight: "20px" }}>
           <img
             src={lightning}
             alt="Energy Icon"
-            style={{ width: "30px", marginRight: "10px" }}
+            style={{ width: "30px", marginRight: "10px", marginTop: "10px" }}
           />
           <p
             style={{ fontSize: "1.5rem", color: "#ffffff", fontWeight: "bold" }}
@@ -210,7 +266,17 @@ const NewsSection: React.FC = () => {
             {energy} / 500
           </p>
         </div>
+        {/* <button className={energy < 500 ? "take_profit_out" :"take_profit"}>TAKE PROFIT</button> */}
       </div>
+      {modalVisible && (
+        <div>
+          <ConfirmationModal
+            message={message}
+            onConfirm={handleConfirm}
+            onCancel={handleCancel}
+          />
+        </div>
+      )}
     </div>
   );
 };

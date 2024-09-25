@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./SpecialPackage.css"; // Importing the CSS file
 import StarRating from "./StarRating";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -43,6 +43,7 @@ const SpecialPackage: React.FC<SpecialPackageProps> = ({
   const [message, setmessage] = useState<string>("");
   const [balance_enough, setbalance_enough] = useState<boolean>(false);
   const { mybalance, setMybalance } = context; // Safely destructure from context
+  const navigate = useNavigate();
 
   const handleCancel = () => {
     setModalVisible(false);
@@ -51,6 +52,7 @@ const SpecialPackage: React.FC<SpecialPackageProps> = ({
   const handleConfirm = () => {
     if (verificated !== "verified") {
       setModalVisible(false);
+      navigate("/menu/passport")
     } else {
       if (balance_enough) {
         setLoading(true);
@@ -74,7 +76,6 @@ const SpecialPackage: React.FC<SpecialPackageProps> = ({
           )
           .then((response) => {
             setLoading(false);
-            console.log(response.data);
           })
           .catch((error) => {
             console.error("Error fetching messages", error);
@@ -115,7 +116,6 @@ const SpecialPackage: React.FC<SpecialPackageProps> = ({
   };
 
   const unlockbutton = (unlockPrice: string) => {
-    console.log(mybalance, unlockPrice);
     if (verificated !== "verified") {
       setmessage("You have to verify your passport information");
       setModalVisible(true);
@@ -140,7 +140,7 @@ const SpecialPackage: React.FC<SpecialPackageProps> = ({
           <StarRating rating={packageRating} />
           <div className="ratingIncome">
             <p>{t("Daily Earnings")}</p>
-            <p className="dayText">{dailyEarnings} USD/day</p>
+            <p className="dayText">{dailyEarnings} {t("USD/day")}</p>
           </div>
           <div className="ratingIncome">
             <p>{t("Valid Time")}</p>

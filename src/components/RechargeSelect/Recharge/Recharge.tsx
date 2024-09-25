@@ -5,11 +5,20 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ConfirmationModal from "../../ConfirmationModal/ConfirmationModal";
+import axios from "axios";
+import CuteLoading from "../../CuteLoading/CuteLoading";
+import toast from "react-hot-toast";
+import { jwtDecode } from "jwt-decode";
 
 interface RechargeProps {
   mainnetType: string;
   depositAddress: string;
   qrCodeUrl: string;
+}
+
+interface JwtPayload {
+  id: string;
+  // Add other properties that you expect in your JWT payload
 }
 
 const Recharge: React.FC<RechargeProps> = ({
@@ -28,6 +37,7 @@ const Recharge: React.FC<RechargeProps> = ({
   const [cryptoPrices, setCryptoPrices] = useState<any>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [swappedPrice, setSwappedPrice] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   // Load wallet address from localStorage when the component mounts
   useEffect(() => {
@@ -55,7 +65,35 @@ const Recharge: React.FC<RechargeProps> = ({
   };
 
   const handleConfirm = () => {
-    // Confirm deposit logic
+    const token = localStorage.getItem("token");
+    // Decode the token with the specified type
+    if (token) {
+      const decoded: JwtPayload = jwtDecode(token);
+
+      // Now TypeScript knows that `decoded` has an `id` property
+      const userId = decoded.id;
+      const read_status = "unread";
+      const recipientId = 1;
+      const content = `${t("I want to withdraw")} $${usdAmount} ${t("to my address")}(${walletAddress}) 
+                       ${t("swappedPrice as")} ${mainnetType}: ${swappedPrice}`
+
+      axios
+        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/withdrawsend`, {
+          userId,
+          recipientId,
+          content,
+          read_status,
+        })
+        .then(() => {
+          toast.success(`${t("Message sent to admin successfully.")}`);
+          setModalVisible(false)
+        })
+        .catch(() => {
+          toast.error(t("Failed to send message."));
+        });
+    } else {
+      console.log("no token found")
+    }
   };
 
   // Fetch crypto prices when component mounts
@@ -68,7 +106,7 @@ const Recharge: React.FC<RechargeProps> = ({
         const data = await response.json();
         setCryptoPrices(data);
       } catch (error) {
-        console.error("Error fetching crypto prices:", error);
+        console.error("Error fetching crypto prices", error);
       }
     };
 
@@ -111,7 +149,7 @@ const Recharge: React.FC<RechargeProps> = ({
         <FaArrowLeft />
       </button>
       <div className="header">
-        <span className="title">{t("Recharge")}</span>
+        <span className="title">{t("Withdraw")}</span>
       </div>
       <div className="logo">
         <img src={qrCodeUrl} alt="TRC20 USDT" />
@@ -124,11 +162,12 @@ const Recharge: React.FC<RechargeProps> = ({
         <div className="address-section">
           <div style={{ display: "flex", flexDirection: "column" }}>
             <label style={{ width: "100%", marginBottom: "10px" }}>
-              Deposit Amount:
+              {t("Withdraw Amount")}
               <input
                 id="amount"
                 type="number"
                 value={usdAmount}
+                min={0}
                 onChange={handleInputChange}
                 style={{
                   width: "100%",
@@ -140,7 +179,7 @@ const Recharge: React.FC<RechargeProps> = ({
               />
             </label>
             <label style={{ width: "100%" }}>
-              Your Wallet Address:
+              {t("Your Wallet Address")}
               <input
                 id="walletAddress"
                 type="text"
@@ -159,12 +198,12 @@ const Recharge: React.FC<RechargeProps> = ({
         </div>
 
         <button className="recharge-complete-btn" onClick={deposit}>
-          {t("Deposit Complete")}
+          {t("Withdraw Complete")}
         </button>
 
         {cryptoPrices && (
           <div>
-            <h2>Equivalent Cryptocurrency Prices:</h2>
+            <h2>{t("Equivalent Cryptocurrency Prices")}</h2>
             {usdAmount > 0 && mainnetType === "TRC20-USDT" && (
               <p>
                 TRC20-USDT:{" "}
@@ -207,11 +246,12 @@ const Recharge: React.FC<RechargeProps> = ({
 
       {modalVisible && (
         <ConfirmationModal
-          message={`Confirm deposit of $${usdAmount} to ${walletAddress}?   (${swappedPrice} ${mainnetType})`}
+          message={`${t("Confirm withdraw of")} $${usdAmount} ${t("to")} ${walletAddress}?   (${swappedPrice} ${mainnetType})`}
           onConfirm={handleConfirm}
           onCancel={handleCancel}
         />
       )}
+      {loading && <CuteLoading />}
     </div>
   );
 };

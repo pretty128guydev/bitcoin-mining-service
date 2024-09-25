@@ -58,7 +58,7 @@ const InvestPlus: React.FC = () => {
   };
   const { t } = useTranslation();
   const invest = () => {
-    navigate(`/rechargeSelect`);
+    navigate(`/menu/record`);
   };
   return (
     <div className="investment-options">
@@ -74,25 +74,25 @@ const InvestPlus: React.FC = () => {
                   {option.period} {t("days investment rights")}
                 </span>
                 <span className="sm-daily-return">
-                  {t("Daily return rate:")} {option.dailyReturnRate}%
+                  {t("Daily return rate")} {option.dailyReturnRate}%
                 </span>
               </div>
               <div className="sm-investment-details">
                 <div className="sm-investment-info">
                   <p>
-                    {t("Minimum Investment amount:")}{" "}
+                    {t("Minimum Investment amount")}{" "}
                     <strong>
                       {option.minInvestment} {t("USDT")}
                     </strong>
                   </p>
                   <p>
-                    {t("Investment period:")}{" "}
+                    {t("Investment period")}{" "}
                     <strong>
                       {option.period} {t("Days")}
                     </strong>
                   </p>
                   <p>
-                    {t("Periodic principal and interest:")}{" "}
+                    {t("Periodic principal and interest")}{" "}
                     <strong>
                       {option.periodicAmount} {t("USDT")}
                     </strong>
@@ -111,25 +111,25 @@ const InvestPlus: React.FC = () => {
                   {option.period} {t("days investment rights")}
                 </span>
                 <span className="daily-return">
-                  {t("Daily return rate:")} {option.dailyReturnRate}%
+                  {t("Daily return rate")} {option.dailyReturnRate}%
                 </span>
               </div>
               <div className="investment-details">
                 <div className="investment-info">
                   <p>
-                    {t("Minimum Investment amount:")}{" "}
+                    {t("Minimum Investment amount")}{" "}
                     <strong>
                       {option.minInvestment} {t("USDT")}
                     </strong>
                   </p>
                   <p>
-                    {t("Investment period:")}{" "}
+                    {t("Investment period")}{" "}
                     <strong>
                       {option.period} {t("Days")}
                     </strong>
                   </p>
                   <p>
-                    {t("Periodic principal and interest:")}{" "}
+                    {t("Periodic principal and interest")}{" "}
                     <strong>
                       {option.periodicAmount} {t("USDT")}
                     </strong>

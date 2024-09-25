@@ -35,7 +35,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                 alt="Reminder Icon"
                 className="reminder-icon"
               />
-              All transactions are conducted in USD.
+              {t("All transactions are conducted in USD.")}
             </h4>
             <div style={{ display: "flex", justifyContent: "flex-start" }}>
               <label
@@ -48,7 +48,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                   fontSize: "15px",
                 }}
               >
-                Recharge:
+                {t("Recharge")}
               </label>
               <input
                 id="amount"

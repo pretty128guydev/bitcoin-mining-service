@@ -1,76 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Card, message, Modal } from "antd";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import logo from "../assets/mining.png";
 import SignupFrame from "./SignupFrame";
 import { useTranslation } from "react-i18next";
 
 const Register: React.FC = () => {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [form] = Form.useForm();
-  const [modalVisible, setModalVisible] = useState(false); // State to control modal visibility
-  const [invitationCode, setInvitationCode] = useState(""); // State for invitation code
-  const { t } = useTranslation();
+  const [userId, setuserId] = useState(""); // State for invitation code
+  const { code } = useParams<{ code: string }>();
 
-  const onFinish = (values: any) => {
-    setLoading(true);
+  const extractNumbers = (str: string) => {
+    if (str.startsWith('137') && str.endsWith('376')) {
+      const between = str.slice(3, -3);  // Get the substring between '137' and '376'
 
-    axios
-      .post(`${process.env.REACT_APP_BACKEND_PORT}/api/register`, { values, role: "user" })
-      .then((response) => {
-        message.success(t("Registration successful"));
-        navigate("/login");
-      })
-      .catch((error) => {
-        message.error(error.response.data.message);
-        setLoading(false);
-      });
-  };
-
-  const handleAdminRegister = async () => {
-    try {
-      // Validate form fields
-      const values = await form.validateFields();
-
-      // Only show modal if form is valid
-      setModalVisible(true);
-    } catch (errorInfo) {
-      // Validation failed, display error message
-      message.error(t("Please complete all required fields."));
+      // Check if the extracted part is all digits
+      if (/^\d+$/.test(between)) {
+        return between; // Return the digits
+      }
     }
+    return null;  // Return null if conditions are not met
   };
 
-  const handleModalOk = () => {
-    // Close the modal
-    setModalVisible(false);
+  useEffect(() => {
+    if (code !== undefined) {
+      const extracted = extractNumbers(code);
+      setuserId(extracted !== null ? extracted : '');
+    }
+  }, [code])
 
-    // Retrieve form values
-    const values = form.getFieldsValue(true);
-    values.invitationCode = invitationCode; // Add the invitation code to the form values
-
-    setLoading(true);
-
+  useEffect(() => {
+    if (userId === '') return;
+    
     axios
-      .post(`${process.env.REACT_APP_BACKEND_PORT}/api/register_admin`, {
-        values,
-        role: "admin",
-        invitationcode: invitationCode,
-      })
+      .post(`${process.env.REACT_APP_BACKEND_PORT}/api/update_invites/${userId}`)
       .then((response) => {
-        message.success(t("Registration successful as Administrator"));
-        navigate("/login");
+        console.log(response.data)
       })
       .catch((error) => {
         message.error(error.response.data.message);
-        setLoading(false);
       });
-  };
-
-  const handleModalCancel = () => {
-    setModalVisible(false); // Close the modal without proceeding
-  };
+  }, [userId])
 
   return (
     <div
@@ -82,76 +52,6 @@ const Register: React.FC = () => {
       }}
     >
       <SignupFrame />
-      {/* <Card
-        title="Register"
-        style={{
-          maxWidth: 400,
-          margin: "auto",
-          backgroundColor: "rgba(255, 255, 255, 0.5)",
-          borderRadius: "8px",
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <Form form={form} onFinish={onFinish}>
-          <Form.Item
-            name="username"
-            rules={[{ required: true, message: "Please input your username!" }]}
-          >
-            <Input placeholder="Username" />
-          </Form.Item>
-          <Form.Item
-            name="email"
-            rules={[{ required: true, message: "Please input your email!" }]}
-          >
-            <Input placeholder="Email" />
-          </Form.Item>
-          <Form.Item
-            name="password"
-            rules={[{ required: true, message: "Please input your password!" }]}
-          >
-            <Input.Password placeholder="Password" />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" loading={loading} block>
-              Register
-            </Button>
-          </Form.Item>
-          <Form.Item>
-            <Button
-              type="primary"
-              danger
-              onClick={handleAdminRegister}
-              loading={loading}
-              block
-            >
-              Register as Administrator
-            </Button>
-          </Form.Item>
-          <Button
-            style={{ color: "black" }}
-            type="link"
-            onClick={() => navigate("/login")}
-          >
-            Already have an account? Log in here
-          </Button>
-        </Form>
-      </Card> */}
-
-      <Modal
-        title={t("Validation Administrator")}
-        visible={modalVisible}
-        onOk={handleModalOk}
-        onCancel={handleModalCancel}
-        confirmLoading={loading}
-        okText={t("Submit")}
-        cancelText={t("Cancel")}
-      >
-        <Input
-          placeholder={t("Enter your invitation code")}
-          value={invitationCode}
-          onChange={(e) => setInvitationCode(e.target.value)}
-        />
-      </Modal>
     </div>
   );
 };

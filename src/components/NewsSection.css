@@ -8,7 +8,7 @@
 .image-item-cont {
   display: flex;
   justify-content: center;
-  height: 300px;
+  height: 200px;
   background-position: center center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -16,9 +16,9 @@
 }
 
 .image-item-cont a {
-    margin: auto;
-    width: 300px;
-  }
+  margin: auto;
+  width: 300px;
+}
 
 .carousel .selected.slide {
   background-color: transparent !important;
@@ -34,9 +34,11 @@
 .floating-numbers {
   position: relative;
   width: 300px;
-  height: 60px; /* Adjust as needed */
-  overflow: hidden; /* Ensure numbers don't overflow the container */
-  margin: 0px auto -150px auto;
+  height: 60px;
+  /* Adjust as needed */
+  overflow: hidden;
+  /* Ensure numbers don't overflow the container */
+  margin: 0px auto -130px auto;
   z-index: 100;
 }
 
@@ -47,7 +49,8 @@
   color: #ffffff;
   opacity: 0;
   animation: float 1s ease-out forwards;
-  pointer-events: none; /* Ensure floating numbers don’t interfere with clicks */
+  pointer-events: none;
+  /* Ensure floating numbers don’t interfere with clicks */
 }
 
 @keyframes float {
@@ -55,11 +58,14 @@
     opacity: 1;
     transform: translateY(0);
   }
+
   100% {
     opacity: 0;
-    transform: translateY(-50px); /* Adjust the float distance as needed */
+    transform: translateY(-50px);
+    /* Adjust the float distance as needed */
   }
 }
+
 /* Adjust styling for energy counter */
 .energy-container {
   display: flex;
@@ -76,4 +82,46 @@
   font-size: 1.5rem;
   color: #ffffff;
   font-weight: bold;
+}
+
+.take_profit {
+  background: linear-gradient(12deg, #151c2b, #ac1eb9);
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  animation: growShrink 2s infinite ease-in-out;
+}
+
+.take_profit_out {
+  background: linear-gradient(12deg, #151c2b, #ac1eb9);
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+@keyframes growShrink {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+    /* Grow to 1.5x size */
+  }
+
+  100% {
+    transform: scale(1);
+    /* Back to original size */
+  }
+}
+
+.bitcoin_button:active {
+  transform: scale(1.2);
+  width: 225px;
 }
