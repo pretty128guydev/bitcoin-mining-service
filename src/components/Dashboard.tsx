@@ -510,7 +510,7 @@ const Dashboard: React.FC<DashboardProps> = ({ }) => {
             </Button> */}
           </div>
         </Header>
-        <Content style={{ height: "calc(100vh - 110px)", }}>{renderContent()}</Content>
+        <Content style={{ height: "calc(100vh - 105px)", }}>{renderContent()}</Content>
         {/* <Footer style={{ textAlign: "center" }}>Bitcoin Mining ©2024</Footer> */}
         <CustomFooter
           selectedMenu={selectedMenu}

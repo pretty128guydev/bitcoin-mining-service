@@ -32,31 +32,30 @@ const CustomFooter: React.FC<CustomFooterProps> = ({
         className={`footer-item ${selectedMenu === "news" ? "active" : ""}`}
         onClick={() => handleMenuClick("news")}
       >
-        <ThunderboltOutlined style={{ fontSize: "25px" }} />
+        <ThunderboltOutlined style={{ fontSize: "19px" }} />
         <span>{t("NEWS")}</span>
       </div>
       <div
         className={`footer-item ${selectedMenu === "packages" ? "active" : ""}`}
         onClick={() => handleMenuClick("packages")}
       >
-        <ProfileOutlined style={{ fontSize: "25px" }} />
+        <ProfileOutlined style={{ fontSize: "19px" }} />
         <span>{t("PACKAGES")}</span>
       </div>
       <div
         className={`footer-item ${selectedMenu === "referral" ? "active" : ""}`}
         onClick={() => handleMenuClick("referral")}
       >
-        <SolutionOutlined style={{ fontSize: "25px" }} />
+        <SolutionOutlined style={{ fontSize: "19px" }} />
         <span>{t("INVITING")}</span>
       </div>
       <Badge count={myunreadmessage} size="small" color="#ff4d4f">
         <div
-          className={`footer-item ${
-            selectedMenu === "profile" ? "active" : ""
-          }`}
+          className={`footer-item ${selectedMenu === "profile" ? "active" : ""
+            }`}
           onClick={() => handleMenuClick("profile")}
         >
-          <UserOutlined style={{ fontSize: "25px" }} />
+          <UserOutlined style={{ fontSize: "19px" }} />
           <span>{t("PROFILE")}</span>
         </div>
       </Badge>
