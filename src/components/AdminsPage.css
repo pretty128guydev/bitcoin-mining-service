@@ -1,8 +1,10 @@
 /* AdminUsersPage.css */
 
 .admin-user-container {
-  margin: 24px;
   font-family: Arial, sans-serif;
+  padding: 20px;
+  height: 100%;
+  overflow-y: auto;
 }
 
 h1 {
@@ -37,6 +39,9 @@ h1 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
   width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .user-card:hover {
@@ -63,11 +68,11 @@ h1 {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 14px;
+  font-size: 13px;
   margin: 20px 0 0px;
   cursor: pointer;
   border-radius: 10px;
-  width: 30%;
+  width: 31%;
 }
 
 .check-admin-button:hover {

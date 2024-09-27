@@ -28,12 +28,9 @@ const RechargeSelect: React.FC<RechargeSelectProps> = ({ options }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { amount } = useParams();
-  console.log(amount);
   const handleBack = () => {
-    navigate(-1); // Navigates to the previous page
-  };
-
-  const NOWPAYMENTS_API_KEY = "YOUR_NOWPAYMENTS_API_KEY";
+   navigate("/", { state: { fromService: true } });
+ };
 
   const handleOptionClick = async (
     id: string,

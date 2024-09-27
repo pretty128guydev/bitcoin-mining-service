@@ -9,6 +9,12 @@ import lightning from "../assets/lightning.png";
 import { useTranslation } from "react-i18next";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.css";
+import { jwtDecode } from "jwt-decode";
+import ConfirmationModal from "./ConfirmationModal/ConfirmationModal";
+import news1 from "../assets/news1.jpg"
+import news2 from "../assets/news2.jpg"
+import news3 from "../assets/news3.jpg"
+import news4 from "../assets/news4.jpg"
 
 interface NewsItem {
   uuid: string;
@@ -17,61 +23,132 @@ interface NewsItem {
   image_url: string;
 }
 
+
+interface JwtPayload {
+  id: string;
+  // Add other properties that you expect in your JWT payload
+}
+
+
 const NewsSection: React.FC = () => {
-  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
+  const [imageurl, setimageurl] = useState<string>("https://t.me/MyMiningsOfficialChannel");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [price, setPrice] = useState<number>(0);
   const [energy, setEnergy] = useState<number>(0);
+  const [message, setMessage] = useState<string>("");
   const width = useWindowSize() ?? 0;
   const { t } = useTranslation();
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+
+
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
+
+  const handleConfirm = () => {
+    setModalVisible(false);
+  };
 
   // State to track if the image is clicked or not
   const [isClicked, setIsClicked] = useState(false);
   const [floatingNumbers, setFloatingNumbers] = useState<
     { value: number; left: string; top: string }[]
   >([]);
+  const token = localStorage.getItem("token");
 
-  const onChange = (currentSlide: number) => {
-    console.log(currentSlide);
-  };
-  // Function to handle image click
-  const handleImageClick = () => {
-    setIsClicked(true); // Start animation effect
 
-    // Update price and add a floating number with random position
-    const newNumber = {
-      value: price + 0.00000257,
-      left: `${Math.random() * 100}%`, // Random horizontal position
-      top: `${Math.random() * 100}px`, // Random vertical position
-    };
-
-    setPrice(newNumber.value);
-    setEnergy((prev) => Math.min(prev + 1, 500));
-    setFloatingNumbers((prev) => [...prev, newNumber]);
-
-    // Stop shaving animation after a short delay
-    setTimeout(() => {
-      setIsClicked(false);
-    }, 500); // Duration of the shaving effect
-  };
+  const options = [
+    {
+      id: "1",
+      image_url: news1,
+      url: "https://t.me/MyMiningsOfficialChannel",
+    },
+    {
+      id: "2",
+      image_url: news2,
+      url: "https://t.me/MyMiningsOfficialChannel",
+    },
+    {
+      id: "3",
+      image_url: news3,
+      url: "https://t.me/MyMiningsOfficialChannel",
+    },
+    {
+      id: "4",
+      image_url: news4,
+      url: "https://t.me/MyMiningsOfficialChannel",
+    }
+  ];
 
   useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        const response = await axios.get(
-          "https://api.marketaux.com/v1/news/all?symbols=TSLA,AMZN,MSFT&filter_entities=true&language=en&api_token=IMc5zrj7jCeIq218grq7ibLPEalUFo4xcXC2kt7w"
-        );
-        setNewsItems(response.data.data);
-      } catch (err) {
-        setError("Failed to fetch news");
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (token) {
+      const decoded: JwtPayload = jwtDecode(token);
+      const userId = decoded.id;
+      axios
+        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get_button_clicks/${userId}`)
+        .then((response) => {
+          setEnergy(response.data.result)
+        })
+        .catch((error) => {
+          console.error("Error fetching messages", error);
+        });
+    } else {
+      console.log("no token found")
+    }
+  }, [])
+  // Function to handle image click
+  const handleImageClick = () => {
+    if (energy < 500) {
+      if (token) {
+        const decoded: JwtPayload = jwtDecode(token);
+        const userId = decoded.id;
+        axios
+          .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get_package_status/${userId}`)
+          .then((response) => {
+            if (response.data === "active") {
+              axios
+                .post(`${process.env.REACT_APP_BACKEND_PORT}/api/button_clicks/${userId}`, { newClicks: energy + 1 })
+                .then((response) => {
+                  setEnergy(Number(response.data.result))
+                })
+                .catch((error) => {
+                  console.error("Error fetching messages", error);
+                });
+            } else {
+              setMessage(`${t("You didn't have bought any Package")}`)
+              setModalVisible(true)
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching messages", error);
+          });
 
-    fetchNews();
-  }, []);
+      } else {
+        console.log("no token found");
+      }
+    } else {
+      setMessage(`${t("You've reached at 500 times Please try tomorrow.")}`)
+      setModalVisible(true)
+    }
+  };
+
+  // useEffect(() => {
+  //   const fetchNews = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "https://api.marketaux.com/v1/news/all?symbols=TSLA,AMZN,MSFT&filter_entities=true&language=en&api_token=IMc5zrj7jCeIq218grq7ibLPEalUFo4xcXC2kt7w"
+  //       );
+  //       setNewsItems(response.data.data);
+  //     } catch (err) {
+  //       setError("Failed to fetch news");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchNews();
+  // }, []);
 
   const onClickItem = (key: string) => {
     window.open(key);
@@ -81,13 +158,13 @@ const NewsSection: React.FC = () => {
     <div
       style={{
         height: "100%",
+        overflow: "auto",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-evenly",
-        position: "relative", // Ensure that floating numbers are positioned relative to this container
+        justifyContent: "space-between"
       }}
     >
-      {loading && (
+      {/* {loading && (
         <div
           style={{
             display: "flex",
@@ -108,9 +185,9 @@ const NewsSection: React.FC = () => {
           }}
         >
           <img src={nonews} style={{ width: "100px" }} />
-          <h2 style={{ color: "#ffffff" }}>{t("No Current news")}</h2>
+          <h2 style={{ color: "#ffffff" }}>{t("No Current News")}</h2>
         </div>
-      )}
+      )} */}
       {/* <div className="image-gallery">
         {newsItems.map((item) => (
           <div className="image-item" key={item.uuid}>
@@ -129,22 +206,34 @@ const NewsSection: React.FC = () => {
         infiniteLoop={true}
         autoPlay={true}
         showStatus={false}
-        showThumbs={true}
-        onChange={onChange}
+        showThumbs={false}
         swipeable={true}
         useKeyboardArrows={true}
         dynamicHeight={true}
         stopOnHover={true}
-        // onClickThumb={onClickThumb}
+        interval={1500}
+      // onClickThumb={onClickThumb}
       >
-        {newsItems.map((item) => (
-          <div
-            className="image-item-cont"
-            key={item.uuid}
-            style={{ backgroundImage: `url(${item.image_url})` }}
-            onClick={() => onClickItem(item.url)}
-          ></div>
-        ))}
+        <div
+          className="image-item-contnews1"
+          onClick={() => onClickItem(imageurl)}
+        >
+        </div>
+        <div
+          className="image-item-contnews2"
+          onClick={() => onClickItem(imageurl)}
+        >
+        </div>
+        <div
+          className="image-item-contnews3"
+          onClick={() => onClickItem(imageurl)}
+        >
+        </div>
+        <div
+          className="image-item-contnews4"
+          onClick={() => onClickItem(imageurl)}
+        >
+        </div>
       </Carousel>
 
       {/* Display floating numbers */}
@@ -154,12 +243,12 @@ const NewsSection: React.FC = () => {
             key={index}
             className="floating-number"
             style={{
-              animation: `float 2s ease-out ${index * 0.1}s`,
+              animation: `float 1s ease-out ${index * 0.1}s`,
               left: number.left,
               top: number.top,
             }}
           >
-            +{(0.00000257).toFixed(8)}
+            +{(2)}
           </div>
         ))}
       </div>
@@ -171,20 +260,22 @@ const NewsSection: React.FC = () => {
           justifyContent: "center",
           alignItems: "center",
           zIndex: "0",
+          marginBottom: "50px"
         }}
       >
         <img
           onClick={handleImageClick}
           src={bitcoin}
-          className={isClicked ? "shaving" : ""}
+          className={isClicked ? "bitcoin_button" : "bitcoin_button is-clicked"}
           style={{
-            width: "250px",
+            width: "200px",
             cursor: "pointer",
             transform: isClicked ? "scale(1.1)" : "scale(1)",
             transition: "transform 0.3s ease",
+            marginBottom: "50px"
           }}
         />
-        <p
+        {/* <p
           style={{
             fontSize: "2rem",
             fontWeight: "bold",
@@ -197,12 +288,12 @@ const NewsSection: React.FC = () => {
           }}
         >
           ${price.toFixed(8)}
-        </p>
-        <div style={{ display: "flex", alignItems: "center" }}>
+        </p> */}
+        <div style={{ display: "flex", alignItems: "center", marginRight: "20px" }}>
           <img
             src={lightning}
             alt="Energy Icon"
-            style={{ width: "30px", marginRight: "10px" }}
+            style={{ width: "30px", marginRight: "10px", marginTop: "10px" }}
           />
           <p
             style={{ fontSize: "1.5rem", color: "#ffffff", fontWeight: "bold" }}
@@ -210,7 +301,17 @@ const NewsSection: React.FC = () => {
             {energy} / 500
           </p>
         </div>
+        {/* <button className={energy < 500 ? "take_profit_out" :"take_profit"}>TAKE PROFIT</button> */}
       </div>
+      {modalVisible && (
+        <div>
+          <ConfirmationModal
+            message={message}
+            onConfirm={handleConfirm}
+            onCancel={handleCancel}
+          />
+        </div>
+      )}
     </div>
   );
 };

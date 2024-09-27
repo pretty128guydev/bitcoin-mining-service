@@ -32,21 +32,21 @@ const CustomFooter: React.FC<CustomFooterProps> = ({
         className={`footer-item ${selectedMenu === "news" ? "active" : ""}`}
         onClick={() => handleMenuClick("news")}
       >
-        <ThunderboltOutlined style={{ fontSize: "15px" }} />
+        <ThunderboltOutlined style={{ fontSize: "25px" }} />
         <span>{t("NEWS")}</span>
       </div>
       <div
         className={`footer-item ${selectedMenu === "packages" ? "active" : ""}`}
         onClick={() => handleMenuClick("packages")}
       >
-        <ProfileOutlined style={{ fontSize: "15px" }} />
+        <ProfileOutlined style={{ fontSize: "25px" }} />
         <span>{t("PACKAGES")}</span>
       </div>
       <div
         className={`footer-item ${selectedMenu === "referral" ? "active" : ""}`}
         onClick={() => handleMenuClick("referral")}
       >
-        <SolutionOutlined style={{ fontSize: "15px" }} />
+        <SolutionOutlined style={{ fontSize: "25px" }} />
         <span>{t("INVITING")}</span>
       </div>
       <Badge count={myunreadmessage} size="small" color="#ff4d4f">
@@ -56,7 +56,7 @@ const CustomFooter: React.FC<CustomFooterProps> = ({
           }`}
           onClick={() => handleMenuClick("profile")}
         >
-          <UserOutlined style={{ fontSize: "15px" }} />
+          <UserOutlined style={{ fontSize: "25px" }} />
           <span>{t("PROFILE")}</span>
         </div>
       </Badge>

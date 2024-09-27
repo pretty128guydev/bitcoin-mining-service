@@ -4,7 +4,11 @@ import InvitationComponent from "./InvitationComponent";
 
 const ReferralSection: React.FC = () => {
 
-  return <InvitationComponent />;
+  return <div style={{
+    height: "100%",
+    overflowY: "auto",
+    padding: "20px"
+  }}> <InvitationComponent /></div >;
 };
 
 export default ReferralSection;

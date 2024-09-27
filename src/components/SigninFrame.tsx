@@ -147,11 +147,10 @@ const SigninFrame: React.FC = () => {
         </button>
         <div className="footer">
           <p>
-            {t("No Account?")} <a href="/register">{t("Sign Up")}</a>
+            {t("No Account?")} <a href="/#/register">{t("Sign Up")}</a>
           </p>
         </div>
       </form>
-      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 };

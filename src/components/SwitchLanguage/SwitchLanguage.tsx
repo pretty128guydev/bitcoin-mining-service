@@ -9,6 +9,10 @@ interface Language {
   label: string;
 }
 
+interface LanguageProps {
+  setSelectedMenu: (deta: any) => void
+}
+
 const languages: Language[] = [
   { code: "en", label: "English" },
   { code: "fr", label: "French" },
@@ -30,9 +34,9 @@ const languages: Language[] = [
   { code: "hi", label: "हिंदी" },
 ];
 
-const SwitchLanguage: React.FC = () => {
+const SwitchLanguage: React.FC<LanguageProps> = ({ setSelectedMenu }) => {
   const [selectedLanguage, setSelectedLanguage] = useState<string>("en");
-  const { t, i18n: {changeLanguage, language} } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,11 +49,11 @@ const SwitchLanguage: React.FC = () => {
   const handleChangeLanguage = (code: string) => {
     setSelectedLanguage(code);
     localStorage.setItem("selectedLanguage", code);
+    i18n.changeLanguage(code);
 
-    changeLanguage(code);
   };
-  const handleBack = () => {
-    navigate(-1); // Navigates to the previous page
+   const handleBack = () => {
+    navigate("/", { state: { fromService: true } });
   };
 
   return (
@@ -62,9 +66,8 @@ const SwitchLanguage: React.FC = () => {
         {languages.map((language) => (
           <li
             key={language.code}
-            className={`language-item ${
-              selectedLanguage === language.code ? "selected" : ""
-            }`}
+            className={`language-item ${selectedLanguage === language.code ? "selected" : ""
+              }`}
             onClick={() => handleChangeLanguage(language.code)}
           >
             {language.label}

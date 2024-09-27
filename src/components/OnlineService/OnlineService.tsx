@@ -4,10 +4,14 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-const OnlineService: React.FC = () => {
+interface ServiceProps {
+  setSelectedMenu: (data: any) => void;
+}
+
+const OnlineService: React.FC<ServiceProps> = ({ setSelectedMenu }) => {
   const navigate = useNavigate();
   const handleBack = () => {
-    navigate(-1); // Navigates to the previous page
+    navigate("/", { state: { fromService: true } });
   };
   const { t } = useTranslation();
   return (
@@ -18,29 +22,30 @@ const OnlineService: React.FC = () => {
       <h2>{t("Online Service")}</h2>
       <p>{t("Choose your preferred online customer service contact method")}</p>
       <div className="service-options">
-        <div className="service-option">
-          <img
+        <div className="service-option"
+          onClick={() => window.open("https://t.me/MyMiningsOfficialChannel")}>
+          < img
             src="https://img.icons8.com/color/48/000000/telegram-app--v1.png"
             alt={t("Telegram")}
           />
           <span>{t("Myminings official channel")}</span>
         </div>
-        <div className="service-option">
+        <div className="service-option" onClick={() => window.open("https://t.me/myminings_admin")}>
           <img
             src="https://img.icons8.com/color/48/000000/telegram-app--v1.png"
             alt={t("Telegram")}
           />
           <span>{t("Myminings 24h service")}</span>
         </div>
-        <div className="service-option">
+        {/* <div className="service-option">
           <img
             src="https://img.icons8.com/color/48/000000/whatsapp.png"
             alt={t("WhatsApp")}
           />
           <span>{t("Myminings 24h service")}</span>
-        </div>
+        </div> */}
       </div>
-    </div>
+    </div >
   );
 };
 

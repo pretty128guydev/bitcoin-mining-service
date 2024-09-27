@@ -1,7 +1,7 @@
 // src/App.tsx
 import React, { useContext, useEffect, useState } from "react";
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Route,
   Routes,
   Navigate,
@@ -16,7 +16,7 @@ import { useAuth } from "./contexts/AuthContext";
 import backgroundImage from "./assets/background.png";
 import mobile_back from "./assets/mobile_back.png";
 import useWindowSize from "./hooks/useWindowSize";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import InvestPlus from "./components/InvestPlus/InvestPlus";
 import FAQ from "./components/FAQ/FAQ";
 import LoginPassword from "./components/LoginPassword/LoginPassword";
@@ -27,11 +27,10 @@ import AboutUs from "./components/AboutUs/AboutUs";
 import Notification from "./components/Notification/Notification";
 import AppDownload from "./components/AppDownload/AppDownload";
 
-// import "./i18n.ts";
+import "./i18n";
 import OnlineService from "./components/OnlineService/OnlineService";
 import RechargeSelect from "./components/RechargeSelect/RechargeSelect";
 import Recharge from "./components/RechargeSelect/Recharge/Recharge";
-import TronWalletConnector from "./components/tronWallet/tronWalletConnector";
 
 import {
   useWallet,
@@ -47,14 +46,13 @@ import {
   WalletError,
   WalletNotFoundError,
 } from "@tronweb3/tronwallet-abstract-adapter";
-import toast from "react-hot-toast";
-import Wallet_Connect from "./components/Wallet_Connect/Wallet_Connect";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import UpdatePassportInfo from "./components/UpdatePassportInfo/UpdatePassportInfo";
 import { io } from "socket.io-client";
 import { MyContext } from "./MyContext";
 import ConfirmationModal from "./components/ConfirmationModal/ConfirmationModal";
+import { TbMessagePlus } from "react-icons/tb";
 
 const { Content } = Layout;
 
@@ -125,21 +123,33 @@ interface JwtPayload {
 const App: React.FC = () => {
   const context = useContext(MyContext);
   const { myunreadmessage, setMyunreadmessages } = context; // Safely destructure from context
+  const { package_status, setpackage_status } = context; // Safely destructure from context
+  const { package_remain, setpackage_remain } = context; // Safely destructure from context
+  const { package_role, setpackage_role } = context; // Safely destructure from context
+  const { selectedMenu, setSelectedMenu } = context; // Safely destructure from context
   const { mybalance, setMybalance } = context; // Safely destructure from context
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const [actually_paid, setactually_paid] = useState<number>(0);
   const [packageprice, setpackageprice] = useState<number>(0);
-  const REACT_APP_SOCKET_PORT = process.env.REACT_APP_SOCKET_PORT;
+  const REACT_APP_BACKEND_PORT = process.env.REACT_APP_BACKEND_PORT;
 
-  const socket = io("http://localhost:8000");
+  const socket = io(`${REACT_APP_BACKEND_PORT}`, { path: '/socket.io/' });
 
   const token = localStorage.getItem("token");
+
+  const handleConfirm = () => {
+    setSelectedMenu("packages")
+  }
 
   const handleCancel = () => {
     setModalVisible(false);
     setactually_paid(0);
   };
+
+  const pahandleConfirm = () => {
+    setSelectedMenu("news")
+  }
 
   const pahandleCancle = () => {
     setModalVisible(false);
@@ -155,6 +165,11 @@ const App: React.FC = () => {
         .get(`${process.env.REACT_APP_BACKEND_PORT}/api/user/${userId}/unread`)
         .then((response) => {
           setMyunreadmessages(response.data.length);
+          if (response.data.length !== 0) {
+            toast(`${response.data.length} new messages have arrived for you.`, {
+              icon: '👏',
+            });
+          }
         })
         .catch((error) => {
           console.error("Error fetching messages", error);
@@ -163,6 +178,9 @@ const App: React.FC = () => {
         .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get-balance/${userId}`)
         .then((response) => {
           setMybalance(response.data.balance);
+          setpackage_status(response.data.package_remain.package_status)
+          setpackage_remain(response.data.package_remain.package_remain)
+          setpackage_role(response.data.package_remain.package_role)
         })
         .catch((error) => {
           console.error("Error fetching messages", error);
@@ -178,16 +196,37 @@ const App: React.FC = () => {
       const userId = decoded.id;
 
       // Listen for balance response
-      socket.on("package_bought", (balance, newbalance) => {
-        console.log(balance, newbalance);
-        setMybalance(balance);
-        setpackageprice(newbalance);
+      socket.on("package_bought", (balance, newbalance, user_id) => {
+        if (user_id == Number(userId)) {
+          setMybalance(balance);
+          setpackageprice(newbalance);
+        }
       });
 
-      socket.on("balanceResponse", (balance, actually_paid) => {
-        setMybalance(balance);
-        if (!actually_paid) {
-          setactually_paid(actually_paid);
+      socket.on("balanceResponse", (balance, actually_paid, user_id) => {
+        if (user_id == Number(userId)) {
+          setMybalance(balance);
+          if (!actually_paid) {
+            setactually_paid(actually_paid);
+          }
+        }
+      });
+
+
+      socket.on(
+        "depositadmin",
+        (actually_paid, user_id, name) => {
+          if (user_id == 1) {
+            toast(`${name} did deposit $${actually_paid}.`, {
+              icon: '👏',
+            });
+          }
+        }
+      );
+
+      socket.on("updatebalance", (balance, user_id) => {
+        if (user_id == Number(userId)) {
+          setMybalance(balance);
         }
       });
 
@@ -195,9 +234,12 @@ const App: React.FC = () => {
       socket.on(
         "unreadMessagesResponse",
         (unread_messages: number, user_id: number) => {
-          console.log(user_id, unread_messages);
-          if (user_id === Number(userId)) {
+          if (user_id == Number(userId)) {
             setMyunreadmessages(unread_messages);
+            // toast.info(`${unread_messages} new messages have arrived for you.`)
+            toast(`${unread_messages} new messages have arrived for you.`, {
+              icon: '👏',
+            });
           }
         }
       );
@@ -261,15 +303,15 @@ const App: React.FC = () => {
               element={<Login setIsAuthenticated={setIsAuthenticated} />}
             />
             <Route path="/register" element={<Register />} />
-            <Route path="/menu/register" element={<Register />} />
+            <Route path="/register/:code" element={<Register />} />
             <Route path="/menu/investplus" element={<InvestPlus />} />
-            <Route path="/menu/faq" element={<FAQ />} />
+            <Route path="/menu/faq" element={<FAQ setSelectedMenu={setSelectedMenu} />} />
             <Route path="/menu/login-password" element={<LoginPassword />} />
             <Route
               path="/menu/security-password"
               element={<SecurityPassword />}
             />
-            <Route path="/menu/record" element={<Record />} />
+            <Route path="/menu/record" element={<Record setSelectedMenu={setSelectedMenu} />} />
             <Route
               path="/menu/rechargeSelect"
               element={<RechargeSelect options={options} />}
@@ -278,26 +320,25 @@ const App: React.FC = () => {
               path="/menu/rechargeSelect/:cryptoId"
               element={<RechargeWrapper />}
             />
-            <Route path="/menu/switch-language" element={<SwitchLanguage />} />
-            <Route path="/menu/notification" element={<Notification />} />
-            <Route path="/menu/about-us" element={<AboutUs />} />
+            <Route path="/menu/switch-language" element={<SwitchLanguage setSelectedMenu={setSelectedMenu} />} />
+            <Route path="/menu/notification" element={<Notification setSelectedMenu={setSelectedMenu} />} />
+            <Route path="/menu/about-us" element={<AboutUs setSelectedMenu={setSelectedMenu} />} />
             <Route path="/menu/app-download" element={<AppDownload />} />
-            <Route path="/menu/online-service" element={<OnlineService />} />
-            <Route
+            <Route path="/menu/online-service" element={<OnlineService setSelectedMenu={setSelectedMenu} />} />
+            {/* <Route
               path="/menu/wallet_connect/:unlockPrice"
-              element={<Wallet_Connect />}
-            />
-            <Route path="/tronconnect" element={<TronWalletConnector />} />
-            <Route path="/menu/passport" element={<UpdatePassportInfo />} />
+              element={<Wallet_Connect/>}
+            /> */}
+            <Route path="/menu/passport" element={<UpdatePassportInfo setSelectedMenu={setSelectedMenu} />} />
           </Routes>
-          <Toaster position="top-center" reverseOrder={false} />
         </Content>
+        <Toaster position="top-right" reverseOrder={false} />
       </Layout>
       {actually_paid !== 0 && (
         <div>
           <ConfirmationModal
             message={`$${actually_paid} has now been deposited into your account.`}
-            onConfirm={handleCancel}
+            onConfirm={handleConfirm}
             onCancel={handleCancel}
           />
         </div>
@@ -306,7 +347,7 @@ const App: React.FC = () => {
         <div>
           <ConfirmationModal
             message={`You have bought $${packageprice} package successfully!`}
-            onConfirm={pahandleCancle}
+            onConfirm={pahandleConfirm}
             onCancel={pahandleCancle}
           />
         </div>

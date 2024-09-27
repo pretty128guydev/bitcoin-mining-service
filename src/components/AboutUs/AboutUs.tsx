@@ -4,10 +4,14 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-const AboutUs: React.FC = () => {
+interface AboutProps {
+  setSelectedMenu: (data: any) => void
+}
+
+const AboutUs: React.FC<AboutProps> = ({ setSelectedMenu }) => {
   const navigate = useNavigate();
-  const handleBack = () => {
-    navigate(-1); // Navigates to the previous page
+   const handleBack = () => {
+    navigate("/", { state: { fromService: true } });
   };
   const { t } = useTranslation();
   return (
@@ -19,15 +23,7 @@ const AboutUs: React.FC = () => {
         </button>
         <p className="about_us_info">
           {" "}
-          Welcome to our Bitcoin mining farm, where we make cryptocurrency
-          mining simple and profitable for everyone. Our mission is to offer
-          accessible investment opportunities with packages starting from just
-          $50. Whether you’re a beginner or an experienced investor, we provide
-          cutting-edge mining equipment that delivers consistent returns. With
-          our transparent and reliable system, you can enjoy a 1.8% return on
-          your investment in just 2 months. We handle the technical side, so you
-          can sit back and watch your investment grow! Join us today and be part
-          of the future of digital finance!
+          {t("Welcome to our Bitcoin mining farm, where we make cryptocurrency mining simple and profitable for everyone. Our mission is to offer accessible investment opportunities with packages starting from just $50. Whether you’re a beginner or an experienced investor, we provide cutting-edge mining equipment that delivers consistent returns. With our transparent and reliable system, you can enjoy a 1.8% return on your investment in just 2 months. We handle the technical side, so you can sit back and watch your investment grow! Join us today and be part of the future of digital finance!")}
         </p>
       </div>
     </>

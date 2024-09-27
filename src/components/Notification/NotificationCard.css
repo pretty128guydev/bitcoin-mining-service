@@ -11,17 +11,17 @@
 }
 
 .trash-button {
-    background-color: transparent;
-    border: none;
-    color: white;
-    font-size: 1.2em;
-    cursor: pointer;
-    transition: color 0.3s ease;
-  }
-  
-  .trash-button:hover {
-    color: #7ed6df;
-  }
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.trash-button:hover {
+  color: #7ed6df;
+}
 
 .card-notification-title-section {
   display: flex;
@@ -62,4 +62,19 @@
   text-align: left;
   overflow-wrap: break-word;
   margin: 10px 0px;
+}
+
+.confirm-button {
+  background: linear-gradient(90deg, #356afb, #d13cdf);
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  width: 220px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.confirm-button:hover {
+  background: linear-gradient(90deg, #2e5dbf, #b330d4);
 }

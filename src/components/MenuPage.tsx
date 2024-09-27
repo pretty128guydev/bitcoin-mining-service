@@ -24,6 +24,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import CuteLoading from "./CuteLoading/CuteLoading";
 import { FaMoneyCheckAlt } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 interface MenuPageProps {
   setSelectedMenu: (data: any) => void;
@@ -41,9 +42,12 @@ const MenuPage: React.FC<MenuPageProps> = ({ setSelectedMenu }) => {
   const context = useContext(MyContext); // Access the context safely
   const { myunreadmessage, setMyunreadmessages } = context; // Safely destructure from context
   const { mybalance, setMybalance } = context; // Safely destructure from context
+  const { package_status, setpackage_status } = context; // Safely destructure from context
+  const { package_remain, setpackage_remain } = context; // Safely destructure from context
+  const { package_role, setpackage_role } = context; // Safely destructure from context
+  const { t } = useTranslation();
 
   const handleClick = (label: string) => {
-    console.log(`${label} clicked`);
     navigate(`/menu/${label}`);
   };
 
@@ -52,7 +56,7 @@ const MenuPage: React.FC<MenuPageProps> = ({ setSelectedMenu }) => {
     navigate("/login"); // Redirect to login page
   };
 
-  const Deposit = () => {};
+  const Deposit = () => { };
 
   const handleConfirm = (amount: number) => {
     const token = localStorage.getItem("token");
@@ -65,7 +69,7 @@ const MenuPage: React.FC<MenuPageProps> = ({ setSelectedMenu }) => {
         .post(`${process.env.REACT_APP_BACKEND_PORT}/api/create_payment`, {
           amount: amount,
           sender_id: userId,
-          price_currency: "usd",
+          price_currency: "usdttrc20",
         })
         .then((response) => {
           setLoading(false);
@@ -91,38 +95,42 @@ const MenuPage: React.FC<MenuPageProps> = ({ setSelectedMenu }) => {
 
   return (
     <div className="menu-page">
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <h1>MY BALANCE: ${mybalance}</h1>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <h3 style={{ color: "#fff" }}>{t("MY BALANCE")}: ${mybalance}</h3>
+        {package_status === "active" &&
+          <h3 style={{ color: "#fff" }}>${package_role} {t("package available")} {package_remain} {t("in days")}</h3>
+        }
+
       </div>
       <div className="menu-options">
-        <MenuOption
-          icon={<AiOutlineSetting />}
-          label="InvestPlus"
-          onClick={() => handleClick("investplus")}
-        />
+        {/* <MenuOption
+            icon={<AiOutlineSetting />}
+            label="InvestPlus"
+            onClick={() => handleClick("investplus")}
+          /> */}
         <MenuOption
           icon={<FaGlobe />}
-          label="Official Website"
+          label={t("Official Website")}
           onClick={() => setSelectedMenu("/news")}
         />
         <MenuOption
           icon={<FaLock />}
-          label="Login Password"
+          label={t("Login Password")}
           onClick={() => handleClick("login-password")}
         />
         <MenuOption
           icon={<FaEnvelope />}
-          label="Passport Verify"
+          label={t("Passport Verify")}
           onClick={() => handleClick("passport")}
         />
         <MenuOption
           icon={<BsFillLightningChargeFill />}
-          label="Recharge My Wallet"
+          label={t("Recharge My Wallet")}
           onClick={() => Recharge()}
         />
         <MenuOption
           icon={<FaMoneyCheckAlt />}
-          label="Deposit"
+          label={t("Withdraw")}
           onClick={() => handleClick("rechargeSelect")}
         />
       </div>
@@ -130,17 +138,17 @@ const MenuPage: React.FC<MenuPageProps> = ({ setSelectedMenu }) => {
       <div className="menu-options">
         <MenuOption
           icon={<FaQuestionCircle />}
-          label="FAQ"
+          label={t("FAQ")}
           onClick={() => handleClick("faq")}
         />
         <MenuOption
           icon={<AiOutlineInfoCircle />}
-          label="Contact Customer Service"
+          label={t("Contact Customer Service")}
           onClick={() => handleClick("online-service")}
         />
         <MenuOption
           icon={<AiOutlineGlobal />}
-          label="Switch Language"
+          label={t("Switch Language")}
           onClick={() => handleClick("switch-language")}
         />
         <Badge
@@ -151,26 +159,26 @@ const MenuPage: React.FC<MenuPageProps> = ({ setSelectedMenu }) => {
         >
           <MenuOption
             icon={<FaBell />}
-            label="Notification"
+            label={t("Notification")}
             onClick={() => handleClick("notification")}
           />
         </Badge>
         <MenuOption
           icon={<AiOutlineInfoCircle />}
-          label="About Us"
+          label={t("About Us")}
           onClick={() => handleClick("about-us")}
         />
-        <MenuOption
+        {/* <MenuOption
           icon={<FaMobileAlt />}
           label="APP Download"
           onClick={() => {}}
-        />
+        /> */}
       </div>
       <div className="menu-separator"></div> {/* Separator for sections */}
       <div className="logout">
         <button className="logout-button" onClick={handleLogout}>
           <AiOutlineLogout />
-          LogOut
+          {t("Logout")}
         </button>
       </div>
       {modalVisible && (

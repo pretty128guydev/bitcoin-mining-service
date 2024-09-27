@@ -1,0 +1,86 @@
+/* SpecialPackage.css */
+.mobilepackage_container {
+  width: 100%;
+  background-image: linear-gradient(to right, #9d9a9a61, #cfc4c41f);
+  border-radius: 10px;
+  padding: 5px 20px 20px;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* Smooth transition */
+}
+
+.mobilepackage_container:hover {
+  transform: scale(1.05);
+  /* Slightly enlarge the container */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  /* Enhance shadow on hover */
+}
+
+.mobilepackage_header {
+  background-color: #6164e8;
+  border-radius: 5px;
+  padding: 5px 10px;
+  text-align: center;
+}
+
+.mobilepackage_headerText {
+  margin: 0;
+  color: #fff;
+  font-size: 18px;
+}
+
+.mobilepackageDetails {
+  margin-top: 10px;
+}
+
+.mobiledetailsRow {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 15px;
+}
+
+.mobiledetailTitle {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.mobileratingIncome {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mobileusdtText {
+  font-weight: bold;
+  font-size: 16px;
+  color: #42f5a7;
+  margin: 10px;
+}
+
+.mobiledayText {
+  font-weight: bold;
+  font-size: 16px;
+  color: #ffffff;
+  margin: 10px;
+}
+
+.mobileunlockButton {
+  background-image: linear-gradient(to right, #6a00f4, #c800ff);
+  color: #fff;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 40px;
+  margin-top: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.mobile-packages {
+  width: 100%;
+}
+
+.mobilep {
+  margin: 10px;
+}

@@ -18,6 +18,7 @@ interface User {
   balance: number;
   passport_number: number;
   passport_image_path: string;
+  button_clicks: string;
 }
 
 const AdminsPage: React.FC = () => {
@@ -36,7 +37,6 @@ const AdminsPage: React.FC = () => {
       .get(`${process.env.REACT_APP_BACKEND_PORT}/api/users`)
       .then((response) => {
         setUsers(response.data);
-        console.log(response.data);
         setLoading(false);
       })
       .catch((error) => {
@@ -111,23 +111,26 @@ const AdminsPage: React.FC = () => {
             usersToDisplay.map((user) => (
               <div key={user.id} className="user-card">
                 <div className="user-detail">
-                  <strong>{t("Name:")}</strong>{" "}
+                  <strong>{t("Name")}:{" "}</strong>{" "}
                   {`${user.firstname} ${user.lastname}`}
                 </div>
                 <div className="user-detail">
-                  <strong>{t("Email:")}</strong> {user.email}
+                  <strong>{t("Email")}:{" "}</strong> {user.email}
                 </div>
                 <div className="user-detail">
-                  <strong>{t("Phone Number:")}</strong> {user.phoneNumber}
+                  <strong>{t("Phone Number")}:{" "}</strong> {user.phoneNumber}
                 </div>
                 <div className="user-detail">
-                  <strong>{t("Role:")}</strong> {user.role}
+                  <strong>{t("Role")}:{" "}</strong> {user.role}
                 </div>
                 <div className="user-detail">
-                  <strong>{t("Balance:")}</strong> ${user.balance}
+                  <strong>{t("Balance")}:{" "}</strong> ${user.balance}
                 </div>
                 <div className="user-detail">
-                  <strong>{t("Passport Number:")}</strong>{" "}
+                  <strong>{t("Button Clicks")}:{" "}</strong>{user.button_clicks}
+                </div>
+                <div className="user-detail">
+                  <strong>{t("Passport Number")}:{" "}</strong>{" "}
                   {user.passport_number}
                 </div>
                 <div
@@ -188,7 +191,6 @@ const AdminsPage: React.FC = () => {
           onClose={handleClosePassportModal}
         />
       )}
-      <Toaster position="top-center" reverseOrder={false} />
       {loading && <CuteLoading />} {/* Show loading spinner when processing */}
     </div>
   );
