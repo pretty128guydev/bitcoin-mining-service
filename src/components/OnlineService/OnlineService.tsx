@@ -11,7 +11,7 @@ interface ServiceProps {
 const OnlineService: React.FC<ServiceProps> = ({ setSelectedMenu }) => {
   const navigate = useNavigate();
   const handleBack = () => {
-    navigate(-1) // Navigates to the previous page
+    navigate("/", { state: { fromService: true } });
   };
   const { t } = useTranslation();
   return (

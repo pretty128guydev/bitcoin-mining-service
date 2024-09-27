@@ -5,6 +5,8 @@ import TextAnimation from "./TextAnimation";
 import { useTranslation } from "react-i18next";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import useWindowSize from "../hooks/useWindowSize";
+import MobilePackages from "./MobilePackages/MobilePackages";
 
 interface PackagesSectionProps {
   mybalance: number;
@@ -20,6 +22,7 @@ const PackagesSection: React.FC<PackagesSectionProps> = ({ mybalance }) => {
   const token = localStorage.getItem("token");
   const [user_id, setuser_id] = useState<string>("");
   const [verificated, setverificated] = useState<string>("");
+  const width = useWindowSize() ?? 0;
 
   useEffect(() => {
     if (token) {
@@ -122,28 +125,48 @@ const PackagesSection: React.FC<PackagesSectionProps> = ({ mybalance }) => {
       }}
     >
       <TextAnimation text={`${t("Special")}  ${t("Packages")}`} />
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "40px",
-          justifyContent: "space-evenly",
-        }}
-      >
-        {packages.map((pkg, index) => (
-          <SpecialPackage
-            user_id={user_id}
-            verificated={verificated}
-            mybalance={mybalance}
-            key={index}
-            packageRating={pkg.packageRating}
-            dailyEarnings={pkg.dailyEarnings}
-            validTime={pkg.validTime}
-            ratingIncome={pkg.ratingIncome}
-            unlockPrice={pkg.unlockPrice}
-          />
-        ))}
-      </div>
+      {width < 500 ?
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "30px",
+            justifyContent: "space-evenly",
+          }}
+        >
+          {packages.map((pkg, index) => (
+            <MobilePackages
+              user_id={user_id}
+              verificated={verificated}
+              mybalance={mybalance}
+              key={index}
+              packageRating={pkg.packageRating}
+              dailyEarnings={pkg.dailyEarnings}
+              validTime={pkg.validTime}
+              ratingIncome={pkg.ratingIncome}
+              unlockPrice={pkg.unlockPrice}
+            />))}
+        </div> : <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "40px",
+            justifyContent: "space-evenly",
+          }}
+        >
+          {packages.map((pkg, index) => (
+            <SpecialPackage
+              user_id={user_id}
+              verificated={verificated}
+              mybalance={mybalance}
+              key={index}
+              packageRating={pkg.packageRating}
+              dailyEarnings={pkg.dailyEarnings}
+              validTime={pkg.validTime}
+              ratingIncome={pkg.ratingIncome}
+              unlockPrice={pkg.unlockPrice}
+            />))}
+        </div>}
     </div>
   );
 };

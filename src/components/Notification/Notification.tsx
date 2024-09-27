@@ -70,7 +70,7 @@ const Notification: React.FC<NotificationProps> = ({ setSelectedMenu }) => {
   }, [userId, activeTab]);
 
   const handleBack = () => {
-    navigate(-1)
+    navigate("/", { state: { fromService: true } });
   };
 
   return (

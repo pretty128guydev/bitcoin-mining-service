@@ -69,7 +69,7 @@ const MenuPage: React.FC<MenuPageProps> = ({ setSelectedMenu }) => {
         .post(`${process.env.REACT_APP_BACKEND_PORT}/api/create_payment`, {
           amount: amount,
           sender_id: userId,
-          price_currency: "usd",
+          price_currency: "usdttrc20",
         })
         .then((response) => {
           setLoading(false);

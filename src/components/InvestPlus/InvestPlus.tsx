@@ -54,8 +54,8 @@ const InvestPlus: React.FC = () => {
   const width = useWindowSize() ?? 0;
   const navigate = useNavigate();
   const handleBack = () => {
-    navigate(-1); // Navigates to the previous page
-  };
+   navigate("/", { state: { fromService: true } });
+ };
   const { t } = useTranslation();
   const invest = () => {
     navigate(`/menu/record`);

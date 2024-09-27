@@ -15,8 +15,8 @@ const FAQ: React.FC<FAQProps> = ({ setSelectedMenu }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const handleBack = () => {
-    navigate(-1) // Navigates to the previous page
+   const handleBack = () => {
+    navigate("/", { state: { fromService: true } });
   };
 
   const text1 = `

@@ -5,20 +5,55 @@
   gap: 10px;
 }
 
-.image-item-cont {
+.image-item-contnews1 {
+  background-image: url(../assets/news1.jpg);
   display: flex;
   justify-content: center;
-  height: 200px;
+  height: 300px;
+  width: 100%;
   background-position: center center;
   background-size: contain;
   background-repeat: no-repeat;
   cursor: pointer;
 }
 
-.image-item-cont a {
-  margin: auto;
-  width: 300px;
+.image-item-contnews2 {
+  background-image: url(../assets/news2.jpg);
+  display: flex;
+  justify-content: center;
+  height: 300px;
+  width: 100%;
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
 }
+
+.image-item-contnews3 {
+  background-image: url(../assets/news3.jpg);
+  display: flex;
+  justify-content: center;
+  height: 300px;
+  width: 100%;
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.image-item-contnews4 {
+  background-image: url(../assets/news4.jpg);
+  display: flex;
+  justify-content: center;
+  height: 300px;
+  width: 100%;
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+
 
 .carousel .selected.slide {
   background-color: transparent !important;

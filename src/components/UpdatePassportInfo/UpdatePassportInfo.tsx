@@ -112,7 +112,7 @@ const UpdatePassportInfo: React.FC<PassportProps> = ({ setSelectedMenu }) => {
   };
 
   const handleBack = () => {
-    navigate(-1)
+    navigate("/", { state: { fromService: true } });
   };
 
   return (

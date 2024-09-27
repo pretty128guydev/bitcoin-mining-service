@@ -11,6 +11,10 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.css";
 import { jwtDecode } from "jwt-decode";
 import ConfirmationModal from "./ConfirmationModal/ConfirmationModal";
+import news1 from "../assets/news1.jpg"
+import news2 from "../assets/news2.jpg"
+import news3 from "../assets/news3.jpg"
+import news4 from "../assets/news4.jpg"
 
 interface NewsItem {
   uuid: string;
@@ -27,7 +31,7 @@ interface JwtPayload {
 
 
 const NewsSection: React.FC = () => {
-  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
+  const [imageurl, setimageurl] = useState<string>("https://t.me/MyMiningsOfficialChannel");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [price, setPrice] = useState<number>(0);
@@ -53,9 +57,29 @@ const NewsSection: React.FC = () => {
   >([]);
   const token = localStorage.getItem("token");
 
-  const onChange = (currentSlide: number) => {
-    console.log(currentSlide);
-  };
+
+  const options = [
+    {
+      id: "1",
+      image_url: news1,
+      url: "https://t.me/MyMiningsOfficialChannel",
+    },
+    {
+      id: "2",
+      image_url: news2,
+      url: "https://t.me/MyMiningsOfficialChannel",
+    },
+    {
+      id: "3",
+      image_url: news3,
+      url: "https://t.me/MyMiningsOfficialChannel",
+    },
+    {
+      id: "4",
+      image_url: news4,
+      url: "https://t.me/MyMiningsOfficialChannel",
+    }
+  ];
 
   useEffect(() => {
     if (token) {
@@ -109,22 +133,22 @@ const NewsSection: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        const response = await axios.get(
-          "https://api.marketaux.com/v1/news/all?symbols=TSLA,AMZN,MSFT&filter_entities=true&language=en&api_token=IMc5zrj7jCeIq218grq7ibLPEalUFo4xcXC2kt7w"
-        );
-        setNewsItems(response.data.data);
-      } catch (err) {
-        setError("Failed to fetch news");
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchNews = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "https://api.marketaux.com/v1/news/all?symbols=TSLA,AMZN,MSFT&filter_entities=true&language=en&api_token=IMc5zrj7jCeIq218grq7ibLPEalUFo4xcXC2kt7w"
+  //       );
+  //       setNewsItems(response.data.data);
+  //     } catch (err) {
+  //       setError("Failed to fetch news");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchNews();
-  }, []);
+  //   fetchNews();
+  // }, []);
 
   const onClickItem = (key: string) => {
     window.open(key);
@@ -137,10 +161,10 @@ const NewsSection: React.FC = () => {
         overflow: "auto",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-around"
+        justifyContent: "space-between"
       }}
     >
-      {loading && (
+      {/* {loading && (
         <div
           style={{
             display: "flex",
@@ -163,7 +187,7 @@ const NewsSection: React.FC = () => {
           <img src={nonews} style={{ width: "100px" }} />
           <h2 style={{ color: "#ffffff" }}>{t("No Current News")}</h2>
         </div>
-      )}
+      )} */}
       {/* <div className="image-gallery">
         {newsItems.map((item) => (
           <div className="image-item" key={item.uuid}>
@@ -182,8 +206,7 @@ const NewsSection: React.FC = () => {
         infiniteLoop={true}
         autoPlay={true}
         showStatus={false}
-        showThumbs={true}
-        onChange={onChange}
+        showThumbs={false}
         swipeable={true}
         useKeyboardArrows={true}
         dynamicHeight={true}
@@ -191,14 +214,26 @@ const NewsSection: React.FC = () => {
         interval={1500}
       // onClickThumb={onClickThumb}
       >
-        {newsItems.map((item) => (
-          <div
-            className="image-item-cont"
-            key={item.uuid}
-            style={{ backgroundImage: `url(${item.image_url})` }}
-            onClick={() => onClickItem(item.url)}
-          ></div>
-        ))}
+        <div
+          className="image-item-contnews1"
+          onClick={() => onClickItem(imageurl)}
+        >
+        </div>
+        <div
+          className="image-item-contnews2"
+          onClick={() => onClickItem(imageurl)}
+        >
+        </div>
+        <div
+          className="image-item-contnews3"
+          onClick={() => onClickItem(imageurl)}
+        >
+        </div>
+        <div
+          className="image-item-contnews4"
+          onClick={() => onClickItem(imageurl)}
+        >
+        </div>
       </Carousel>
 
       {/* Display floating numbers */}
@@ -233,7 +268,7 @@ const NewsSection: React.FC = () => {
           src={bitcoin}
           className={isClicked ? "bitcoin_button" : "bitcoin_button is-clicked"}
           style={{
-            width: "215px",
+            width: "200px",
             cursor: "pointer",
             transform: isClicked ? "scale(1.1)" : "scale(1)",
             transition: "transform 0.3s ease",

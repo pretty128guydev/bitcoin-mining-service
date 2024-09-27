@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./SpecialPackage.css"; // Importing the CSS file
-import StarRating from "./StarRating";
+import "./MobilePackages.css"; // Importing the CSS file
+import StarRating from "../StarRating";
 import { useTranslation } from "react-i18next";
 import { Navigate, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import toast from "react-hot-toast";
-import ConfirmationModal from "./ConfirmationModal/ConfirmationModal";
-import CuteLoading from "./CuteLoading/CuteLoading"; // Import your loading component
-import { MyContext } from "../MyContext";
+import ConfirmationModal from "../ConfirmationModal/ConfirmationModal";
+import CuteLoading from "../CuteLoading/CuteLoading"; // Import your loading component
+import { MyContext } from "../../MyContext";
 
-interface SpecialPackageProps {
+interface MobilePackagesProps {
   packageRating: number;
   dailyEarnings: string;
   validTime: string;
@@ -26,7 +26,7 @@ interface JwtPayload {
   // Add other properties that you expect in your JWT payload
 }
 
-const SpecialPackage: React.FC<SpecialPackageProps> = ({
+const MobilePackages: React.FC<MobilePackagesProps> = ({
   packageRating,
   dailyEarnings,
   validTime,
@@ -134,24 +134,24 @@ const SpecialPackage: React.FC<SpecialPackageProps> = ({
   };
 
   return (
-    <div>
-      <div className="package_container">
-        <div className="packageDetails">
-          <StarRating rating={packageRating} height={50} width={50}/>
-          <div className="ratingIncome">
-            <p>{t("Daily Earnings")}</p>
-            <p className="dayText">{dailyEarnings} {t("USD/day")}</p>
+    <div className="mobile-packages">
+      <div className="mobilepackage_container">
+        <div className="mobilepackageDetails">
+          <StarRating rating={packageRating} height={25} width={25}/>
+          <div className="mobileratingIncome">
+            <p className="mobilep">{t("Daily Earnings")}</p>
+            <p className="mobiledayText">{dailyEarnings} {t("USD/day")}</p>
           </div>
-          <div className="ratingIncome">
-            <p>{t("Valid Time")}</p>
-            <p className="dayText">{validTime}</p>
+          <div className="mobileratingIncome">
+            <p className="mobilep">{t("Valid Time")}</p>
+            <p className="mobiledayText">{validTime}</p>
           </div>
-          <div className="ratingIncome">
-            <p>{t("Rating income")}</p>
-            <p className="usdtText">{ratingIncome}</p>
+          <div className="mobileratingIncome">
+            <p className="mobilep">{t("Rating income")}</p>
+            <p className="mobileusdtText">{ratingIncome}</p>
           </div>
           <button
-            className="unlockButton"
+            className="mobileunlockButton"
             onClick={() => unlockbutton(unlockPrice)}
           >
             {unlockPrice} {t("USDT")} {t("Unlock now")}
@@ -172,4 +172,4 @@ const SpecialPackage: React.FC<SpecialPackageProps> = ({
   );
 };
 
-export default SpecialPackage;
+export default MobilePackages;

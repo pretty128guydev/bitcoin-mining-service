@@ -10,8 +10,8 @@ interface RecordProps {
 
 const Record: React.FC<RecordProps> = ({setSelectedMenu}) => {
   const navigate = useNavigate();
-  const handleBack = () => {
-    navigate(-1) // Navigates to the previous page
+   const handleBack = () => {
+    navigate("/", { state: { fromService: true } });
   };
   const { t } = useTranslation();
   return (

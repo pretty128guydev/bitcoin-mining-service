@@ -14,7 +14,7 @@ import NewsSection from "./NewsSection";
 import PackagesSection from "./PackagesSection";
 import ReferralSection from "./ReferralSection";
 import ProfileSection from "./ProfileSection";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useWindowSize from "../hooks/useWindowSize";
 import CustomFooter from "./Footer";
 import logo from "../assets/logo.png";
@@ -24,6 +24,8 @@ import { jwtDecode } from "jwt-decode";
 import { useTranslation } from "react-i18next";
 import io from "socket.io-client";
 import { MyContext } from "../MyContext";
+import axios from "axios";
+import "./Dashboard.css"
 
 const { Header, Content, Sider } = Layout;
 
@@ -88,6 +90,7 @@ const Dashboard: React.FC<DashboardProps> = ({ }) => {
   const [userId, setUserId] = useState<string>("");
   const { t } = useTranslation();
   const [error, setError] = useState<string>("");
+  const location = useLocation();
 
   const [role, setrole] = useState(localStorage.getItem("role"));
 
@@ -113,6 +116,13 @@ const Dashboard: React.FC<DashboardProps> = ({ }) => {
     { key: "referral", icon: <ProfileOutlined />, label: t("Referral") },
     { key: "profile", icon: <UserOutlined />, label: t("Profile") },
   ];
+
+  useEffect(() => {
+    // Check if we came from the OnlineService and adjust the selected menu accordingly
+    if (location.state?.fromService) {
+      setSelectedMenu("profile"); // Set the menu to "profile" if navigating from service
+    }
+  }, [location.state]);
 
   const renderContent = () => {
     switch (selectedMenu) {
@@ -283,7 +293,7 @@ const Dashboard: React.FC<DashboardProps> = ({ }) => {
   //     .post(
   //       `https://api-sandbox.nowpayments.io/v1/invoice`,
   //       {
-  //         price_amount: 1000,
+  //         price_amount: 10000,
   //         price_currency: "usd",
   //         order_id: "RGDBP-21314",
   //         order_description: "Apple Macbook Pro 2019 x 1",
@@ -461,8 +471,8 @@ const Dashboard: React.FC<DashboardProps> = ({ }) => {
               }}
             >
               {t("TEST")}
-            </Button>
-            <Button
+            </Button> */}
+            {/*<Button
               type="primary"
               danger
               onClick={status}
@@ -500,7 +510,7 @@ const Dashboard: React.FC<DashboardProps> = ({ }) => {
             </Button> */}
           </div>
         </Header>
-        <Content style={{ height: "calc(100vh - 96px)", }}>{renderContent()}</Content>
+        <Content style={{ height: "calc(100vh - 110px)", }}>{renderContent()}</Content>
         {/* <Footer style={{ textAlign: "center" }}>Bitcoin Mining ©2024</Footer> */}
         <CustomFooter
           selectedMenu={selectedMenu}

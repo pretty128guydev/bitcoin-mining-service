@@ -28,7 +28,7 @@ const LoginPassword: React.FC = () => {
     setShowConfirmPassword(!showConfirmPassword);
 
   const handleBack = () => {
-    navigate(-1); // Navigates to the previous page
+    navigate("/", { state: { fromService: true } });
   };
   const { t } = useTranslation();
 
@@ -112,10 +112,11 @@ const LoginPassword: React.FC = () => {
             {showConfirmPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
           </button>
         </div>
-
-        <button className="confirm-button" type="submit">
-          {t("Confirm")}
-        </button>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <button className="confirm-button" type="submit">
+            {t("Confirm")}
+          </button>
+        </div>
       </form>
     </div>
   );

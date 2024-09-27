@@ -29,8 +29,8 @@ const Recharge: React.FC<RechargeProps> = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
   const handleBack = () => {
-    navigate(-1); // Navigates to the previous page
-  };
+   navigate(-1)
+ };
 
   const [usdAmount, setUsdAmount] = useState<number>(0);
   const [walletAddress, setWalletAddress] = useState<string>("");

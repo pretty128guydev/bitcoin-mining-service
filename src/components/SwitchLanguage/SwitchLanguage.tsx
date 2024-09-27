@@ -52,8 +52,8 @@ const SwitchLanguage: React.FC<LanguageProps> = ({ setSelectedMenu }) => {
     i18n.changeLanguage(code);
 
   };
-  const handleBack = () => {
-    navigate(-1) // Navigates to the previous page
+   const handleBack = () => {
+    navigate("/", { state: { fromService: true } });
   };
 
   return (

@@ -29,8 +29,8 @@ const RechargeSelect: React.FC<RechargeSelectProps> = ({ options }) => {
   const { t } = useTranslation();
   const { amount } = useParams();
   const handleBack = () => {
-    navigate(-1); // Navigates to the previous page
-  };
+   navigate("/", { state: { fromService: true } });
+ };
 
   const handleOptionClick = async (
     id: string,
