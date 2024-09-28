@@ -210,7 +210,12 @@
       "Users": "ผู้ใช้",
       "Admins": "ผู้ดูแลระบบ",
       "No users found.": "ไม่พบผู้ใช้.",
-      "View Passport": "ดูหนังสือเดินทาง"
+      "View Passport": "ดูหนังสือเดินทาง",
+      "You have bought": "คุณได้ซื้อแล้ว",
+      "package successfully!": "แพ็คเกจสำเร็จ!",
+      "has now been deposited into your account.": "ได้ฝากเข้าบัญชีของคุณแล้ว",
+      "new messages have arrived for you.": "ข้อความใหม่มาถึงคุณแล้ว",
+      "did deposit": "ฝากเงิน"
   
     }
   }

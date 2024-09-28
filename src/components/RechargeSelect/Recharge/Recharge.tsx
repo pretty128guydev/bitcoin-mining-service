@@ -68,6 +68,7 @@ const Recharge: React.FC<RechargeProps> = ({
     const token = localStorage.getItem("token");
     // Decode the token with the specified type
     if (token) {
+      setLoading(true);
       const decoded: JwtPayload = jwtDecode(token);
 
       // Now TypeScript knows that `decoded` has an `id` property
@@ -83,12 +84,15 @@ const Recharge: React.FC<RechargeProps> = ({
           recipientId,
           content,
           read_status,
+          usdAmount
         })
         .then(() => {
+          setLoading(false);
           toast.success(`${t("Message sent to admin successfully.")}`);
           setModalVisible(false)
         })
         .catch(() => {
+          setLoading(false);
           toast.error(t("Failed to send message."));
         });
     } else {

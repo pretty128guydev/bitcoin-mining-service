@@ -196,6 +196,11 @@
         "Users": "Benutzer",
         "Admins": "Administratoren",
         "No users found.": "Keine Benutzer gefunden.",
-        "View Passport": "Pass anzeigen"
+        "View Passport": "Pass anzeigen",
+        "You have bought": "Sie haben gekauft",
+        "package successfully!": "Paket erfolgreich!",
+        "has now been deposited into your account.": "wurde nun auf Ihr Konto eingezahlt.",
+        "new messages have arrived for you.": "neue Nachrichten sind für Sie angekommen.",
+        "did deposit": "hat eingezahlt"
     }
 }

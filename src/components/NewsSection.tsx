@@ -272,7 +272,7 @@ const NewsSection: React.FC = () => {
             cursor: "pointer",
             transform: isClicked ? "scale(1.1)" : "scale(1)",
             transition: "transform 0.3s ease",
-            marginBottom: "50px"
+            marginBottom: "25px"
           }}
         />
         {/* <p

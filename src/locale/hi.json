@@ -208,7 +208,12 @@
       "Users": "उपयोगकर्ता",
       "Admins": "प्रशासक",
       "No users found.": "कोई उपयोगकर्ता नहीं मिला।",
-      "View Passport": "पासपोर्ट देखें"
+      "View Passport": "पासपोर्ट देखें",
+      "You have bought": "आपने खरीदा है",
+      "package successfully!": "पैकेज सफलतापूर्वक!",
+      "has now been deposited into your account.": "अब आपके खाते में जमा हो गया है।",
+      "new messages have arrived for you.": "आपके लिए नए संदेश आ गए हैं।",
+      "did deposit": "जमा किया"
     }
   }
   

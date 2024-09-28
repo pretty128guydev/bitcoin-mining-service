@@ -209,6 +209,11 @@
     "Users": "Usuários",
     "Admins": "Administradores",
     "No users found.": "Nenhum usuário encontrado.",
-    "View Passport": "Ver Passaporte"
+    "View Passport": "Ver Passaporte",
+    "You have bought": "Você comprou",
+    "package successfully!": "pacote com sucesso",
+    "has now been deposited into your account.": "foi depositado em sua conta.",
+    "new messages have arrived for you.": "novas mensagens chegaram para você.",
+    "did deposit": "fez depósito"
   }
 }

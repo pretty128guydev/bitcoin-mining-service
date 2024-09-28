@@ -210,6 +210,11 @@
         "Users": "Utenti",
         "Admins": "Amministratori",
         "No users found.": "Nessun utente trovato.",
-        "View Passport": "Visualizza Passaporto"
+        "View Passport": "Visualizza Passaporto",
+        "You have bought": "You have bought",
+        "package successfully!": "pacchetto con successo!",
+        "has now been deposited into your account.": "è stato depositato nel tuo account.",
+        "new messages have arrived for you.": "nuovi messaggi sono arrivati per te.",
+        "did deposit": "ha depositato"
     }
 }

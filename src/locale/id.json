@@ -210,7 +210,12 @@
       "Users": "Pengguna",
       "Admins": "Admin",
       "No users found.": "Pengguna tidak ditemukan.",
-      "View Passport": "Lihat Paspor"
+      "View Passport": "Lihat Paspor",
+      "You have bought": "Anda telah membeli",
+      "package successfully!": "paket berhasil!",
+      "has now been deposited into your account.": "telah disetor ke akun Anda.",
+      "new messages have arrived for you.": "pesan baru telah tiba untuk Anda.",
+      "did deposit": "melakukan deposit"
     }
   }
   

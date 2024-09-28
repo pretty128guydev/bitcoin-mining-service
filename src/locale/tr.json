@@ -210,6 +210,11 @@
         "Users": "Kullanıcılar",
         "Admins": "Yöneticiler",
         "No users found.": "Kullanıcı bulunamadı.",
-        "View Passport": "Pasaportu Görüntüle"
+        "View Passport": "Pasaportu Görüntüle",
+        "You have bought": "Satın aldınız",
+        "package successfully!": "paket başarıyla!",
+        "has now been deposited into your account.": "artık hesabınıza yatırıldı.",
+        "new messages have arrived for you.": "yeni mesajlar size ulaştı.",
+        "did deposit": "para yatırdı"
     }
 }

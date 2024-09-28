@@ -206,6 +206,11 @@
       "Users": "Χρήστες",
       "Admins": "Διαχειριστές",
       "No users found.": "Δεν βρέθηκαν χρήστες.",
-      "View Passport": "Δείτε το Διαβατήριο"
+      "View Passport": "Δείτε το Διαβατήριο",
+      "You have bought": "Έχετε αγοράσει",
+      "package successfully!": "πακέτο με επιτυχία!",
+      "has now been deposited into your account.": "έχει κατατεθεί στον λογαριασμό σας.",
+      "new messages have arrived for you.": "νέα μηνύματα έχουν φτάσει για εσάς.",
+      "did deposit": "έκανε κατάθεση"
   }
 }  

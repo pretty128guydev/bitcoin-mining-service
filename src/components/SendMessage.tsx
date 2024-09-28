@@ -57,19 +57,21 @@ const SendMessage: React.FC<SendMessageProps> = ({
   };
 
   return (
-    <div className="send-message-modal">
-      <h2>{`${t("Send Message to")} ${fullName}`}</h2>
-      <textarea
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        placeholder={t("Enter your message here...")}
-      />
-      <button className="modal-button confirm" onClick={handleSend}>
-        {t("Send")}
-      </button>
-      <button className="modal-button cancel" onClick={onClose}>
-        {t("Close")}
-      </button>
+    <div className="send-message-overlay">
+      <div className="send-message-modal">
+        <h2>{`${t("Send Message to")} ${fullName}`}</h2>
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder={t("Enter your message here...")}
+        />
+        <button className="modal-button confirm" onClick={handleSend}>
+          {t("Send")}
+        </button>
+        <button className="modal-button cancel" onClick={onClose}>
+          {t("Close")}
+        </button>
+      </div>
     </div>
   );
 };

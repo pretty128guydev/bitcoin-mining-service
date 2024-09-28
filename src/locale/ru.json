@@ -209,6 +209,11 @@
     "Users": "Пользователи",
     "Admins": "Администраторы",
     "No users found.": "Пользователи не найдены.",
-    "View Passport": "Просмотреть паспорт"
+    "View Passport": "Просмотреть паспорт",
+    "You have bought": "Вы купили",
+    "package successfully!": "пакет успешно!",
+    "has now been deposited into your account.": "теперь зачислено на ваш счет.",
+    "new messages have arrived for you.": "новые сообщения для вас.",
+    "did deposit": "сделал депозит"
   }
 }

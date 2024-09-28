@@ -230,12 +230,6 @@ const Dashboard: React.FC<DashboardProps> = ({ }) => {
         return [
           {
             label: t("Users"),
-            key: "about_users",
-            icon: <FaRegUser />,
-            theme: "dark",
-          },
-          {
-            label: t("Admins"),
             key: "about_admins",
             icon: <RiAdminLine />,
           },
@@ -404,11 +398,8 @@ const Dashboard: React.FC<DashboardProps> = ({ }) => {
             onSelect={({ key }) => setSelectedMenu(key)}
             selectedKeys={[selectedMenu]}
           >
-            <Menu.Item key="about_users" icon={<FaRegUser />}>
-              {t("About Users")}
-            </Menu.Item>
             <Menu.Item key="about_admins" icon={<RiAdminLine />}>
-              {t("About Admins")}
+              {t("About Users")}
             </Menu.Item>
             <Menu.Item key="news" icon={<ThunderboltOutlined />}>
               {t("News & Task")}

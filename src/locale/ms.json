@@ -210,7 +210,12 @@
       "Users": "Pengguna",
       "Admins": "Pentadbir",
       "No users found.": "Tiada pengguna ditemui.",
-      "View Passport": "Lihat Pasport"
+      "View Passport": "Lihat Pasport",
+      "You have bought": "Anda telah membeli",
+      "package successfully!": "pakej berjaya!",
+      "has now been deposited into your account.": "telah didepositkan ke akaun anda.",
+      "new messages have arrived for you.": "mesej baru telah tiba untuk anda.",
+      "did deposit": "telah mendepositkan"
     }
   }
   

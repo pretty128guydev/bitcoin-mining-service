@@ -199,7 +199,12 @@
       "Users": "کاربران",
       "Admins": "مدیران",
       "No users found.": "کاربری یافت نشد.",
-      "View Passport": "مشاهده گذرنامه"
+      "View Passport": "مشاهده گذرنامه",
+      "You have bought": "شما خرید کرده‌اید",
+      "package successfully!": "بسته با موفقیت!",
+      "has now been deposited into your account.": "اکنون به حساب شما واریز شده است.",
+      "new messages have arrived for you.": "پیام‌های جدیدی برای شما رسیده‌اند.",
+      "did deposit": "واریز کرده است"
     }
   }
   

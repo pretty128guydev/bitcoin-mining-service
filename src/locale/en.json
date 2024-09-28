@@ -210,6 +210,11 @@
     "Users": "Users",
     "Admins": "Admins",
     "No users found.": "No users found.",
-    "View Passport": "View Passport"
+    "View Passport": "View Passport",
+    "You have bought": "You have bought",
+    "package successfully!": "package successfully!",
+    "has now been deposited into your account.": "has now been deposited into your account.",
+    "new messages have arrived for you.": "new messages have arrived for you.",
+    "did deposit": "did deposit"
   }
 }

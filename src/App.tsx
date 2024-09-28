@@ -53,6 +53,7 @@ import { io } from "socket.io-client";
 import { MyContext } from "./MyContext";
 import ConfirmationModal from "./components/ConfirmationModal/ConfirmationModal";
 import { TbMessagePlus } from "react-icons/tb";
+import { useTranslation } from "react-i18next";
 
 const { Content } = Layout;
 
@@ -129,6 +130,7 @@ const App: React.FC = () => {
   const { selectedMenu, setSelectedMenu } = context; // Safely destructure from context
   const { mybalance, setMybalance } = context; // Safely destructure from context
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const { t } = useTranslation();
 
   const [actually_paid, setactually_paid] = useState<number>(0);
   const [packageprice, setpackageprice] = useState<number>(0);
@@ -148,6 +150,7 @@ const App: React.FC = () => {
   };
 
   const pahandleConfirm = () => {
+    setModalVisible(false);
     setSelectedMenu("news")
   }
 
@@ -166,7 +169,7 @@ const App: React.FC = () => {
         .then((response) => {
           setMyunreadmessages(response.data.length);
           if (response.data.length !== 0) {
-            toast(`${response.data.length} new messages have arrived for you.`, {
+            toast(`${response.data.length} ${t("new messages have arrived for you.")}`, {
               icon: '👏',
             });
           }
@@ -217,7 +220,7 @@ const App: React.FC = () => {
         "depositadmin",
         (actually_paid, user_id, name) => {
           if (user_id == 1) {
-            toast(`${name} did deposit $${actually_paid}.`, {
+            toast(`${name} ${t("did deposit")} $${actually_paid}.`, {
               icon: '👏',
             });
           }
@@ -237,7 +240,7 @@ const App: React.FC = () => {
           if (user_id == Number(userId)) {
             setMyunreadmessages(unread_messages);
             // toast.info(`${unread_messages} new messages have arrived for you.`)
-            toast(`${unread_messages} new messages have arrived for you.`, {
+            toast(`${unread_messages} ${t("new messages have arrived for you.")}`, {
               icon: '👏',
             });
           }
@@ -337,7 +340,7 @@ const App: React.FC = () => {
       {actually_paid !== 0 && (
         <div>
           <ConfirmationModal
-            message={`$${actually_paid} has now been deposited into your account.`}
+            message={`$${actually_paid} ${t("has now been deposited into your account.")}`}
             onConfirm={handleConfirm}
             onCancel={handleCancel}
           />
@@ -346,7 +349,7 @@ const App: React.FC = () => {
       {packageprice !== 0 && (
         <div>
           <ConfirmationModal
-            message={`You have bought $${packageprice} package successfully!`}
+            message={`${t("You have bought")} $${packageprice} ${t("package successfully!")}`}
             onConfirm={pahandleConfirm}
             onCancel={pahandleCancle}
           />

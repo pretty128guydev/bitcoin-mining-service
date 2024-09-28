@@ -208,7 +208,12 @@
       "Users": "Usores",
       "Admins": "Administratores",
       "No users found.": "Nulli usores inventi sunt.",
-      "View Passport": "Vide Tessera"
+      "View Passport": "Vide Tessera",
+      "You have bought": "Emisti",
+      "package successfully!": "fasciculus feliciter!",
+      "has now been deposited into your account.": "nunc in rationem tuam collocatum est.",
+      "new messages have arrived for you.": "novae litterae tibi advenerunt.",
+      "did deposit": "deposuit"
     }
   }
   

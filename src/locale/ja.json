@@ -196,6 +196,11 @@
         "Users": "ユーザー",
         "Admins": "管理者",
         "No users found.": "ユーザーが見つかりません。",
-        "View Passport": "パスポートを見る"
+        "View Passport": "パスポートを見る",
+        "You have bought": "購入しました",
+        "package successfully!": "パッケージが正常に完了しました！",
+        "has now been deposited into your account.": "あなたのアカウントに入金されました。",
+        "new messages have arrived for you.": "新しいメッセージが届きました。",
+        "did deposit": "預けました"
     }
 }

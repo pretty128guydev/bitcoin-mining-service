@@ -208,7 +208,12 @@
       "Users": "المستخدمون",
       "Admins": "المسؤولون",
       "No users found.": "لم يتم العثور على مستخدمين.",
-      "View Passport": "عرض جواز السفر"
+      "View Passport": "عرض جواز السفر",
+      "You have bought": "لقد اشتريت",
+      "package successfully!": "الحزمة بنجاح!",
+      "has now been deposited into your account.": "تم إيداعه الآن في حسابك.",
+      "new messages have arrived for you.": "رسائل جديدة وصلت إليك.",
+      "did deposit": "قام بإيداع"
     }
   }
   

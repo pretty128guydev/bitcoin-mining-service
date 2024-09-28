@@ -208,6 +208,11 @@
         "Users": "Người dùng",
         "Admins": "Quản trị viên",
         "No users found.": "Không tìm thấy người dùng.",
-        "View Passport": "Xem Hộ Chiếu"
+        "View Passport": "Xem Hộ Chiếu",
+        "You have bought": "Bạn đã mua",
+        "package successfully!": "gói hàng thành công!",
+        "has now been deposited into your account.": "đã được gửi vào tài khoản của bạn.",
+        "new messages have arrived for you.": "tin nhắn mới đã đến cho bạn.",
+        "did deposit": "đã gửi"
     }
 }
