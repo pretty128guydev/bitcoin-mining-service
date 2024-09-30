@@ -108,7 +108,7 @@ const NewsSection: React.FC = () => {
           .then((response) => {
             if (response.data === "active") {
               axios
-                .post(`${process.env.REACT_APP_BACKEND_PORT}/api/button_clicks/${userId}`, { newClicks: energy + 1 })
+                .post(`${process.env.REACT_APP_BACKEND_PORT}/api/button_clicks/${userId}`)
                 .then((response) => {
                   setEnergy(Number(response.data.result))
                 })

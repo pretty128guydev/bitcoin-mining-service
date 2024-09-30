@@ -29,8 +29,8 @@ const Recharge: React.FC<RechargeProps> = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
   const handleBack = () => {
-   navigate(-1)
- };
+    navigate(-1)
+  };
 
   const [usdAmount, setUsdAmount] = useState<number>(0);
   const [walletAddress, setWalletAddress] = useState<string>("");
@@ -70,31 +70,45 @@ const Recharge: React.FC<RechargeProps> = ({
     if (token) {
       setLoading(true);
       const decoded: JwtPayload = jwtDecode(token);
-
-      // Now TypeScript knows that `decoded` has an `id` property
       const userId = decoded.id;
-      const read_status = "unread";
-      const recipientId = 1;
-      const content = `${t("I want to withdraw")} $${usdAmount} ${t("to my address")}(${walletAddress}) 
-                       ${t("swappedPrice as")} ${mainnetType}: ${swappedPrice}`
 
       axios
-        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/withdrawsend`, {
-          userId,
-          recipientId,
-          content,
-          read_status,
-          usdAmount
+        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get-balance/${userId}`)
+        .then((response) => {
+          if (response.data.balance > usdAmount) {
+            const read_status = "unread";
+            const recipientId = 1;
+            const content = `${t("I want to withdraw")} $${usdAmount} ${t("to my address")}(${walletAddress}) 
+                       ${t("swappedPrice as")} ${mainnetType}: ${swappedPrice}`
+
+            axios
+              .post(`${process.env.REACT_APP_BACKEND_PORT}/api/withdrawsend`, {
+                userId,
+                recipientId,
+                content,
+                read_status,
+                usdAmount
+              })
+              .then(() => {
+                setLoading(false);
+                toast.success(`${t("Message sent to admin successfully.")}`);
+                setModalVisible(false)
+              })
+              .catch(() => {
+                setLoading(false);
+                toast.error(t("Failed to send message."));
+              });
+          } else {
+            toast.error(t("There is insufficient stock."));
+          }
         })
-        .then(() => {
-          setLoading(false);
-          toast.success(`${t("Message sent to admin successfully.")}`);
-          setModalVisible(false)
-        })
-        .catch(() => {
-          setLoading(false);
-          toast.error(t("Failed to send message."));
+        .catch((error) => {
+          console.error("Error fetching messages", error);
         });
+
+
+      // Now TypeScript knows that `decoded` has an `id` property
+
     } else {
       console.log("no token found")
     }
@@ -173,6 +187,7 @@ const Recharge: React.FC<RechargeProps> = ({
                 value={usdAmount}
                 min={0}
                 onChange={handleInputChange}
+                placeholder="0"
                 style={{
                   width: "100%",
                   height: "35px",

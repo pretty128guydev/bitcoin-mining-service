@@ -54,6 +54,8 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                 id="amount"
                 type="number"
                 value={amount}
+                placeholder="0"
+                min={0}
                 onChange={(e) => setAmount(Number(e.target.value))}
                 style={{
                   height: "35px",

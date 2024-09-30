@@ -181,9 +181,10 @@ const App: React.FC = () => {
           console.error("Error fetching messages", error);
         });
       axios
-        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get-balance/${userId}`)
+        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get-electron-balance/${userId}`)
         .then((response) => {
-          setMybalance(response.data.balance);
+          console.log(response.data)
+          setMybalance(response.data.electron_balance);
           setpackage_status(response.data.package_remain.package_status)
           setpackage_remain(response.data.package_remain.package_remain)
           setpackage_role(response.data.package_remain.package_role)

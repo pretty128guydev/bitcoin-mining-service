@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './FlexibleWallet.css';
 import { FaArrowLeft } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -17,30 +17,44 @@ interface JwtPayload {
   // Add other properties that you expect in your JWT payload
 }
 
+interface TransactionsData {
+  amount: number;
+  description: string;
+  createdAt: string;
+}
+
 const FlexibleWallet: React.FC = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [transactions, settransactions] = useState<TransactionsData[]>([]);
   const navigate = useNavigate();
   const handleBack = () => {
     navigate("/");
   };
-  const transactions = [
-    {
-      title: 'Withdrawal deduction',
-      amount: '-1.03',
-      isNegative: true,
-      date: '2024/09/16 11:53:23',
-    },
-    {
-      title: 'Task earnings',
-      amount: '0.50',
-      isNegative: false,
-      date: '2024/09/16 11:52:59',
-    },
-  ];
+
+  useEffect(() => {
+    setLoading(true)
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decoded: JwtPayload = jwtDecode(token);
+      const userId = decoded.id;
+      axios
+        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get_transaction/${userId}`)
+        .then((response) => {
+          setLoading(false);
+          settransactions(response.data)
+        })
+        .catch((error) => {
+          setLoading(false);
+          console.error("Error fetching messages", error);
+        });
+    } else {
+      console.log(`No token found.`);
+    }
+  }, [])
 
   const { t } = useTranslation();
-  
+
   const Recharge = () => {
     setModalVisible(true);
   };
@@ -56,7 +70,6 @@ const FlexibleWallet: React.FC = () => {
       setLoading(true);
       const decoded: JwtPayload = jwtDecode(token);
       const userId = decoded.id;
-
       axios
         .post(`${process.env.REACT_APP_BACKEND_PORT}/api/create_payment`, {
           amount: amount,
@@ -94,25 +107,23 @@ const FlexibleWallet: React.FC = () => {
         <div className="flexible-wallet-actions">
           <button className="flexible-wallet-action" onClick={() => Recharge()}>Recharge</button>
           <button className="flexible-wallet-action" onClick={() => navigate("/menu/rechargeSelect")}>Withdraw</button>
-          <button className="flexible-wallet-action"  onClick={() => navigate("/transfer")}>Transfer</button>
+          <button className="flexible-wallet-action" onClick={() => navigate("/transfer")}>Transfer</button>
         </div>
 
       </div>
       <div className="flexible-wallet-asset-details">
         <h4>Asset Details</h4>
-        <div className="flexible-wallet-asset-placeholder">
-          <img src={nonews} style={{ width: "100px" }} />
-          <p>No data yet</p>
-        </div>
-        {transactions.map((transaction, index) => (
+        {transactions.length !== 0 ? transactions.map((transaction, index) => (
           <TransactionItem
             key={index}
-            title={transaction.title}
+            title={transaction.description}
             amount={transaction.amount}
-            isNegative={transaction.isNegative}
-            date={transaction.date}
+            date={transaction.createdAt}
           />
-        ))}
+        )) : <div className="flexible-wallet-asset-placeholder">
+          <img src={nonews} style={{ width: "100px" }} />
+          <p>No data yet</p>
+        </div>}
       </div>
       {modalVisible && (
         <div>
