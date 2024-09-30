@@ -1,0 +1,103 @@
+/* Dark Mode Styles */
+:root {
+    --bg-color-dark: #333333;
+    --text-color-dark: #ffffff;
+    --border-color-dark: #444444;
+    --dropdown-bg-dark: #222222;
+    --dropdown-hover-bg-dark: #444444;
+}
+
+.header-language-picker {
+    position: relative;
+    display: inline-block;
+    height: 100%;
+}
+
+.header-selected-language {
+    color: var(--text-color-dark);
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    /* Matches the header height */
+}
+
+.header-dropdown-arrow {
+    margin-left: 10px;
+    font-size: 0.8rem;
+    color: var(--text-color-dark);
+}
+
+.header-language-dropdown {
+    position: absolute;
+    background-color: var(--dropdown-bg-dark);
+    border: 1px solid var(--border-color-dark);
+    border-radius: 4px;
+    margin-top: 5px;
+    list-style: none;
+    padding: 0;
+    width: 136px;
+    z-index: 1000;
+    height: 300px;
+    overflow-y: auto;
+    /* Changed to 'auto' to show scrollbar when needed */
+}
+
+/* For WebKit browsers (Chrome, Safari, etc.) */
+.header-language-dropdown::-webkit-scrollbar {
+    width: 8px;
+    /* Width of the scrollbar */
+}
+
+.header-language-dropdown::-webkit-scrollbar-track {
+    background: #444444;
+    /* Track color */
+}
+
+.header-language-dropdown::-webkit-scrollbar-thumb {
+    background: #aaaaaa;
+    /* Thumb color */
+    border-radius: 10px;
+    /* Round edges for the thumb */
+}
+
+.header-language-dropdown::-webkit-scrollbar-thumb:hover {
+    background: #888888;
+    /* Thumb color on hover */
+}
+
+/* For Firefox */
+.header-language-dropdown {
+    scrollbar-width: thin;
+    /* Makes the scrollbar thinner */
+    scrollbar-color: #aaaaaa #444444;
+    /* Thumb color and track color */
+}
+
+.header-language-option {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: var(--text-color-dark);
+    transition: background-color 0.2s;
+}
+
+.header-language-option:hover {
+    background-color: var(--dropdown-hover-bg-dark);
+}
+
+.header-language-option.selected {
+    background-color: var(--dropdown-hover-bg-dark);
+    font-weight: bold;
+}
+
+.header-language-option .flag {
+    margin-right: 10px;
+}
+
+.header-language-option .label {
+    flex-grow: 1;
+}

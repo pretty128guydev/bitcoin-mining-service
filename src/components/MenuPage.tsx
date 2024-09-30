@@ -25,6 +25,7 @@ import toast from "react-hot-toast";
 import CuteLoading from "./CuteLoading/CuteLoading";
 import { FaMoneyCheckAlt } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import InfoMenu from "./InfoMenu/InfoMenu";
 
 interface MenuPageProps {
   setSelectedMenu: (data: any) => void;
@@ -95,13 +96,14 @@ const MenuPage: React.FC<MenuPageProps> = ({ setSelectedMenu }) => {
 
   return (
     <div className="menu-page">
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      {/* <div style={{ display: "flex", justifyContent: "space-between" }}>
         <h3 style={{ color: "#fff" }}>{t("MY BALANCE")}: ${mybalance}</h3>
         {package_status === "active" &&
           <h3 style={{ color: "#fff" }}>${package_role} {t("package available")} {package_remain} {t("in days")}</h3>
         }
 
-      </div>
+      </div> */}
+      <InfoMenu />
       <div className="menu-options">
         {/* <MenuOption
             icon={<AiOutlineSetting />}

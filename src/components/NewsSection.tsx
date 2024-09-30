@@ -211,7 +211,7 @@ const NewsSection: React.FC = () => {
         useKeyboardArrows={true}
         dynamicHeight={true}
         stopOnHover={true}
-        interval={1500}
+        interval={3000}
       // onClickThumb={onClickThumb}
       >
         <div

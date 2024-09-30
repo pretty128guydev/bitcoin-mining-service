@@ -16,9 +16,10 @@
   margin-bottom: 20px;
   width: 100%;
   text-align: center;
+  position: relative;
 }
 
-.label {
+.invi-label {
   font-size: 14px;
   margin-bottom: 15px;
   color: #a9a9a9;

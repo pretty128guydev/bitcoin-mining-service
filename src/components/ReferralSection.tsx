@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, Input, Button } from "antd";
 import InvitationComponent from "./InvitationComponent";
+import GoldCoinPromo from "./GoldCoinPromo/GoldCoinPromo";
 
 const ReferralSection: React.FC = () => {
 
@@ -8,7 +9,9 @@ const ReferralSection: React.FC = () => {
     height: "100%",
     overflowY: "auto",
     padding: "20px"
-  }}> <InvitationComponent /></div >;
+  }}> <InvitationComponent />
+    <GoldCoinPromo />
+  </div >;
 };
 
 export default ReferralSection;

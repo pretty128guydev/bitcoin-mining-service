@@ -3,4 +3,37 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}   
+}
+
+.language-selection {
+    height: 47px;
+}
+
+.content-container {
+    height: calc(100vh - 105px);
+    overflow-y: auto; /* Enables scrolling when needed */
+  }
+  
+  /* For WebKit browsers (Chrome, Safari, etc.) */
+  .content-container::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+  }
+  
+  .content-container::-webkit-scrollbar-track {
+    background: #444444; /* Track color */
+  }
+  
+  .content-container::-webkit-scrollbar-thumb {
+    background: #aaaaaa; /* Thumb color */
+    border-radius: 10px; /* Round edges for the thumb */
+  }
+  
+  .content-container::-webkit-scrollbar-thumb:hover {
+    background: #888888; /* Thumb color on hover */
+  }
+  
+  /* For Firefox */
+  .content-container {
+    scrollbar-width: thin; /* Makes the scrollbar thinner */
+    scrollbar-color: #aaaaaa #444444; /* Thumb color and track color */
+  }

@@ -70,7 +70,7 @@ const InvitationComponent: React.FC = () => {
       </div> */}
 
       <div className="item">
-        <label className="label">{t("Invitation Link")}</label>
+        <label className="invi-label">{t("Invitation Link")}</label>
         <div className="link-container">
           <span className="link">{invitationLink}</span>
           <button

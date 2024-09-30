@@ -26,6 +26,7 @@ import io from "socket.io-client";
 import { MyContext } from "../MyContext";
 import axios from "axios";
 import "./Dashboard.css"
+import LanguagePicker from "./LanguagePicker/LanguagePicker";
 
 const { Header, Content, Sider } = Layout;
 
@@ -438,20 +439,24 @@ const Dashboard: React.FC<DashboardProps> = ({ }) => {
         >
           {/* <div style={{ color: "white" }}>MY MININGS</div> */}
           <img src={logo} style={{ marginLeft: "10px", width: "35px", height: "35px", cursor: "pointer" }} onClick={() => setSelectedMenu("news")} />
-          <div>
-            <Dropdown menu={mobileMenu()} trigger={["click"]}>
-              <Button
-                type="primary"
-                style={{
-                  padding: "5px 10px",
-                  justifyContent: "space-between",
-                }}
-              >
-                <FaUserCircle />
-                <span>${`${mybalance}`}</span>
-              </Button>
-            </Dropdown>
-            {/* <Button
+          <div style={{display: "flex"}}>
+            <div className="language-section">
+              <LanguagePicker />
+            </div>
+            <div>
+              <Dropdown menu={mobileMenu()} trigger={["click"]}>
+                <Button
+                  type="primary"
+                  style={{
+                    padding: "5px 10px",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <FaUserCircle />
+                  <span>${`${mybalance}`}</span>
+                </Button>
+              </Dropdown>
+              {/* <Button
               type="primary"
               danger
               onClick={test}
@@ -463,7 +468,7 @@ const Dashboard: React.FC<DashboardProps> = ({ }) => {
             >
               {t("TEST")}
             </Button> */}
-            {/*<Button
+              {/*<Button
               type="primary"
               danger
               onClick={status}
@@ -499,9 +504,10 @@ const Dashboard: React.FC<DashboardProps> = ({ }) => {
             >
               {t("pay")}
             </Button> */}
-          </div>
+            </div>
+            </div>
         </Header>
-        <Content style={{ height: "calc(100vh - 105px)", }}>{renderContent()}</Content>
+        <Content className="content-container">{renderContent()}</Content>
         {/* <Footer style={{ textAlign: "center" }}>Bitcoin Mining ©2024</Footer> */}
         <CustomFooter
           selectedMenu={selectedMenu}

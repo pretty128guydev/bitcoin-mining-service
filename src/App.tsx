@@ -54,6 +54,8 @@ import { MyContext } from "./MyContext";
 import ConfirmationModal from "./components/ConfirmationModal/ConfirmationModal";
 import { TbMessagePlus } from "react-icons/tb";
 import { useTranslation } from "react-i18next";
+import TransferAmount from "./components/TransferAmount/TransferAmount";
+import FlexibleWallet from "./components/FlexibleWallet/FlexibleWallet";
 
 const { Content } = Layout;
 
@@ -151,6 +153,7 @@ const App: React.FC = () => {
 
   const pahandleConfirm = () => {
     setModalVisible(false);
+    setpackageprice(0);
     setSelectedMenu("news")
   }
 
@@ -333,6 +336,8 @@ const App: React.FC = () => {
               element={<Wallet_Connect/>}
             /> */}
             <Route path="/menu/passport" element={<UpdatePassportInfo setSelectedMenu={setSelectedMenu} />} />
+            <Route path="/transfer" element={<TransferAmount />} />
+            <Route path="/wallet" element={<FlexibleWallet />} />
           </Routes>
         </Content>
         <Toaster position="top-right" reverseOrder={false} />
