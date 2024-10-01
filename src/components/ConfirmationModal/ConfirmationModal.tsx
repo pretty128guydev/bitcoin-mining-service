@@ -51,9 +51,10 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                 {t("Recharge")}
               </label>
               <input
+                className="recharge-input"
                 id="amount"
                 type="number"
-                value={amount}
+                value={amount === 0 ? "" : amount} // Show empty if amount is 0
                 placeholder="0"
                 min={0}
                 onChange={(e) => setAmount(Number(e.target.value))}
@@ -61,7 +62,9 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                   height: "35px",
                   borderRadius: "5px",
                   fontSize: "15px",
-                }} // Set minimum value if needed
+                  MozAppearance: "textfield", // For Firefox, disables spinner
+                }}
+                onFocus={(e) => e.target.select()} // Automatically select text on focus
               />
             </div>
           </div>

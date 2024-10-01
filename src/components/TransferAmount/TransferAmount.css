@@ -70,13 +70,25 @@
   height: 100%;
 }
 
+.trans-transfer-amount input[type="number"]::-webkit-outer-spin-button,
+.trans-transfer-amount input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.trans-transfer-amount input[type="number"] {
+  -moz-appearance: textfield;
+  /* Disable Firefox spinner */
+}
+
 .trans-transfer-amount input::placeholder {
   background-color: #2a2a3d;
 }
 
 .trans-transfer-amount input:-webkit-autofill {
   background-color: #2a2a3d;
-  color: #111; /* Optional: Ensure text readability */
+  color: #111;
+  /* Optional: Ensure text readability */
 }
 
 .trans-all-btn {
@@ -94,6 +106,7 @@
   margin-bottom: 20px;
   background-color: #2a2a3d;
   padding: 10px;
+  display: flex;
   border-radius: 20px;
 }
 
@@ -108,13 +121,21 @@
   height: 100%;
 }
 
+.trans-security-password button{
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+}
+
 .trans-security-password input::placeholder {
   background-color: #2a2a3d;
 }
 
 .trans-security-password input:-webkit-autofill {
   background-color: #2a2a3d;
-  color: #111; /* Optional: Ensure text readability */
+  color: #111;
+  /* Optional: Ensure text readability */
 }
 
 .trans-eye-icon {

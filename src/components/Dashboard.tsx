@@ -453,7 +453,7 @@ const Dashboard: React.FC<DashboardProps> = ({ }) => {
                   }}
                 >
                   <FaUserCircle />
-                  <span>${`${mybalance}`}</span>
+                  {/* <span>${`${mybalance}`}</span> */}
                 </Button>
               </Dropdown>
               {/* <Button

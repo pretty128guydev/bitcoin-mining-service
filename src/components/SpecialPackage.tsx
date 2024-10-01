@@ -65,21 +65,22 @@ const SpecialPackage: React.FC<SpecialPackageProps> = ({
           .then((response) => {
             setLoading(false);
             setMybalance(response.data.balance);
+            axios
+              .post(
+                `${process.env.REACT_APP_BACKEND_PORT}/api/update-package/${user_id}`,
+                { packagePrice: unlockPrice, packageRole: dailyEarnings }
+              )
+              .then((response) => {
+                console.log(response.data)
+              })
+              .catch((error) => {
+                console.error("Error fetching messages", error);
+              });
           })
           .catch((error) => {
             console.error("Error fetching messages", error);
           });
-        axios
-          .post(
-            `${process.env.REACT_APP_BACKEND_PORT}/api/update-package/${user_id}`,
-            { packagePrice: unlockPrice, packageRole: dailyEarnings }
-          )
-          .then((response) => {
-            setLoading(false);
-          })
-          .catch((error) => {
-            console.error("Error fetching messages", error);
-          });
+
       } else {
         const token = localStorage.getItem("token");
         if (token) {
@@ -137,7 +138,7 @@ const SpecialPackage: React.FC<SpecialPackageProps> = ({
     <div>
       <div className="package_container">
         <div className="packageDetails">
-          <StarRating rating={packageRating} height={50} width={50}/>
+          <StarRating rating={packageRating} height={50} width={50} />
           <div className="ratingIncome">
             <p>{t("Daily Earnings")}</p>
             <p className="dayText">{dailyEarnings} {t("USD/day")}</p>

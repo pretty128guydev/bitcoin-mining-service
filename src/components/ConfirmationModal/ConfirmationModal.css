@@ -10,6 +10,27 @@
   align-items: center;
 }
 
+.recharge-input[type="number"]::-webkit-outer-spin-button,
+.recharge-input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.recharge-input[type="number"] {
+  -moz-appearance: textfield;
+  /* Disable Firefox spinner */
+}
+
+.recharge-input::placeholder {
+  background-color: #fff;
+}
+
+.recharge-input:-webkit-autofill {
+  background-color: #fff;
+  color: #111;
+  /* Optional: Ensure text readability */
+}
+
 .modal-content {
   padding: 20px;
   border-radius: 5px;

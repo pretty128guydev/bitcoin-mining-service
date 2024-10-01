@@ -1,10 +1,11 @@
 // InfoMenu.tsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import './InfoMenu.css';
 import CuteLoading from "../CuteLoading/CuteLoading";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { Navigate, useNavigate } from "react-router-dom";
+import { MyContext } from "../../MyContext";
 
 
 interface JwtPayload {
@@ -13,6 +14,7 @@ interface JwtPayload {
 }
 
 const InfoMenu: React.FC = () => {
+  const context = useContext(MyContext);
   const [loading, setLoading] = useState(false);
   const [electronic_wallet, setelectronic_wallet] = useState<number>(0);
   const [flexible_wallet, setflexible_wallet] = useState<number>(0);
@@ -24,10 +26,11 @@ const InfoMenu: React.FC = () => {
   const [cumulative_recharge, setcumulative_recharge] = useState<number>(0);
   const [useremail, setuseremail] = useState<string>("");
   const [userphoneNumber, setuserphoneNumber] = useState<string>("");
+  const [totalEarning, setTotalEarning] = useState<string>("");
+  const [flexibleBalance, setFlexibleBalance] = useState<number>(0);
+  const { mybalance, setMybalance } = context;
   const navigate = useNavigate();
-  const handleBack = () => {
-    navigate("/", { state: { fromService: true } });
-  };
+
 
   useEffect(() => {
     setLoading(true)
@@ -39,7 +42,6 @@ const InfoMenu: React.FC = () => {
         .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get_user_id/${userId}`)
         .then((response) => {
           setLoading(false);
-          console.log(response.data)
           // setelectronic_wallet(response.data.)
           // setflexible_wallet(response.data.)
           setgold_coin(response.data.gold_coin)
@@ -50,6 +52,9 @@ const InfoMenu: React.FC = () => {
           setcumulative_recharge(response.data.first_investment)
           setuseremail(response.data.email)
           setuserphoneNumber(response.data.phoneNumber)
+          setMybalance(response.data.electron_balance);
+          setTotalEarning(response.data.total_earning)
+          setFlexibleBalance(response.data.balance);
         })
         .catch((error) => {
           setLoading(false);
@@ -66,11 +71,11 @@ const InfoMenu: React.FC = () => {
       {userphoneNumber && <h3 style={{ color: "#fff", textAlign: "left" }}>{userphoneNumber}</h3>}
       <div className="info-wallet-section">
         <div className="info-wallet">
-          <div className="info-wallet-amount">0.00</div>
+          <div className="info-wallet-amount">{mybalance}</div>
           <div className="info-wallet-title">Electronic wallet (USDT)</div>
         </div>
         <div className="info-wallet" onClick={() => navigate("/wallet")}>
-          <div className="info-wallet-amount">0.00</div>
+          <div className="info-wallet-amount">{flexibleBalance}</div>
           <div className="info-wallet-title">Flexible wallet (USDT)</div>
         </div>
         <div className="info-wallet">
@@ -82,7 +87,7 @@ const InfoMenu: React.FC = () => {
       <div className="info-income-section">
         <div className="info-income-row1">
           <div className="info-income-box">
-            <div className="info-income-amount">0.00</div>
+            <div className="info-income-amount">{totalEarning}</div>
             <div className="info-income-title">Total Income (USDT)</div>
           </div>
           <div className="info-income-box">

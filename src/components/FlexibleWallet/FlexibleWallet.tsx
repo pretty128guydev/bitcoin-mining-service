@@ -23,14 +23,38 @@ interface TransactionsData {
   createdAt: string;
 }
 
+interface JwtPayload {
+  id: string;
+  // Add other properties that you expect in your JWT payload
+}
+
+
 const FlexibleWallet: React.FC = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [transactions, settransactions] = useState<TransactionsData[]>([]);
+  const [flexibleBalance, setFlexibleBalance] = useState<number>(0);
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const handleBack = () => {
-    navigate("/");
+    navigate("/", { state: { fromService: true } });
   };
+
+  useEffect(() => {
+    if (token) {
+      const decoded: JwtPayload = jwtDecode(token);
+      const userId = decoded.id;
+      axios
+        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get-balance/${userId}`)
+        .then((res) => {
+          console.log(res.data);
+          setFlexibleBalance(res.data.balance);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      console.log("no token found")
+    }
+  }, [])
 
   useEffect(() => {
     setLoading(true)
@@ -100,7 +124,7 @@ const FlexibleWallet: React.FC = () => {
         <div className="flexible-wallet-header">
           <div className="flexible-wallet-balance">
             <h3>Total Assets(USDT)</h3>
-            <h1>0.00</h1>
+            <h1>{flexibleBalance}</h1>
           </div>
         </div>
 

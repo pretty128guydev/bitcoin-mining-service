@@ -121,6 +121,11 @@ const MenuPage: React.FC<MenuPageProps> = ({ setSelectedMenu }) => {
           onClick={() => handleClick("login-password")}
         />
         <MenuOption
+          icon={<FaLock />}
+          label={t("Security Password")}
+          onClick={() => handleClick("security-password")}
+        />
+        <MenuOption
           icon={<FaEnvelope />}
           label={t("Passport Verify")}
           onClick={() => handleClick("passport")}
