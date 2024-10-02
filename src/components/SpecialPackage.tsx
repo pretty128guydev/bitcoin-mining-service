@@ -19,6 +19,8 @@ interface SpecialPackageProps {
   mybalance: number;
   verificated: string;
   user_id: string;
+  purchased: string;
+  disabled: string;
 }
 
 interface JwtPayload {
@@ -33,6 +35,8 @@ const SpecialPackage: React.FC<SpecialPackageProps> = ({
   ratingIncome,
   unlockPrice,
   verificated,
+  purchased,
+  disabled,
   user_id,
 }) => {
   const { t } = useTranslation();
@@ -137,7 +141,11 @@ const SpecialPackage: React.FC<SpecialPackageProps> = ({
   return (
     <div>
       <div className="package_container">
-        <div className="packageDetails">
+        <div className="packageDetails"
+        style={{
+          opacity: disabled === "yes" ? 0.2 : 1, // Apply transparency if disabled
+          pointerEvents: disabled === "yes" ? "none" : "auto", // Disable click events
+        }}>
           <StarRating rating={packageRating} height={50} width={50} />
           <div className="ratingIncome">
             <p>{t("Daily Earnings")}</p>
@@ -152,10 +160,10 @@ const SpecialPackage: React.FC<SpecialPackageProps> = ({
             <p className="usdtText">{ratingIncome}</p>
           </div>
           <button
-            className="unlockButton"
+            className={purchased === "yes" ? "blinkunlockbutton" : "unlockButton"}
             onClick={() => unlockbutton(unlockPrice)}
           >
-            {unlockPrice} {t("USDT")} {t("Unlock now")}
+            {purchased === "yes" ? `${t("You have bought this package")}` : `${unlockPrice} ${t("USDT")} ${t("Unlock now")}`}
           </button>
         </div>
       </div>

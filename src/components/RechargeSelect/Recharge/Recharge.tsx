@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import "./Recharge.css"; // We'll write CSS for styling
 import { FaArrowLeft } from "react-icons/fa";
@@ -9,6 +9,7 @@ import axios from "axios";
 import CuteLoading from "../../CuteLoading/CuteLoading";
 import toast from "react-hot-toast";
 import { jwtDecode } from "jwt-decode";
+import { MyContext } from "../../../MyContext";
 
 interface RechargeProps {
   mainnetType: string;
@@ -32,7 +33,10 @@ const Recharge: React.FC<RechargeProps> = ({
     navigate(-1)
   };
 
+  const context = useContext(MyContext);
+  const { calculateFee } = context;
   const [usdAmount, setUsdAmount] = useState<number>(0);
+  const [fee, setFee] = useState<number>(0);
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [cryptoPrices, setCryptoPrices] = useState<any>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -47,11 +51,11 @@ const Recharge: React.FC<RechargeProps> = ({
     }
   }, []);
 
+  useEffect(() => {
+    return setFee(Number(calculateFee(usdAmount)));
+  }, [usdAmount])
+
   // Handle deposit amount input change
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseFloat(e.target.value);
-    setUsdAmount(isNaN(value) ? 0 : value);
-  };
 
   // Handle wallet address input change and save to localStorage
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,11 +75,11 @@ const Recharge: React.FC<RechargeProps> = ({
       setLoading(true);
       const decoded: JwtPayload = jwtDecode(token);
       const userId = decoded.id;
-
+      const allAmount = usdAmount + fee
       axios
         .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get-balance/${userId}`)
         .then((response) => {
-          if (response.data.balance > usdAmount) {
+          if (response.data.balance > allAmount) {
             const read_status = "unread";
             const recipientId = 1;
             const content = `${t("I want to withdraw")} $${usdAmount} ${t("to my address")}(${walletAddress}) 
@@ -87,22 +91,36 @@ const Recharge: React.FC<RechargeProps> = ({
                 recipientId,
                 content,
                 read_status,
-                usdAmount
+                allAmount
               })
               .then(() => {
-                setLoading(false);
-                toast.success(`${t("Message sent to admin successfully.")}`);
-                setModalVisible(false)
+                const newfee = fee;
+                axios
+                  .post(`${process.env.REACT_APP_BACKEND_PORT}/api/update_onefee/${userId}`, {
+                    newfee,
+                  })
+                  .then(() => {
+                    setLoading(false);
+                    toast.success(`${t("Message sent to admin successfully.")}`);
+                    setModalVisible(false)
+                    console.log("successfuly updated fee")
+                  })
+                  .catch(() => {
+                    setLoading(false);
+                    console.log("Error for updating one fee")
+                  });
               })
               .catch(() => {
                 setLoading(false);
                 toast.error(t("Failed to send message."));
               });
           } else {
+            setLoading(false)
             toast.error(t("There is insufficient stock."));
           }
         })
         .catch((error) => {
+          setLoading(false);
           console.error("Error fetching messages", error);
         });
 
@@ -182,11 +200,12 @@ const Recharge: React.FC<RechargeProps> = ({
             <label style={{ width: "100%", marginBottom: "10px" }}>
               {t("Withdraw Amount")}
               <input
+                className="withdraw-input"
                 id="amount"
                 type="number"
-                value={usdAmount}
+                value={usdAmount === 0 ? "" : usdAmount}
                 min={0}
-                onChange={handleInputChange}
+                onChange={(e) => setUsdAmount(Number(e.target.value))}
                 placeholder="0"
                 style={{
                   width: "100%",
@@ -194,7 +213,9 @@ const Recharge: React.FC<RechargeProps> = ({
                   borderRadius: "5px",
                   fontSize: "15px",
                   marginTop: "10px",
+                  MozAppearance: "textfield", // For Firefox, disables spinner
                 }}
+                onFocus={(e) => e.target.select()}
               />
             </label>
             <label style={{ width: "100%" }}>
@@ -262,10 +283,22 @@ const Recharge: React.FC<RechargeProps> = ({
           </div>
         )}
       </div>
+      <div className="fee-container">
+        <h3>Fee Information</h3>
+        <p>The service fee for withdrawals is calculated as follows:</p>
+        <ul>
+          <li><strong>10%</strong> for withdrawals between $10 - $250</li>
+          <li><strong>7%</strong> for withdrawals between $251 - $500</li>
+          <li><strong>5%</strong> for withdrawals between $501 - $1000</li>
+          <li><strong>2%</strong> for withdrawals above $1000</li>
+        </ul>
+        <p>Please enter an amount above $10 to see the exact service fee.</p>
+      </div>
 
       {modalVisible && (
         <ConfirmationModal
-          message={`${t("Confirm withdraw of")} $${usdAmount} ${t("to")} ${walletAddress}?   (${swappedPrice} ${mainnetType})`}
+          message={`${t("Confirm withdraw of")} $${usdAmount + fee}(fee : ${fee}) from your wallet. 
+          ${t("to")} ${walletAddress}?   (${swappedPrice} ${mainnetType})`}
           onConfirm={handleConfirm}
           onCancel={handleCancel}
         />

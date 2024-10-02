@@ -43,6 +43,27 @@
   margin: 20px 0;
 }
 
+.withdraw-input[type="number"]::-webkit-outer-spin-button,
+.withdraw-input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.withdraw-input[type="number"] {
+  -moz-appearance: textfield;
+  /* Disable Firefox spinner */
+}
+
+.withdraw-input::placeholder {
+  background-color: #fff;
+}
+
+.withdraw-input:-webkit-autofill {
+  background-color: #fff;
+  color: #111;
+  /* Optional: Ensure text readability */
+}
+
 .qrcode-wrapper {
   background-color: white;
   padding: 10px;
@@ -132,4 +153,13 @@
   width: 100%;
   max-width: 500px;
   margin: auto;
+}
+
+.fee-container {
+  margin: 10px auto;
+  padding: 20px;
+  background-color: #1e1e38;
+  border-radius: 10px;
+  color: white;
+  font-family: Arial, sans-serif;
 }

@@ -7,6 +7,7 @@ import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import useWindowSize from "../hooks/useWindowSize";
 import MobilePackages from "./MobilePackages/MobilePackages";
+import CuteLoading from "./CuteLoading/CuteLoading";
 
 interface PackagesSectionProps {
   mybalance: number;
@@ -23,26 +24,9 @@ const PackagesSection: React.FC<PackagesSectionProps> = ({ mybalance }) => {
   const [user_id, setuser_id] = useState<string>("");
   const [verificated, setverificated] = useState<string>("");
   const width = useWindowSize() ?? 0;
+  const [loading, setLoading] = useState(false);
+  const [modifiedPackages, setModifiedPackages] = useState<any[]>([]);
 
-  useEffect(() => {
-    if (token) {
-      const decoded: JwtPayload = jwtDecode(token);
-      const userId = decoded.id;
-      setuser_id(userId);
-      axios
-        .post(
-          `${process.env.REACT_APP_BACKEND_PORT}/api/get-passport/${userId}`
-        )
-        .then((response) => {
-          setverificated(response.data.passport_verificated);
-        })
-        .catch((error) => {
-          console.error("Error fetching messages", error);
-        });
-    } else {
-      console.log("no token found");
-    }
-  }, []);
   // Define the package data
   const packages = [
     {
@@ -51,6 +35,8 @@ const PackagesSection: React.FC<PackagesSectionProps> = ({ mybalance }) => {
       validTime: `60 ${t("days")}`,
       dailyEarnings: `1.5`,
       unlockPrice: "50",
+      purchased: "",
+      disabled: ""
     },
     {
       packageRating: 2,
@@ -58,6 +44,8 @@ const PackagesSection: React.FC<PackagesSectionProps> = ({ mybalance }) => {
       validTime: `60 ${t("days")}`,
       dailyEarnings: `3.9`,
       unlockPrice: "130",
+      purchased: "",
+      disabled: ""
     },
     {
       packageRating: 3,
@@ -65,6 +53,8 @@ const PackagesSection: React.FC<PackagesSectionProps> = ({ mybalance }) => {
       validTime: `60 ${t("days")}`,
       dailyEarnings: `8.4`,
       unlockPrice: "280",
+      purchased: "",
+      disabled: ""
     },
     {
       packageRating: 4,
@@ -72,6 +62,8 @@ const PackagesSection: React.FC<PackagesSectionProps> = ({ mybalance }) => {
       validTime: `60 ${t("days")}`,
       dailyEarnings: `10.2`,
       unlockPrice: "340",
+      purchased: "",
+      disabled: ""
     },
     {
       packageRating: 5,
@@ -79,6 +71,8 @@ const PackagesSection: React.FC<PackagesSectionProps> = ({ mybalance }) => {
       validTime: `60 ${t("days")}`,
       dailyEarnings: `15`,
       unlockPrice: "500",
+      purchased: "",
+      disabled: ""
     },
     {
       packageRating: 6,
@@ -86,6 +80,8 @@ const PackagesSection: React.FC<PackagesSectionProps> = ({ mybalance }) => {
       validTime: `60 ${t("days")}`,
       dailyEarnings: `30`,
       unlockPrice: "1000",
+      purchased: "",
+      disabled: ""
     },
     {
       packageRating: 7,
@@ -93,6 +89,8 @@ const PackagesSection: React.FC<PackagesSectionProps> = ({ mybalance }) => {
       validTime: `60 ${t("days")}`,
       dailyEarnings: `60`,
       unlockPrice: "2000",
+      purchased: "",
+      disabled: ""
     },
     {
       packageRating: 8,
@@ -100,6 +98,8 @@ const PackagesSection: React.FC<PackagesSectionProps> = ({ mybalance }) => {
       validTime: `60 ${t("days")}`,
       dailyEarnings: `90`,
       unlockPrice: "3000",
+      purchased: "",
+      disabled: ""
     },
     {
       packageRating: 9,
@@ -107,6 +107,8 @@ const PackagesSection: React.FC<PackagesSectionProps> = ({ mybalance }) => {
       validTime: `60 ${t("days")}`,
       dailyEarnings: `150`,
       unlockPrice: "5000",
+      purchased: "",
+      disabled: ""
     },
     {
       packageRating: 10,
@@ -114,18 +116,76 @@ const PackagesSection: React.FC<PackagesSectionProps> = ({ mybalance }) => {
       validTime: `60 ${t("days")}`,
       dailyEarnings: `300`,
       unlockPrice: "10000",
+      purchased: "",
+      disabled: ""
     },
   ];
+
+
+  useEffect(() => {
+    setLoading(true);
+    if (token) {
+      const decoded: JwtPayload = jwtDecode(token);
+      const userId = decoded.id;
+      setuser_id(userId);
+      axios
+        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get-passport/${userId}`)
+        .then((response) => {
+          setverificated(response.data.passport_verificated);
+          axios
+            .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get_user_id/${userId}`)
+            .then((response) => {
+              setLoading(false);
+
+              // Determine the user's highest purchased package
+              const highestPurchasedPackage = Number(response.data.package_role);
+
+              // Update the packages array based on the package_status and package_role
+              let updatedPackages = packages.map((pkg) => {
+                const isPurchased = Number(pkg.dailyEarnings) === highestPurchasedPackage;
+
+                // If the package price is greater than 2000 and the user hasn't purchased a 1000+ package, disable it
+                const shouldDisable = Number(pkg.unlockPrice) >= 2000 && response.data.package_price < 1000;
+
+                return {
+                  ...pkg,
+                  validTime: isPurchased ? `${response.data.package_remain} ${t("days")}` : pkg.validTime,
+                  dailyEarnings: isPurchased ? response.data.package_role : pkg.dailyEarnings,
+                  unlockPrice: isPurchased ? response.data.package_price : pkg.unlockPrice,
+                  purchased: isPurchased ? "yes" : "",
+                  disabled: shouldDisable ? "yes" : "", // Mark as disabled
+                };
+              });
+
+              setModifiedPackages(updatedPackages);
+            })
+            .catch((error) => {
+              setLoading(false);
+              console.error("Error fetching messages", error);
+            });
+        })
+        .catch((error) => {
+          setLoading(false);
+          console.error("Error fetching messages", error);
+        });
+    } else {
+      console.log("no token found");
+    }
+  }, []);
+
+
+
+
   return (
     <div
       style={{
         padding: "20px",
         height: "100%",
-        overflowY: "auto"
+        overflowY: "auto",
       }}
     >
       <TextAnimation text={`${t("Special")}  ${t("Packages")}`} />
-      {width < 500 ?
+      {width < 500 ? (
         <div
           style={{
             display: "flex",
@@ -134,7 +194,7 @@ const PackagesSection: React.FC<PackagesSectionProps> = ({ mybalance }) => {
             justifyContent: "space-evenly",
           }}
         >
-          {packages.map((pkg, index) => (
+          {modifiedPackages.map((pkg, index) => (
             <MobilePackages
               user_id={user_id}
               verificated={verificated}
@@ -145,8 +205,13 @@ const PackagesSection: React.FC<PackagesSectionProps> = ({ mybalance }) => {
               validTime={pkg.validTime}
               ratingIncome={pkg.ratingIncome}
               unlockPrice={pkg.unlockPrice}
-            />))}
-        </div> : <div
+              purchased={pkg.purchased}
+              disabled={pkg.disabled}
+            />
+          ))}
+        </div>
+      ) : (
+        <div
           style={{
             display: "flex",
             flexWrap: "wrap",
@@ -154,7 +219,7 @@ const PackagesSection: React.FC<PackagesSectionProps> = ({ mybalance }) => {
             justifyContent: "space-evenly",
           }}
         >
-          {packages.map((pkg, index) => (
+          {modifiedPackages.map((pkg, index) => (
             <SpecialPackage
               user_id={user_id}
               verificated={verificated}
@@ -165,8 +230,13 @@ const PackagesSection: React.FC<PackagesSectionProps> = ({ mybalance }) => {
               validTime={pkg.validTime}
               ratingIncome={pkg.ratingIncome}
               unlockPrice={pkg.unlockPrice}
-            />))}
-        </div>}
+              purchased={pkg.purchased}
+              disabled={pkg.disabled}
+            />
+          ))}
+        </div>
+      )}
+      {loading && <CuteLoading />} {/* Show loading spinner when processing */}
     </div>
   );
 };

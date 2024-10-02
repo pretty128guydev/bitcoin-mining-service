@@ -73,3 +73,22 @@
     cursor: pointer;
   }
   
+  .blinkunlockbutton {
+    background-image: linear-gradient(to right, #6a00f4, #c800ff);
+    color: #fff;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 40px;
+    margin-top: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    animation: blinking-animation 1s infinite;
+  }
+  
+  
+  @keyframes blinking-animation {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+  }

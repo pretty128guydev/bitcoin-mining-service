@@ -8,86 +8,100 @@
     font-family: Arial, sans-serif;
     margin-bottom: 15px;
   } */
-  
-  .info-wallet-section {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    width: 100%;
-    background-color: #2d2d3d;
-    padding: 20px;
-    border-radius: 10px;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    margin-bottom: 15px;
-  }
-  
-  .info-wallet {
-    flex: 1;
-    text-align: center;
-    margin-right: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    cursor: pointer;
-  }
-  
-  .info-wallet-title {
-    font-size: 12px;
-    color: #ccc;
-  }
-  
-  .info-wallet-amount {
-    font-size: 18px;
-    font-weight: bold;
-  }
-  
-  .info-income-section {
-    background-color: #6c6d7129;
-    padding: 20px;
-    border-radius: 10px;
-    width: 100%;
-    background-color: #2d2d3d;
-    padding: 20px;
-    border-radius: 10px;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    margin-bottom: 15px;
-  }
-  
-  .info-income-row1 {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 20px;
-    border-bottom: 1px #4f4d4d solid;
-  }
 
-  .info-income-row2 {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
-  
-  .info-income-box {
-    flex: 1;
-    text-align: center;
-    margin-right: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  .info-income-title {
-    font-size: 12px;
-    color: #ccc;
-  }
-  
-  .info-income-amount {
-    font-size: 18px;
-    font-weight: bold;
-  }
-  
-  .info-income-row:last-child {
-    margin-bottom: 0;
-  }
-  
+.info-wallet-section {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  width: 100%;
+  background-color: #2d2d3d;
+  padding: 20px;
+  border-radius: 10px;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  margin-bottom: 15px;
+}
+
+.info-wallet-header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #2d2d3d;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+.info-wallet-header span {
+  margin-left: 10px;
+}
+
+.info-wallet {
+  flex: 1;
+  text-align: center;
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.info-wallet-title {
+  font-size: 12px;
+  color: #ccc;
+}
+
+.info-wallet-amount {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.info-income-section {
+  background-color: #6c6d7129;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  background-color: #2d2d3d;
+  padding: 20px;
+  border-radius: 10px;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  margin-bottom: 15px;
+}
+
+.info-income-row1 {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  border-bottom: 1px #4f4d4d solid;
+}
+
+.info-income-row2 {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.info-income-box {
+  flex: 1;
+  text-align: center;
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.info-income-title {
+  font-size: 12px;
+  color: #ccc;
+}
+
+.info-income-amount {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.info-income-row:last-child {
+  margin-bottom: 0;
+}

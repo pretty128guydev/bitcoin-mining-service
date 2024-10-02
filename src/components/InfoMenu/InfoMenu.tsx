@@ -28,6 +28,7 @@ const InfoMenu: React.FC = () => {
   const [userphoneNumber, setuserphoneNumber] = useState<string>("");
   const [totalEarning, setTotalEarning] = useState<string>("");
   const [flexibleBalance, setFlexibleBalance] = useState<number>(0);
+  const [totalfee, settotalfee] = useState<number>(0);
   const { mybalance, setMybalance } = context;
   const navigate = useNavigate();
 
@@ -55,6 +56,7 @@ const InfoMenu: React.FC = () => {
           setMybalance(response.data.electron_balance);
           setTotalEarning(response.data.total_earning)
           setFlexibleBalance(response.data.balance);
+          settotalfee(response.data.total_fee)
         })
         .catch((error) => {
           setLoading(false);
@@ -67,8 +69,10 @@ const InfoMenu: React.FC = () => {
 
   return (
     <div className="info-dashboard-container">
-      {useremail && <h3 style={{ color: "#fff", textAlign: "left" }}>{useremail}</h3>}
-      {userphoneNumber && <h3 style={{ color: "#fff", textAlign: "left" }}>{userphoneNumber}</h3>}
+      <div className="info-wallet-header">
+        {useremail && <span style={{ color: "#fff", textAlign: "left" }}>{useremail}</span>}
+        {userphoneNumber && <span style={{ color: "#fff", textAlign: "left" }}>{userphoneNumber}</span>}
+      </div>
       <div className="info-wallet-section">
         <div className="info-wallet">
           <div className="info-wallet-amount">{mybalance}</div>
@@ -91,7 +95,7 @@ const InfoMenu: React.FC = () => {
             <div className="info-income-title">Total Income (USDT)</div>
           </div>
           <div className="info-income-box">
-            <div className="info-income-amount">0</div>
+            <div className="info-income-amount">{totalfee}</div>
             <div className="info-income-title">Total commission fee</div>
           </div>
         </div>
@@ -111,7 +115,7 @@ const InfoMenu: React.FC = () => {
         </div>
       </div>
       {loading && <CuteLoading />}
-    </div>
+    </div >
   );
 };
 

@@ -1,0 +1,49 @@
+.user-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #e0f7fa;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-icon {
+    display: flex;
+    align-items: center;
+}
+
+.user-details {
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
+.user-details h3 {
+    margin: 0;
+    color: #0077b6;
+}
+
+.user-details p {
+    margin: 0;
+    color: #6c757d;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+}
+
+.user-actions .edit-btn,
+.user-actions .delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 10px;
+}
+
+.user-actions .edit-btn:hover,
+.user-actions .delete-btn:hover {
+    transform: scale(1.1);
+}

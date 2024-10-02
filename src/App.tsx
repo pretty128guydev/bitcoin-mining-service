@@ -56,6 +56,9 @@ import { TbMessagePlus } from "react-icons/tb";
 import { useTranslation } from "react-i18next";
 import TransferAmount from "./components/TransferAmount/TransferAmount";
 import FlexibleWallet from "./components/FlexibleWallet/FlexibleWallet";
+import UsersList from "./components/UserList/UsersList";
+import LocationCard from "./components/LocationCard/LocationCard";
+import UserDetails from "./components/UserDetails/UserDetails";
 
 const { Content } = Layout;
 
@@ -338,6 +341,8 @@ const App: React.FC = () => {
             <Route path="/menu/passport" element={<UpdatePassportInfo setSelectedMenu={setSelectedMenu} />} />
             <Route path="/transfer" element={<TransferAmount />} />
             <Route path="/wallet" element={<FlexibleWallet />} />
+            <Route path="/usercard" element={<UsersList />} />
+            <Route path="/locationcard" element={<UserDetails/>} />
           </Routes>
         </Content>
         <Toaster position="top-right" reverseOrder={false} />

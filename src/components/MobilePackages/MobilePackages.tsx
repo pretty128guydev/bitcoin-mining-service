@@ -18,7 +18,9 @@ interface MobilePackagesProps {
   unlockPrice: string;
   mybalance: number;
   verificated: string;
+  purchased: string;
   user_id: string;
+  disabled: string;
 }
 
 interface JwtPayload {
@@ -33,8 +35,11 @@ const MobilePackages: React.FC<MobilePackagesProps> = ({
   ratingIncome,
   unlockPrice,
   verificated,
+  purchased,
+  disabled,
   user_id,
 }) => {
+  console.log(packageRating + "------" + purchased)
   const { t } = useTranslation();
 
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -136,8 +141,12 @@ const MobilePackages: React.FC<MobilePackagesProps> = ({
   return (
     <div className="mobile-packages">
       <div className="mobilepackage_container">
-        <div className="mobilepackageDetails">
-          <StarRating rating={packageRating} height={25} width={25}/>
+        <div className="mobilepackageDetails"
+          style={{
+            opacity: disabled === "yes" ? 0.2 : 1, // Apply transparency if disabled
+            pointerEvents: disabled === "yes" ? "none" : "auto", // Disable click events
+          }}>
+          <StarRating rating={packageRating} height={25} width={25} />
           <div className="mobileratingIncome">
             <p className="mobilep">{t("Daily Earnings")}</p>
             <p className="mobiledayText">{dailyEarnings} {t("USD/day")}</p>
@@ -151,10 +160,10 @@ const MobilePackages: React.FC<MobilePackagesProps> = ({
             <p className="mobileusdtText">{ratingIncome}</p>
           </div>
           <button
-            className="mobileunlockButton"
+            className={purchased === "yes" ? "blinkingunlockbutton" : "mobileunlockButton"}
             onClick={() => unlockbutton(unlockPrice)}
           >
-            {unlockPrice} {t("USDT")} {t("Unlock now")}
+            {purchased === "yes" ? `${t("You have bought this package")}` : `${unlockPrice} ${t("USDT")} ${t("Unlock now")}`}
           </button>
         </div>
       </div>
