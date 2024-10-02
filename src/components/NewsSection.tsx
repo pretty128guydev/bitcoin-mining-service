@@ -15,6 +15,9 @@ import news1 from "../assets/news1.jpg"
 import news2 from "../assets/news2.jpg"
 import news3 from "../assets/news3.jpg"
 import news4 from "../assets/news4.jpg"
+import FizzyButton from "./FizzyButton";
+import toast from "react-hot-toast";
+import CuteLoading from "./CuteLoading/CuteLoading";
 
 interface NewsItem {
   uuid: string;
@@ -52,6 +55,7 @@ const NewsSection: React.FC = () => {
 
   // State to track if the image is clicked or not
   const [isClicked, setIsClicked] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
   const [floatingNumbers, setFloatingNumbers] = useState<
     { value: number; left: string; top: string }[]
   >([]);
@@ -82,55 +86,67 @@ const NewsSection: React.FC = () => {
   ];
 
   useEffect(() => {
+    setLoading(true)
     if (token) {
       const decoded: JwtPayload = jwtDecode(token);
       const userId = decoded.id;
       axios
-        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get_button_clicks/${userId}`)
+        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get_clicked/${userId}`)
         .then((response) => {
-          setEnergy(response.data.result)
+          setLoading(false)
+          if (response.data === "clicked") {
+            setIsButtonDisabled(true);
+          }
         })
         .catch((error) => {
+          setLoading(false)
           console.error("Error fetching messages", error);
         });
     } else {
+      setLoading(false)
       console.log("no token found")
     }
   }, [])
   // Function to handle image click
   const handleImageClick = () => {
-    if (energy < 500) {
-      if (token) {
-        const decoded: JwtPayload = jwtDecode(token);
-        const userId = decoded.id;
-        axios
-          .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get_package_status/${userId}`)
-          .then((response) => {
-            if (response.data === "active") {
-              axios
-                .post(`${process.env.REACT_APP_BACKEND_PORT}/api/button_clicks/${userId}`)
-                .then((response) => {
-                  setEnergy(Number(response.data.result))
-                })
-                .catch((error) => {
-                  console.error("Error fetching messages", error);
-                });
-            } else {
-              setMessage(`${t("You didn't have bought any Package")}`)
-              setModalVisible(true)
-            }
-          })
-          .catch((error) => {
-            console.error("Error fetching messages", error);
-          });
-
-      } else {
-        console.log("no token found");
-      }
-    } else {
-      setMessage(`${t("You've reached at 500 times Please try tomorrow.")}`)
-      setModalVisible(true)
+    if (!isButtonDisabled) {
+      setIsButtonDisabled(true);
     }
+    // if (energy < 500) {
+    if (token) {
+      const decoded: JwtPayload = jwtDecode(token);
+      const userId = decoded.id;
+      axios
+        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get_package_status/${userId}`)
+        .then((response) => {
+          if (response.data === "active") {
+            axios
+              .post(`${process.env.REACT_APP_BACKEND_PORT}/api/button_clicks/${userId}`)
+              .then((response) => {
+                console.log(response.data)
+                setTimeout(() => {
+                  toast.success(`You've get $${response.data.packagerole} today!`)
+                }, 5000);
+              })
+              .catch((error) => {
+                console.error("Error fetching messages", error);
+              });
+          } else {
+            setMessage(`${t("You didn't have bought any Package")}`)
+            setModalVisible(true)
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching messages", error);
+        });
+
+    } else {
+      console.log("no token found");
+    }
+    // } else {
+    //   setMessage(`${t("You've reached at 500 times Please try tomorrow.")}`)
+    //   setModalVisible(true)
+    // }
   };
 
   // useEffect(() => {
@@ -263,7 +279,7 @@ const NewsSection: React.FC = () => {
           marginBottom: "50px"
         }}
       >
-        <img
+        {/* <img
           onClick={handleImageClick}
           src={bitcoin}
           className={isClicked ? "bitcoin_button" : "bitcoin_button is-clicked"}
@@ -274,7 +290,8 @@ const NewsSection: React.FC = () => {
             transition: "transform 0.3s ease",
             marginBottom: "25px"
           }}
-        />
+        /> */}
+        <FizzyButton isDisabled={isButtonDisabled} onClick={handleImageClick} />
         {/* <p
           style={{
             fontSize: "2rem",
@@ -289,7 +306,7 @@ const NewsSection: React.FC = () => {
         >
           ${price.toFixed(8)}
         </p> */}
-        <div style={{ display: "flex", alignItems: "center", marginRight: "20px" }}>
+        {/* <div style={{ display: "flex", alignItems: "center", marginRight: "20px" }}>
           <img
             src={lightning}
             alt="Energy Icon"
@@ -300,7 +317,7 @@ const NewsSection: React.FC = () => {
           >
             {energy} / 500
           </p>
-        </div>
+        </div> */}
         {/* <button className={energy < 500 ? "take_profit_out" :"take_profit"}>TAKE PROFIT</button> */}
       </div>
       {modalVisible && (
@@ -312,6 +329,7 @@ const NewsSection: React.FC = () => {
           />
         </div>
       )}
+      {loading && <CuteLoading />}
     </div>
   );
 };
