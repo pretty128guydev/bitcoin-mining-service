@@ -241,7 +241,7 @@ h1 {
   }
 }
 
-.pagination {
+.adminpagination {
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -249,11 +249,11 @@ h1 {
   color: #fff;
 }
 
-.pagination span {
+.adminpagination span {
   margin-right: 10px;
 }
 
-.pagination select {
+.adminpagination select {
   padding: 0.5rem;
   background-color: #39394d;
   color: white;

@@ -86,33 +86,8 @@ const NewsSection: React.FC = () => {
   ];
 
   useEffect(() => {
+    // BUG: toast is popping 2 times.
     setLoading(true)
-    if (token) {
-      const decoded: JwtPayload = jwtDecode(token);
-      const userId = decoded.id;
-      axios
-        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get_clicked/${userId}`)
-        .then((response) => {
-          setLoading(false)
-          if (response.data === "clicked") {
-            setIsButtonDisabled(true);
-          }
-        })
-        .catch((error) => {
-          setLoading(false)
-          console.error("Error fetching messages", error);
-        });
-    } else {
-      setLoading(false)
-      console.log("no token found")
-    }
-  }, [])
-  // Function to handle image click
-  const handleImageClick = () => {
-    if (!isButtonDisabled) {
-      setIsButtonDisabled(true);
-    }
-    // if (energy < 500) {
     if (token) {
       const decoded: JwtPayload = jwtDecode(token);
       const userId = decoded.id;
@@ -121,20 +96,49 @@ const NewsSection: React.FC = () => {
         .then((response) => {
           if (response.data === "active") {
             axios
-              .post(`${process.env.REACT_APP_BACKEND_PORT}/api/button_clicks/${userId}`)
+              .post(`${process.env.REACT_APP_BACKEND_PORT}/api/get_clicked/${userId}`)
               .then((response) => {
-                console.log(response.data)
-                setTimeout(() => {
-                  toast.success(`You've get $${response.data.packagerole} today!`)
-                }, 5000);
+                setLoading(false)
+                if (response.data === "clicked") {
+                  setIsButtonDisabled(true);
+                }
               })
               .catch((error) => {
+                setLoading(false)
                 console.error("Error fetching messages", error);
               });
           } else {
-            setMessage(`${t("You didn't have bought any Package")}`)
-            setModalVisible(true)
+            setLoading(false)
+            toast.error(`${t("You didn't have bought any Package")}`)
+            setIsButtonDisabled(true);
           }
+        })
+        .catch((error) => {
+          console.error("Error fetching messages", error);
+        });
+
+    } else {
+      setLoading(false)
+      console.log("no token found")
+    }
+  }, [])
+
+  // Function to handle image click
+  const handleImageClick = () => {
+    // if (energy < 500) {
+
+    // BUG: toast is popping 2 times.
+    if (token) {
+      const decoded: JwtPayload = jwtDecode(token);
+      const userId = decoded.id;
+
+      axios
+        .post(`${process.env.REACT_APP_BACKEND_PORT}/api/button_clicks/${userId}`)
+        .then((response) => {
+          setTimeout(() => {
+            toast.success(`You've get $${response.data.packagerole} today!`)
+            setIsButtonDisabled(true);
+          }, 5000);
         })
         .catch((error) => {
           console.error("Error fetching messages", error);
@@ -253,7 +257,7 @@ const NewsSection: React.FC = () => {
       </Carousel>
 
       {/* Display floating numbers */}
-      <div className="floating-numbers">
+      {/* <div className="floating-numbers">
         {floatingNumbers.map((number, index) => (
           <div
             key={index}
@@ -267,7 +271,7 @@ const NewsSection: React.FC = () => {
             +{(2)}
           </div>
         ))}
-      </div>
+      </div> */}
 
       <div
         style={{
@@ -292,6 +296,7 @@ const NewsSection: React.FC = () => {
           }}
         /> */}
         <FizzyButton isDisabled={isButtonDisabled} onClick={handleImageClick} />
+
         {/* <p
           style={{
             fontSize: "2rem",

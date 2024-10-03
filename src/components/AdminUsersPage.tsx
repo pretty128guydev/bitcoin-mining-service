@@ -255,7 +255,7 @@ const AdminsPage = () => {
 
       </table>
 
-      <div className="pagination">
+      <div className="adminpagination">
         {/* <span>{t("Items per page:")}</span>
         <select value={itemsPerPage} onChange={handleItemsPerPageChange}>
           {ITEMS_PER_PAGE_OPTIONS.map(option => (
